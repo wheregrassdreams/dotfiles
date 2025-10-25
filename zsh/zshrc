@@ -114,7 +114,9 @@ fi
 
 
 # PATH stuff
-export GOPATH=$HOME/Documents/go
+# export GOPATH=$HOME/Documents/go # 会因为icloud同步经常导致一些问题
+
+export GOPATH=$HOME/.go
 export GOROOT="$(brew --prefix golang)/libexec"
 export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 export PATH="$PATH:$HOME/.local/bin"
@@ -132,8 +134,7 @@ export DYLD_FALLBACK_LIBRARY_PATH="$(brew --prefix)/lib:$DYLD_FALLBACK_LIBRARY_P
 alias man='tldr'
 alias ls='eza --color=always --git --icons=always --no-user'
 alias cat='bat '
-alias e='$EDITOR '
-alias y='yazi '
+# alias y='yazi '
 alias py='python3 '
 alias nvd='neovide --frame buttonless --title-hidden'
 alias top='btop'
@@ -143,7 +144,7 @@ alias ze='zellij attach'
 alias neofetch='fastfetch'
 alias grep='rg'
 alias tree='eza --tree'
-alias find='fd'
+# alias find='fd'
 alias lg='lazygit'
 alias del='trash'
 alias rm='rm -i'
@@ -152,16 +153,23 @@ alias repo_rename="gh repo list | fzf | awk '{print \$1}' | read d && echo gh re
 alias nvimconf="nvim ~/.config/nvim/"
 alias ob='cd "/Users/zachlu/Library/Mobile Documents/iCloud~md~obsidian/Documents/MySecondBrain"'
 alias zshrc='$EDITOR ~/.zshrc'
+alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
+
 if [[ $TERM == "xterm-kitty" ]]; then
   alias ssh="kitten ssh "
+fi
+if [[ $TERM == "xterm-ghostty" ]]; then
+  # TODO: ssh
 fi
 
 # alias ls='eza --color=always --long --git --icons=always --no-user'
 
 
 # ============================ FZF ===================================
+# keybind
+# ...
 # Use ~~ as the trigger sequence instead of the default **
-export FZF_COMPLETION_TRIGGER=';;'
+export FZF_COMPLETION_TRIGGER='?'
 export FZF_DEFAULT_COMMAND='fd --hidden --exclude .git  . $HOME' 
 # export FZF_CTRL_R_COMMAND=""
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND" # CTRL-T to fuzzily search for a file or directory in your home directory then insert its path at the cursor 
@@ -175,6 +183,14 @@ export FZF_ALT_C_OPTS="
   --preview 'tree -C {}'"
 
 export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
+
+
+function zoxide_fzf() {
+    cd $(zoxide query --list | fzf) 
+}
+
+zle -N zoxide_fzf
+alias zz='zoxide_fzf'
 
 
 # ================== SOME CUSTOM COMMANDS =============================
@@ -244,3 +260,21 @@ eval "$(zoxide init zsh)"
 alias cd='z' # TODO: 先检测z命令是否有效 
 eval "$(starship init zsh)"
 
+
+# Added by Windsurf
+export PATH="/Users/zachlu/.codeium/windsurf/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+
+PATH=~/.console-ninja/.bin:$PATH
+PATH=~/.console-ninja/.bin:$PATH
+
+
+export TLDR_AUTO_UPDATE_DISABLED=1
+export PATH="$(brew --prefix shivammathur/php/php@7.2)/bin:$PATH"
+
+export XDG_CONFIG_HOME="$HOME/.config"
+
+# OSC 7 同步pwd到tmux
+precmd() {
+  printf "\033]7;%s\033\\" "file://$HOST${PWD}"
+}
