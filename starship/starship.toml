@@ -1,13 +1,88 @@
-# Get editor completions based on the config schema
-"$schema" = 'https://starship.rs/config-schema.json'
+# # Get editor completions based on the config schema
+# "$schema" = 'https://starship.rs/config-schema.json'
+#
+# # Inserts a blank line between shell prompts
+# add_newline = false
+#
+# # Replace the '❯' symbol in the prompt with '➜'
+# # [character] # The name of the module we are configuring is 'character'
+# # success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+#
+# # Disable the package module, hiding it from the prompt completely
+# [package]
+# disabled = true
+#
 
-# Inserts a blank line between shell prompts
-add_newline = false
+# ~/.config/starship.toml
 
-# Replace the '❯' symbol in the prompt with '➜'
-# [character] # The name of the module we are configuring is 'character'
-# success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+# 总体格式
+# format = """
+# $directory$git_branch
+# $character
+# """
 
-# Disable the package module, hiding it from the prompt completely
-[package]
-disabled = true
+format = """
+$directory$custom$nodejs$python$rust$golang
+$character
+"""
+
+[directory]
+style = "white"
+truncation_length = 3
+# 只显示目录本身，不要额外符号
+format = "[$path]($style) "
+
+[git_branch]
+style = "white"
+symbol = " "   # 或者 🌱 ，你也可以换
+format = "[$symbol$branch]($style) "
+truncation_length = 15     # 最多显示 15 个字符
+truncation_symbol = "…"
+only_attached = true
+
+[custom.git_branch_tail]
+command = "git rev-parse --abbrev-ref HEAD | awk -F/ '{print $NF}'"
+style = "white"
+symbol = " "
+format = "[$symbol$output](dimmed) "
+# format = "[$symbol]($style)[$output](dimmed) "
+when = "git rev-parse --is-inside-work-tree 2>/dev/null"
+
+[character]
+success_symbol = "[➜](green)"
+error_symbol = "[➜](red)"
+vicmd_symbol = "[➜](yellow)"
+
+
+# ========== 语言 ==========
+# ---------------- Python ----------------
+[python]
+symbol = " "
+style = "yellow"
+version_format = "v${raw}" # 保留原始版本号
+format = "[$symbol]($style)[$version](dimmed) "
+
+# ---------------- Go ----------------
+[golang]
+symbol = " "
+style = "cyan"
+format = "[$symbol$version](dimmed) "
+
+# ---------------- Node.js ----------------
+[nodejs]
+symbol = " "
+style = "green"
+format = "[$symbol]($style)[$version](dimmed) "
+
+# ---------------- Rust ----------------
+[rust]
+symbol = " "
+style = "red"
+format = "[$symbol$version](dimmed) "
+
+# ========== 时间 ==========
+[time]
+disabled = false
+time_format = "%H:%M"
+style = "dimmed"
+format = "[$time]($style) "

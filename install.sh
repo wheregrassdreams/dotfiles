@@ -48,12 +48,14 @@ brew install fastfetch      # neofetch -> fastfetch
 brew install fd             # find -> fd 
 brew install ripgrep        # grep -> ripgrep
 brew install gdu            # du -> gdu
-brew install lazygit
 brew install lazydocker
 brew install fzf            # fuzzy search
 brew install starship
 brew install tokei          # count code lines 
+
+brew install lazygit
 brew install gh             # github cli
+brew install git-delta          # git diff -> delta
 
 brew tap xenodium/macosrec
 brew install macosrec       # Take screenshots/videos of macOS windows from the command line 
@@ -100,6 +102,7 @@ brew install ffmpeg
 # brew install --cask visual-studio-code
 # brew install --cask kitty
 # brew install --cask iterm2
+# brew install --cask ghostty
 
 # brew install --cask obsidian
 # brew install --cask zerotier-one
