@@ -1,0 +1,21 @@
+git:
+  paging:
+    colorArg: always
+    # pager: delta --dark --paging=never
+    pager: delta --dark --paging=never --line-numbers --width={{columnWidth}} --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --hunk-header-style=omit
+gui:
+  showIcons: true
+  theme:
+    diffContextColor: "#555555"  # 可选：调整上下文颜色
+    activeBorderColor:
+      - magenta
+      - bold
+    inactiveBorderColor:
+      - black
+  showFileTree: true # for rendering changes files in a tree format
+os:
+  editCommand: "nvim"
+  editCommandTemplate: "{{editor}} {{filename}}"
+keybinding:
+  universal:
+    quit: "q"
