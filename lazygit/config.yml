@@ -5,17 +5,48 @@ git:
     pager: delta --dark --paging=never --line-numbers --width={{columnWidth}} --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --hunk-header-style=omit
 gui:
   showIcons: true
+  border: single
   theme:
-    diffContextColor: "#555555"  # 可选：调整上下文颜色
     activeBorderColor:
-      - magenta
+      # - magenta
+      - "#FEFFA0"
       - bold
     inactiveBorderColor:
-      - black
+      - "#484847"
+    searchingActiveBorderColor:
+        - "#8BE9FD"
+        - bold
+
+    optionsTextColor:
+    # - "#6272A4"
+      # - "#F8F8F2"
+      - bold
+
+    selectedLineBgColor:
+    - "#3B3B3B"
+    # - "#02FFC6"
+
+    inactiveViewSelectedLineBgColor:
+    - bold
+
+    # cherryPickedCommitFgColor:
+    # - "#6272A4"
+
+    # cherryPickedCommitBgColor:
+    # - "#8BE9FD"
+    #
+    # markedBaseCommitFgColor:
+    # - "#8BE9FD"
+    #
+    # markedBaseCommitBgColor:
+    # - "#F1FA8C"
+    #
+    # unstagedChangesColor:
+    # - "#FF5555"
+
+    defaultFgColor:
+    - white
   showFileTree: true # for rendering changes files in a tree format
-os:
-  editCommand: "nvim"
-  editCommandTemplate: "{{editor}} {{filename}}"
-keybinding:
-  universal:
-    quit: "q"
+# keybinding:
+#   universal:
+#     quit: "q"
