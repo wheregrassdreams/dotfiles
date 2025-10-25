@@ -257,7 +257,7 @@ precmd_functions+=(_fix_cursor)
 eval "$(fzf --zsh)"
 # eval "$(thefuck --alias)"
 eval "$(zoxide init zsh)"
-alias cd='z' # TODO: 先检测z命令是否有效 
+alias cd='z' 
 eval "$(starship init zsh)"
 
 
