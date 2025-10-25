@@ -1,0 +1,45 @@
+theme = "Atom"
+# theme = Catppuccin Frappe
+# theme = Hardcore
+# font-family = "JetBrainsMono Medium"
+font-size = 14
+
+# 背景透明
+background-opacity = 0.6
+background-blur-radius = 64
+
+# hide top bar
+# macos-titlebar-style = hidden
+
+
+# these are used by fzf in vim
+keybind = ctrl+shift+v=ignore
+keybind = ctrl+shift+s=ignore
+keybind = ctrl+shift+t=ignore
+
+keybind = alt+shift+p=ignore
+
+title = " "
+window-padding-x = 16,16
+window-padding-y = 0,0
+
+# 剪贴板
+clipboard-read = allow
+clipboard-write = allow
+
+macos-titlebar-proxy-icon = hidden
+macos-option-as-alt = left
+
+window-colorspace = display-p3
+
+# App图标
+# 透明图标
+macos-icon = glass 
+# 经典图标
+# macos-icon = official 
+
+keybind = shift+enter=text:\x1b\r
+
+keybind = ctrl+shift+space=write_scrollback_file:open
+
+confirm-close-surface=false
