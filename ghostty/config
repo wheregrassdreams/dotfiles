@@ -1,6 +1,6 @@
-theme = "Atom"
+# theme = "Atom"
 # theme = Catppuccin Frappe
-# theme = Hardcore
+theme = Hardcore
 # font-family = "JetBrainsMono Medium"
 font-size = 14
 
@@ -40,6 +40,6 @@ macos-icon = glass
 
 keybind = shift+enter=text:\x1b\r
 
-keybind = ctrl+shift+space=write_scrollback_file:open
+# keybind = ctrl+shift+space=write_scrollback_file:open
 
 confirm-close-surface=false
