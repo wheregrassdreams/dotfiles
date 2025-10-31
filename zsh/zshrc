@@ -35,7 +35,7 @@ plugins=(
   thefuck                    # Auto-correct wrong commands
   starship                   # Modern prompt
   zoxide                     # Smart directory jumping
-  # zsh-vi-mode              # VI mode -- 和我其他命令有不兼容问题，改用自己定义的vi mode
+  zsh-vi-mode              # VI mode -- 和我其他命令有不兼容问题，改用自己定义的vi mode
   fzf                        # Fuzzy finder
 )
 
@@ -89,7 +89,7 @@ fi
 # --- System ---
 # Bin
 export PATH="$PATH:$HOME/.local/bin"
-export PATH="/opt/X11/bin:$PATH"
+export PATH="$PATH:/opt/X11/bin"
 
 # XDG base directory
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -106,7 +106,7 @@ export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 # PHP Language
 # 下面这个命令会执行超长时间，导致整个zsh启动要很久
 # export PATH="$(brew --prefix shivammathur/php/php@7.2)/bin:$PATH"
-export PATH="/opt/homebrew/opt/php@7.2"
+export PATH="$PATH:/opt/homebrew/opt/php@7.2"
 
 # Rust Language
 . "$HOME/.cargo/env"
@@ -116,13 +116,13 @@ export PATH="/opt/homebrew/opt/php@7.2"
 
 # --- Others ---
 # Bun
-export PATH="$HOME/.bun/bin:$PATH"
+export PATH="$PATH:$HOME/.bun/bin"
 
 # Windsurf IDE
-export PATH="/Users/zachlu/.codeium/windsurf/bin:$PATH"
+export PATH="$PATH:/Users/zachlu/.codeium/windsurf/bin"
 
 # PostgreSQL
-export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+export PATH="$PATH:/opt/homebrew/opt/postgresql@15/bin"
 
 # ============================================================================
 # Alias 
@@ -258,7 +258,7 @@ precmd_functions+=(_fix_cursor)
 # ============================================================================
 
 # 已使用omz插件代替这部分
-# eval "$(fzf --zsh)"           # FZF initialization
+eval "$(fzf --zsh)"           # FZF initialization
 # eval "$(thefuck --alias)"     # The Fuck initialization  
 # eval "$(zoxide init zsh)"     # Zoxide initialization
 # eval "$(starship init zsh)"   # Starship initialization
