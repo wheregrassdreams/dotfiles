@@ -1,3 +1,6 @@
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule "/Users/zachlu/.dotfiles/ghostty/shaders"]
+	path = /Users/zachlu/.dotfiles/ghostty/shaders
+	url = https://github.com/hackr-sh/ghostty-shaders.git

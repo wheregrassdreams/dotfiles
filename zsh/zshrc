@@ -67,8 +67,21 @@ COMPLETION_WAITING_DOTS="true"
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # plugins=(git zsh-syntax-highlighting zsh-autosuggestions zsh-system-clipboard)
-plugins=(git zsh-syntax-highlighting)
-plugins+=(zsh-system-clipboard) # 暂时不知道如何远程使用
+plugins=(
+  git 
+  zsh-syntax-highlighting 
+  # zsh-autosuggestions
+  # zsh-autocomplete
+  zsh-system-clipboard
+  extract
+  thefuck
+  starship
+  zoxide
+  # zsh-vi-mode
+  fzf
+
+)
+# plugins+=() # 暂时不知道如何远程使用
 # plugins+=(zsh-vi-mode)
 
 
@@ -113,6 +126,8 @@ else
 fi
 
 
+
+
 # PATH stuff
 # export GOPATH=$HOME/Documents/go # 会因为icloud同步经常导致一些问题
 
@@ -136,11 +151,11 @@ alias ls='eza --color=always --git --icons=always --no-user'
 alias cat='bat '
 # alias y='yazi '
 alias py='python3 '
-alias nvd='neovide --frame buttonless --title-hidden'
+# alias nvd='neovide --frame buttonless --title-hidden'
 alias top='btop'
 alias e='$EDITOR'
 alias sudo='sudo -E '
-alias ze='zellij attach'
+# alias ze='zellij attach'
 alias neofetch='fastfetch'
 alias grep='rg'
 alias tree='eza --tree'
@@ -148,19 +163,19 @@ alias tree='eza --tree'
 alias lg='lazygit'
 alias del='trash'
 alias rm='rm -i'
-alias repo_del="gh repo list | fzf | awk '{print $1}' | xargs gh repo delete "
-alias repo_rename="gh repo list | fzf | awk '{print \$1}' | read d && echo gh repo rename --repo \\\"\"\$d\"\\\" | read a && bash -c 'read -e -p \"new name: \" name && echo \"\$name\"'  | read e && echo \$a \\\"\$e\\\" | read b && echo \"change \\\"\$d\\\" to \\\"\$e\\\"?\" && bash -c 'read -e -p \"confirm [y|n]: \" c && echo \"\$c\"' | read c && if [[ \$c == 'y' ]]; then echo \$b; else echo 'canceled.'; fi"
+# alias repo_del="gh repo list | fzf | awk '{print $1}' | xargs gh repo delete "
+# alias repo_rename="gh repo list | fzf | awk '{print \$1}' | read d && echo gh repo rename --repo \\\"\"\$d\"\\\" | read a && bash -c 'read -e -p \"new name: \" name && echo \"\$name\"'  | read e && echo \$a \\\"\$e\\\" | read b && echo \"change \\\"\$d\\\" to \\\"\$e\\\"?\" && bash -c 'read -e -p \"confirm [y|n]: \" c && echo \"\$c\"' | read c && if [[ \$c == 'y' ]]; then echo \$b; else echo 'canceled.'; fi"
 alias nvimconf="nvim ~/.config/nvim/"
 alias ob='cd "/Users/zachlu/Library/Mobile Documents/iCloud~md~obsidian/Documents/MySecondBrain"'
 alias zshrc='$EDITOR ~/.zshrc'
-alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
+# alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
 
-if [[ $TERM == "xterm-kitty" ]]; then
-  alias ssh="kitten ssh "
-fi
-if [[ $TERM == "xterm-ghostty" ]]; then
-  # TODO: ssh
-fi
+# if [[ $TERM == "xterm-kitty" ]]; then
+#   alias ssh="kitten ssh "
+# fi
+# if [[ $TERM == "xterm-ghostty" ]]; then
+#   # TODO: ssh
+# fi
 
 # alias ls='eza --color=always --long --git --icons=always --no-user'
 
@@ -183,14 +198,6 @@ export FZF_ALT_C_OPTS="
   --preview 'tree -C {}'"
 
 export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
-
-
-function zoxide_fzf() {
-    cd $(zoxide query --list | fzf) 
-}
-
-zle -N zoxide_fzf
-alias zz='zoxide_fzf'
 
 
 # ================== SOME CUSTOM COMMANDS =============================
@@ -253,12 +260,12 @@ zle -N zle-keymap-select
 _fix_cursor() { echo -ne '\e[5 q' }
 precmd_functions+=(_fix_cursor)
 
+
 # ========================= Init =================================
-eval "$(fzf --zsh)"
+# eval "$(fzf --zsh)"
 # eval "$(thefuck --alias)"
-eval "$(zoxide init zsh)"
-alias cd='z' 
-eval "$(starship init zsh)"
+# eval "$(zoxide init zsh)"
+# eval "$(starship init zsh)"
 
 
 # Added by Windsurf
@@ -270,11 +277,21 @@ PATH=~/.console-ninja/.bin:$PATH
 
 
 export TLDR_AUTO_UPDATE_DISABLED=1
-export PATH="$(brew --prefix shivammathur/php/php@7.2)/bin:$PATH"
+# export PATH="$(brew --prefix shivammathur/php/php@7.2)/bin:$PATH"
+export PATH="/opt/homebrew/opt/php@7.2"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 
-# OSC 7 同步pwd到tmux
-precmd() {
-  printf "\033]7;%s\033\\" "file://$HOST${PWD}"
-}
+
+alias npm=pnpm
+alias dbeaver=/Applications/DBeaver.app/Contents/MacOS/dbeaver
+# zoxide jump
+alias jj='zi'
+alias j='z'
+
+# export NVIM_APPNAME=lazyvim
+export NVIM_APPNAME=nvim
+
+export DEEPSEEK_API_KEY=$(security find-generic-password -a "$USER" -s "DEEPSEEK_API_KEY" -w)
+
+export GOOGLE_CLOUD_PROJECT_ID=arcane-premise-427011-v2
