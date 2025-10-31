@@ -1,211 +1,202 @@
-# If you come from bash you might have to change your $PATH.
+# ============================================================================
+# Oh My Zsh Configuration
+# ============================================================================
+
+# If you come from bash you might have to change your $PATH
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
-# Path to your Oh My Zsh installation.
+# Path to your Oh My Zsh installation
 export ZSH="$HOME/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# Theme setting
 # ZSH_THEME="robbyrussell"
+ZSH_THEME="frontcube" # actually using starship
 
-ZSH_THEME="frontcube" # use starship instead
-
-# Set list of themes to pick from when loading at random
+# Random theme candidates
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
+# Enable command auto-correction (turned off, too annoying)
 ENABLE_CORRECTION="false"
 
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
+# Display red dots while waiting for completion
 COMPLETION_WAITING_DOTS="true"
 
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# plugins=(git zsh-syntax-highlighting zsh-autosuggestions zsh-system-clipboard)
+# ============================================================================
+# OMZ plugin List
+# ============================================================================
 plugins=(
-  git 
-  zsh-syntax-highlighting 
-  # zsh-autosuggestions
-  # zsh-autocomplete
-  zsh-system-clipboard
-  extract
-  thefuck
-  starship
-  zoxide
-  # zsh-vi-mode
-  fzf
-
+  git                        # Git shortcuts and prompts
+  zsh-syntax-highlighting    # Syntax highlighting
+  # zsh-autosuggestions      # Auto suggestions 
+  # zsh-autocomplete         # Auto completion 
+  zsh-system-clipboard       # System clipboard integration
+  extract                    # Extract command enhancement
+  thefuck                    # Auto-correct wrong commands
+  starship                   # Modern prompt
+  zoxide                     # Smart directory jumping
+  # zsh-vi-mode              # VI mode -- 和我其他命令有不兼容问题，改用自己定义的vi mode
+  fzf                        # Fuzzy finder
 )
-# plugins+=() # 暂时不知道如何远程使用
-# plugins+=(zsh-vi-mode)
 
-
+# Load Oh My Zsh
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
 
-# export MANPATH="/usr/local/man:$MANPATH"
+# ============================================================================
+# System Environment
+# ============================================================================
 
-# You may need to manually set your language environment
+# Language setting
 export LANG=en_US.UTF-8
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
-
+# OS-specific configuration
 OS_TYPE=$(uname)
 if [[ $OS_TYPE == "Darwin" ]]; then
-  # do something for macos
+  # macOS specific settings
 elif [[ $OS_TYPE == "Linux" ]]; then
-  # do something for linux
+  # Linux specific settings
   export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 fi
 
-# 识别当前终端
+# Smart editor selection
 if [ "$TERM_PROGRAM" = "vscode" ]; then
+  # Use code command in VSCode terminal
   if command -v code >/dev/null 2>&1; then
     export EDITOR=code
   elif command -v cursor >/dev/null 2>&1; then
     export EDITOR=cursor
-    export $TERM_PROGRAM=cursor
+    export TERM_PROGRAM=cursor
   fi
-  export EDITOR=$(which $EDITOR) # 如果 EDITOR 是编辑器内嵌shell自带的命令，则使用 which 获取实际的编辑器
+  export EDITOR=$(which $EDITOR)
 else
+  # Use neovim in regular terminal
   export EDITOR=nvim
 fi
 
+# Remote session editor setting (backup)
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='nvim'
+# fi
 
 
+# ============================================================================
+# PATH
+# ============================================================================
 
-# PATH stuff
-# export GOPATH=$HOME/Documents/go # 会因为icloud同步经常导致一些问题
+# --- System ---
+# Bin
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="/opt/X11/bin:$PATH"
 
+# XDG base directory
+export XDG_CONFIG_HOME="$HOME/.config"
+
+# Dynamic library path
+export DYLD_FALLBACK_LIBRARY_PATH="$(brew --prefix)/lib:$DYLD_FALLBACK_LIBRARY_PATH"
+
+# --- Languages ---
+# Go Language
 export GOPATH=$HOME/.go
 export GOROOT="$(brew --prefix golang)/libexec"
 export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
-export PATH="$PATH:$HOME/.local/bin"
-export PATH="/opt/X11/bin:$PATH"
-export PATH="$HOME/.bun/bin:$PATH"
 
-export DYLD_FALLBACK_LIBRARY_PATH="$(brew --prefix)/lib:$DYLD_FALLBACK_LIBRARY_PATH"
+# PHP Language
+# 下面这个命令会执行超长时间，导致整个zsh启动要很久
+# export PATH="$(brew --prefix shivammathur/php/php@7.2)/bin:$PATH"
+export PATH="/opt/homebrew/opt/php@7.2"
 
-# source "$HOME/.rye/env"
+# Rust Language
 . "$HOME/.cargo/env"
 
-# export EDITOR=nvim 
+# Rye Python
+# source "$HOME/.rye/env"
 
-# Alias
-alias man='tldr'
-alias ls='eza --color=always --git --icons=always --no-user'
-alias cat='bat '
-# alias y='yazi '
-alias py='python3 '
-# alias nvd='neovide --frame buttonless --title-hidden'
-alias top='btop'
-alias e='$EDITOR'
-alias sudo='sudo -E '
-# alias ze='zellij attach'
-alias neofetch='fastfetch'
-alias grep='rg'
-alias tree='eza --tree'
-# alias find='fd'
-alias lg='lazygit'
-alias del='trash'
-alias rm='rm -i'
-# alias repo_del="gh repo list | fzf | awk '{print $1}' | xargs gh repo delete "
-# alias repo_rename="gh repo list | fzf | awk '{print \$1}' | read d && echo gh repo rename --repo \\\"\"\$d\"\\\" | read a && bash -c 'read -e -p \"new name: \" name && echo \"\$name\"'  | read e && echo \$a \\\"\$e\\\" | read b && echo \"change \\\"\$d\\\" to \\\"\$e\\\"?\" && bash -c 'read -e -p \"confirm [y|n]: \" c && echo \"\$c\"' | read c && if [[ \$c == 'y' ]]; then echo \$b; else echo 'canceled.'; fi"
-alias nvimconf="nvim ~/.config/nvim/"
-alias ob='cd "/Users/zachlu/Library/Mobile Documents/iCloud~md~obsidian/Documents/MySecondBrain"'
-alias zshrc='$EDITOR ~/.zshrc'
-# alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
+# --- Others ---
+# Bun
+export PATH="$HOME/.bun/bin:$PATH"
 
+# Windsurf IDE
+export PATH="/Users/zachlu/.codeium/windsurf/bin:$PATH"
+
+# PostgreSQL
+export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+
+# ============================================================================
+# Alias 
+# ============================================================================
+
+# Basic command enhancements
+alias man='tldr'        # Better manual
+alias ls='eza --color=always --git --icons=always --no-user'  # Modern ls
+alias cat='bat'         # Syntax highlighted cat
+alias top='btop'        # Fancy system monitor
+alias neofetch='fastfetch'  # Faster system info
+alias grep='rg'         # Faster grep
+alias tree='eza --tree' # Tree display
+alias npm=pnpm          # Use pnpm instead of npm
+# alias find='fd'        # Faster find (temporarily commented)
+# alias yz='yazi'        # File manager (temporarily commented)
+
+# Command shorcuts
+alias lg='lazygit'      # Lazy git interface
+alias py='python3'      # Python 3 shortcut
+alias e='$EDITOR'       # Quick open editor
+alias sudo='sudo -E'    # sudo with preserved environment
+alias del='trash'       # Safe delete (move to trash)
+alias rm='rm -i'        # Interactive delete
+alias jj='zi'           # Interactive jump (zoxide)
+alias j='z'             # Quick jump (zoxide)
+
+# File/Dir shorcuts
+alias nvimconf="$EDITOR ~/.config/nvim/"  # Quick edit nvim config
+alias ob='cd "/Users/zachlu/Library/Mobile Documents/iCloud~md~obsidian/Documents/MySecondBrain"'  # Obsidian vault
+alias zshrc='$EDITOR ~/.zshrc'         # Quick edit zsh config
+
+alias dbeaver=/Applications/DBeaver.app/Contents/MacOS/dbeaver
+
+# Terminal specific aliases
 # if [[ $TERM == "xterm-kitty" ]]; then
 #   alias ssh="kitten ssh "
 # fi
 # if [[ $TERM == "xterm-ghostty" ]]; then
-#   # TODO: ssh
 # fi
 
-# alias ls='eza --color=always --long --git --icons=always --no-user'
 
+# ============================================================================
+# FZF Configuration
+# ============================================================================
 
-# ============================ FZF ===================================
-# keybind
-# ...
-# Use ~~ as the trigger sequence instead of the default **
-export FZF_COMPLETION_TRIGGER='?'
-export FZF_DEFAULT_COMMAND='fd --hidden --exclude .git  . $HOME' 
-# export FZF_CTRL_R_COMMAND=""
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND" # CTRL-T to fuzzily search for a file or directory in your home directory then insert its path at the cursor 
-export FZF_CTRL_T_OPTS='--walker-skip .git,node_modules,target,Library,Applications,Music'
-#   --preview 'bat -n --color=always {}'
-#   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-export FZF_ALT_C_COMMAND='fd -t d --hidden --exclude .git . $HOME' # ALT-C to fuzzily search for a directory in your home directory then cd into it
-# Print tree structure in the preview window
-export FZF_ALT_C_OPTS="
-  --walker-skip .git,node_modules,target
-  --preview 'tree -C {}'"
+# --- Completion Trigger ---
+export FZF_COMPLETION_TRIGGER='?'        
 
+# --- Default Search ---
+export FZF_DEFAULT_COMMAND='fd --hidden --exclude .git . $HOME'
 export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
 
+# --- Actions ---
+# [Ctrl+T] Global file search
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS='--walker-skip .git,node_modules,target,Library,Applications,Music'  # Ignored directories
 
-# ================== SOME CUSTOM COMMANDS =============================
+# [Alt+C] Switch directory
+export FZF_ALT_C_COMMAND='fd -t d --hidden --exclude .git . $HOME'
+export FZF_ALT_C_OPTS="--walker-skip .git,node_modules,target --preview 'tree -C {}'"
 
-# Blog
+# [Ctrl+R] Search history (reserved)
+# export FZF_CTRL_R_COMMAND=""     # 使用默认         
+
+
+# ============================================================================
+# Custom Functions
+# ============================================================================
+
+# --- BLOG ---
 export MYBLOG_DIR="$HOME/Documents/myblog/"
 alias blog="cd $MYBLOG_DIR"
-alias blog_pub="cd $MYBLOG_DIR && hugo && rsync -vau --delete ~/Documents/myblog/public/ homelab.vpn:~/Services/nginx/nginx/html/myblog "
+alias blog_pub="cd $MYBLOG_DIR && hugo && rsync -vau --delete ~/Documents/myblog/public/ homelab.vpn:~/Services/nginx/nginx/html/myblog"
 
 function post() {
   cd "$MYBLOG_DIR"
@@ -218,80 +209,77 @@ function post() {
   fi
 }
 
-
-# Proxy
+# --- Proxy switch ---
 function proxy_on() {
     export http_proxy=http://127.0.0.1:7897
     export https_proxy=$http_proxy
-    echo -e "终端代理已开启。"
+    echo "Terminal proxy enabled"
 }
 
 function proxy_off(){
     unset http_proxy https_proxy
-    echo -e "终端代理已关闭。"
+    echo "Terminal proxy disabled"
 }
 
-# Alacritty theme switcher
-# alias themes="ls ~/.config/alacritty/themes/themes | fzf | xargs -I {} ln -sf ~/.config/alacritty/themes/themes/{} ~/.config/alacritty/current_theme.toml && echo "@@@" >> ~/.config/alacritty/alacritty.yml && sed -i '/@@@/d' ~/.config/alacritty/alacritty.yml"
+
+# alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
+
+# --- GitHub repo ---
+# alias repo_del="gh repo list | fzf | awk '{print $1}' | xargs gh repo delete "
+# alias repo_rename="gh repo list | fzf | awk '{print \$1}' | read d && echo gh repo rename --repo \\\"\"\$d\"\\\" | read a && bash -c 'read -e -p \"new name: \" name && echo \"\$name\"'  | read e && echo \$a \\\"\$e\\\" | read b && echo \"change \\\"\$d\\\" to \\\"\$e\\\"?\" && bash -c 'read -e -p \"confirm [y|n]: \" c && echo \"\$c\"' | read c && if [[ \$c == 'y' ]]; then echo \$b; else echo 'canceled.'; fi"
+
+# Alacritty theme switcher (temporarily commented)
+# alias themes="ls ~/.config/alacritty/themes/themes | fzf | xargs -I {} ln -sf ~/.config/alacritty/themes/themes/{} ~/.config/alacritty/current_theme.toml && echo '@@@' >> ~/.config/alacritty/alacritty.yml && sed -i '/@@@/d' ~/.config/alacritty/alacritty.yml"
 
 
-# ========================= VI MODE =================================
+# ============================================================================
+# VI Mode
+# ============================================================================
 
-bindkey -v
-# Remove mode switching delay.
-KEYTIMEOUT=5
+bindkey -v   # enable vi mode
+KEYTIMEOUT=5 # Reduce mode switching delay
 
-# Change cursor shape for different vi modes.
+# Change cursor shape based on VI mode
 function zle-keymap-select {
-  if [[ ${KEYMAP} == vicmd ]] ||
-     [[ $1 = 'block' ]]; then
-    echo -ne '\e[1 q'
-
-  elif [[ ${KEYMAP} == main ]]  ||
-       [[ ${KEYMAP} == viins ]] ||
-       [[ ${KEYMAP} = '' ]]     ||
-       [[ $1 = 'beam' ]]; then
-    echo -ne '\e[5 q'
+  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'   # Block cursor
+  elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q'   # Beam cursor
   fi
 }
-zle -N zle-keymap-select
+zle -N zle-keymap-select #
 
-# Use beam shape cursor for each new prompt.
+# Use beam cursor for each new prompt
 _fix_cursor() { echo -ne '\e[5 q' }
 precmd_functions+=(_fix_cursor)
 
+# ============================================================================
+# Init 
+# ============================================================================
 
-# ========================= Init =================================
-# eval "$(fzf --zsh)"
-# eval "$(thefuck --alias)"
-# eval "$(zoxide init zsh)"
-# eval "$(starship init zsh)"
-
-
-# Added by Windsurf
-export PATH="/Users/zachlu/.codeium/windsurf/bin:$PATH"
-export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
-
-PATH=~/.console-ninja/.bin:$PATH
-PATH=~/.console-ninja/.bin:$PATH
+# 已使用omz插件代替这部分
+# eval "$(fzf --zsh)"           # FZF initialization
+# eval "$(thefuck --alias)"     # The Fuck initialization  
+# eval "$(zoxide init zsh)"     # Zoxide initialization
+# eval "$(starship init zsh)"   # Starship initialization
 
 
+# ============================================================================
+# Environment 
+# ============================================================================
+
+# --- Options ---
+# Disable tldr auto-update
 export TLDR_AUTO_UPDATE_DISABLED=1
-# export PATH="$(brew --prefix shivammathur/php/php@7.2)/bin:$PATH"
-export PATH="/opt/homebrew/opt/php@7.2"
 
-export XDG_CONFIG_HOME="$HOME/.config"
-
-
-alias npm=pnpm
-alias dbeaver=/Applications/DBeaver.app/Contents/MacOS/dbeaver
-# zoxide jump
-alias jj='zi'
-alias j='z'
-
-# export NVIM_APPNAME=lazyvim
+# Neovim
+# export NVIM_APPNAME=lazyvim  # Alternative configuration
 export NVIM_APPNAME=nvim
 
+# --- Key stuff ---
+# DeepSeek API key
 export DEEPSEEK_API_KEY=$(security find-generic-password -a "$USER" -s "DEEPSEEK_API_KEY" -w)
 
+# Google Cloud project
 export GOOGLE_CLOUD_PROJECT_ID=arcane-premise-427011-v2
+
