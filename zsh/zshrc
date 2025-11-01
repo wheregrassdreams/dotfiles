@@ -35,7 +35,7 @@ plugins=(
   thefuck                    # Auto-correct wrong commands
   starship                   # Modern prompt
   zoxide                     # Smart directory jumping
-  zsh-vi-mode              # VI mode -- 和我其他命令有不兼容问题，改用自己定义的vi mode
+  # zsh-vi-mode              # VI mode -- 和我其他命令有不兼容问题，改用自己定义的vi mode
   fzf                        # Fuzzy finder
 )
 
@@ -94,6 +94,8 @@ export PATH="$PATH:/opt/X11/bin"
 # XDG base directory
 export XDG_CONFIG_HOME="$HOME/.config"
 
+export EZA_CONFIG_DIR="$HOME/.config/eza"
+
 # Dynamic library path
 export DYLD_FALLBACK_LIBRARY_PATH="$(brew --prefix)/lib:$DYLD_FALLBACK_LIBRARY_PATH"
 
@@ -130,7 +132,7 @@ export PATH="$PATH:/opt/homebrew/opt/postgresql@15/bin"
 
 # Basic command enhancements
 alias man='tldr'        # Better manual
-alias ls='eza --color=always --git --icons=always --no-user'  # Modern ls
+alias ls='eza --color=auto --git --icons=auto --no-user'  # Modern ls
 alias cat='bat'         # Syntax highlighted cat
 alias top='btop'        # Fancy system monitor
 alias neofetch='fastfetch'  # Faster system info
@@ -151,12 +153,13 @@ alias jj='zi'           # Interactive jump (zoxide)
 alias j='z'             # Quick jump (zoxide)
 
 # File/Dir shorcuts
-alias nvimconf="$EDITOR ~/.config/nvim/"  # Quick edit nvim config
+alias nvimconf="(cd ~/.config/$NVIM_APPNAME && $EDITOR .)"  # Quick edit nvim config
 alias ob='cd "/Users/zachlu/Library/Mobile Documents/iCloud~md~obsidian/Documents/MySecondBrain"'  # Obsidian vault
 alias zshrc='$EDITOR ~/.zshrc'         # Quick edit zsh config
 
 alias dbeaver=/Applications/DBeaver.app/Contents/MacOS/dbeaver
 
+alias eza_theme='(cd ~/.config/eza && fd . eza-themes/themes | fzf | xargs -I {} ln -fs {} theme.yml)'
 # Terminal specific aliases
 # if [[ $TERM == "xterm-kitty" ]]; then
 #   alias ssh="kitten ssh "
@@ -174,7 +177,7 @@ export FZF_COMPLETION_TRIGGER='?'
 
 # --- Default Search ---
 export FZF_DEFAULT_COMMAND='fd --hidden --exclude .git . $HOME'
-export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
+export FZF_DEFAULT_OPTS="--layout=reverse --height 45%"
 
 # --- Actions ---
 # [Ctrl+T] Global file search
@@ -194,9 +197,9 @@ export FZF_ALT_C_OPTS="--walker-skip .git,node_modules,target --preview 'tree -C
 # ============================================================================
 
 # --- BLOG ---
-export MYBLOG_DIR="$HOME/Documents/myblog/"
-alias blog="cd $MYBLOG_DIR"
-alias blog_pub="cd $MYBLOG_DIR && hugo && rsync -vau --delete ~/Documents/myblog/public/ homelab.vpn:~/Services/nginx/nginx/html/myblog"
+export MYBLOG_DIR="$HOME/Documents/myblog"
+alias blog="(cd $MYBLOG_DIR/content && $EDITOR posts)"
+# alias blog_pub="cd $MYBLOG_DIR && hugo && rsync -vau --delete ~/Documents/myblog/public/ homelab.vpn:~/Services/nginx/nginx/html/myblog"
 
 function post() {
   cd "$MYBLOG_DIR"
@@ -208,6 +211,70 @@ function post() {
       echo "$output"
   fi
 }
+
+# --- Notes ---
+export NOTE_DIR="/Users/zachlu/Library/Mobile Documents/iCloud~md~obsidian/Documents/MySecondBrain"
+alias notes="(cd $NOTE_DIR && $EDITOR .)"
+alias note="quick_note"
+
+quick_note() {
+    local note_dir="$NOTE_DIR/Inbox"
+    
+    # 处理参数
+    local title="$1"
+    local filename
+    # local title
+    
+    if [ -n "$title" ]; then
+        file_title="$title"
+        # 生成文件名：时间戳+标题前10个字符（避免文件名冲突）
+        # local base_name=$(echo "$title" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | sed 's/[^a-z0-9\u4e00-\u9fff]/-/g' | sed 's/-\+/-/g')
+        local base_name=$(echo "$title" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' |  sed 's/-\+/-/g')
+        filename="${base_name}.md"
+
+        local counter=1
+        local temp_filename="$filename"
+        while [ -f "$note_dir/$temp_filename" ]; do
+            temp_filename="${base_name}($counter).md"
+            counter=$((counter + 1))
+        done
+        filename="$temp_filename"
+    else
+        # 默认使用时间戳
+        filename=$(date +%Y%m%d%H%M%S).md
+        title=""
+    fi
+    
+    local filepath="$note_dir/$filename"
+    
+    # 创建临时文件作为 buffer 的初始内容
+    local temp_content=$(mktemp)
+    cat > "$temp_content" << EOF
+---
+date: $(date +"%Y-%m-%d")
+tags: [inbox]
+aliases: []
+---
+
+# $title
+
+EOF
+
+# 使用 nvim 编辑，但不自动保存
+(cd "$note_dir" && nvim -c "0r $temp_content" \
+                        -c "set ft=markdown"  \
+                        -c "set modified"     \
+                        -c "normal G"         \
+                        -c "startinsert"      \
+                        "$filename")
+
+  # 清理临时文件
+  rm -f "$temp_content"
+
+  echo "$filepath"
+
+}
+
 
 # --- Proxy switch ---
 function proxy_on() {
