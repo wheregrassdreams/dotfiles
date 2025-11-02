@@ -289,6 +289,34 @@ function proxy_off(){
     echo "Terminal proxy disabled"
 }
 
+copypath() {
+  # 没传参数时默认复制当前目录路径
+  local target
+  if [ -z "$1" ]; then
+    target=$(pwd)
+  else
+    # realpath 失败时直接退出
+    target=$(realpath "$1" 2>/dev/null)
+    if [ $? -ne 0 ]; then
+      echo "文件不存在或路径无效: $1"
+      return 1
+    fi
+  fi
+
+  # 检测剪贴板命令
+  if command -v pbcopy >/dev/null 2>&1; then
+    echo -n "$target" | pbcopy
+  elif command -v xclip >/dev/null 2>&1; then
+    echo -n "$target" | xclip -sel clip
+  elif command -v wl-copy >/dev/null 2>&1; then
+    echo -n "$target" | wl-copy
+  else
+    echo "未找到剪贴板命令 (pbcopy / xclip / wl-copy)"
+    return 1
+  fi
+
+  echo "Copied: $target"
+}
 
 # alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
 
