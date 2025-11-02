@@ -207,9 +207,9 @@ function post() {
   output=$(hugo new "$1")
   file_path=$(echo "$output" | awk '{print $2}' | sed 's/"//g')
   if [ -n "$file_path" ]; then
-      $EDITOR "$file_path"
+    $EDITOR "$file_path"
   else
-      echo "$output"
+    echo "$output"
   fi
 }
 
@@ -219,38 +219,38 @@ alias notes="(cd $NOTE_DIR && $EDITOR .)"
 alias note="quick_note"
 
 quick_note() {
-    local note_dir="$NOTE_DIR/Inbox"
-    
-    # 处理参数
-    local title="$1"
-    local filename
-    # local title
-    
-    if [ -n "$title" ]; then
-        file_title="$title"
-        # 生成文件名：时间戳+标题前10个字符（避免文件名冲突）
-        # local base_name=$(echo "$title" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | sed 's/[^a-z0-9\u4e00-\u9fff]/-/g' | sed 's/-\+/-/g')
-        local base_name=$(echo "$title" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' |  sed 's/-\+/-/g')
-        filename="${base_name}.md"
+  local note_dir="$NOTE_DIR/Inbox"
+  
+  # 处理参数
+  local title="$1"
+  local filename
+  # local title
+  
+  if [ -n "$title" ]; then
+      file_title="$title"
+      # 生成文件名：时间戳+标题前10个字符（避免文件名冲突）
+      # local base_name=$(echo "$title" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | sed 's/[^a-z0-9\u4e00-\u9fff]/-/g' | sed 's/-\+/-/g')
+      local base_name=$(echo "$title" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' |  sed 's/-\+/-/g')
+      filename="${base_name}.md"
 
-        local counter=1
-        local temp_filename="$filename"
-        while [ -f "$note_dir/$temp_filename" ]; do
-            temp_filename="${base_name}($counter).md"
-            counter=$((counter + 1))
-        done
-        filename="$temp_filename"
-    else
-        # 默认使用时间戳
-        filename=$(date +%Y%m%d%H%M%S).md
-        title=""
-    fi
-    
-    local filepath="$note_dir/$filename"
-    
-    # 创建临时文件作为 buffer 的初始内容
-    local temp_content=$(mktemp)
-    cat > "$temp_content" << EOF
+      local counter=1
+      local temp_filename="$filename"
+      while [ -f "$note_dir/$temp_filename" ]; do
+          temp_filename="${base_name}($counter).md"
+          counter=$((counter + 1))
+      done
+      filename="$temp_filename"
+  else
+      # 默认使用时间戳
+      filename=$(date +%Y%m%d%H%M%S).md
+      title=""
+  fi
+  
+  local filepath="$note_dir/$filename"
+  
+  # 创建临时文件作为 buffer 的初始内容
+  local temp_content=$(mktemp)
+  cat > "$temp_content" << EOF
 ---
 date: $(date +"%Y-%m-%d")
 tags: [inbox]
@@ -261,18 +261,18 @@ aliases: []
 
 EOF
 
-# 使用 nvim 编辑，但不自动保存
-(cd "$note_dir" && nvim -c "0r $temp_content" \
-                        -c "set ft=markdown"  \
-                        -c "set modified"     \
-                        -c "normal G"         \
-                        -c "startinsert"      \
-                        "$filename")
+  # 使用 nvim 编辑，但不自动保存
+  (cd "$note_dir" && nvim -c "0r $temp_content" \
+                          -c "set ft=markdown"  \
+                          -c "set modified"     \
+                          -c "normal G"         \
+                          -c "startinsert"      \
+                          "$filename")
 
-  # 清理临时文件
-  rm -f "$temp_content"
+    # 清理临时文件
+    rm -f "$temp_content"
 
-  echo "$filepath"
+    echo "$filepath"
 
 }
 
@@ -304,36 +304,27 @@ function proxy_off(){
 # VI Mode
 # ============================================================================
 
-# bindkey -v   # enable vi mode
-# KEYTIMEOUT=5 # Reduce mode switching delay
-#
-# # Change cursor shape based on VI mode
-# function zle-keymap-select {
-#   if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
-#     echo -ne '\e[1 q'   # Block cursor
-#   elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]]; then
-#     echo -ne '\e[5 q'   # Beam cursor
-#   fi
-# }
-# zle -N zle-keymap-select #
-#
-# # Use beam cursor for each new prompt
-# _fix_cursor() { echo -ne '\e[5 q' }
-# precmd_functions+=(_fix_cursor)
-#
-#
-# autoload -U edit-command-line
-# zle -N edit-command-line
+bindkey -v   # enable vi mode
+KEYTIMEOUT=1 # Reduce mode switching delay
+
+# Change cursor shape based on VI mode
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'   # Block cursor
+  elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q'   # Beam cursor
+  fi
+}
+zle -N zle-keymap-select #
+
+# Use beam cursor for each new prompt
+_fix_cursor() { echo -ne '\e[5 q' }
+precmd_functions+=(_fix_cursor)
 
 
-# # 包装函数确保光标正确重置
-# function edit-command-line-with-cursor-fix { edit-command-line
-#   echo -ne '\e[5 q'  # 确保返回后是细条光标
-# }
-# zle -N edit-command-line-with-cursor-fix
-#
-# # 设置快捷键
-# bindkey '^o' edit-command-line-with-cursor-fix
+autoload -U edit-command-line
+zle -N edit-command-line
+
 
 function custom_edit_command_line() {
   if [[ -n "$TMUX" ]]; then
@@ -400,34 +391,17 @@ function tmux_edit_command_line() {
   fi
   rm -f "$tmpfile"
 
+  CURSOR=${#BUFFER}
+
   # 刷新 zle 状态
   zle reset-prompt
   zle redisplay
   zle -I
+  zle end-of-line
 }
 
-# function tmux_edit_command_line() {
-#   local tmpfile=$(mktemp /tmp/zshcmd.XXXXXX)
-#   print -- "$BUFFER" > $tmpfile
-#
-#   tmux split-window -v -p 40 "nvim $tmpfile; tmux wait-for -S done"
-#   tmux wait-for done
-#
-#   if [[ -f "$tmpfile" ]]; then
-#     BUFFER=$(<"$tmpfile")
-#   fi
-#
-#   rm -f "$tmpfile"
-#
-#   zle reset-prompt
-#   zle redisplay
-#   zle -I  
-# }
 zle -N custom_edit_command_line
 bindkey '^o' custom_edit_command_line
-
-# # 设置快捷键
-# bindkey '^o' edit-command-line       # Ctrl+O
 
 # ============================================================================
 # Init 
