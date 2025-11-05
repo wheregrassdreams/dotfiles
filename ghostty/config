@@ -49,6 +49,9 @@ macos-icon = glass
 
 keybind = shift+enter=text:\x1b\r
 
+# cursor-opacity = 0.8
 # keybind = ctrl+shift+space=write_scrollback_file:open
+# custom-shader = ./shaders/cursor_blaze.glsl
+custom-shader = ./shaders/virtual_cursor.glsl
 
 confirm-close-surface=false
