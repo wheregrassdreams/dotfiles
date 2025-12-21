@@ -12,12 +12,12 @@ in {
 
     home.file = lib.mkMerge [
       (lib.mkIf isDarwin {
-        "Library/Preferences/FreeCAD".source = config.lib.file.mkOutOfStoreSymlink ./config;
-        "Library/Application Support/FreeCAD/Macro".source = config.lib.file.mkOutOfStoreSymlink ./share/Macro;
+        "Library/Preferences/FreeCAD".source = ./config;
+        "Library/Application Support/FreeCAD/Macro".source = ./share/Macro;
       })
       (lib.mkIf (!isDarwin) {
-        ".config/FreeCAD".source = config.lib.file.mkOutOfStoreSymlink ./config;
-        ".local/share/FreeCAD/Macro".source = config.lib.file.mkOutOfStoreSymlink ./share/Macro;
+        ".config/FreeCAD".source = ./config;
+        ".local/share/FreeCAD/Macro".source = ./share/Macro;
       })
     ];
   };

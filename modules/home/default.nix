@@ -99,8 +99,8 @@ in
       update-nix = "nix flake update nixpkgs nixpkgs-unstable nix-darwin nur home-manager sops-nix nixos-raspberrypi nixpkgs-otbr nixos-wsl lanzaboote apple-emoji-linux apple-fonts catppuccin --flake $HOME/Developer/dotfiles";
       update-desktop = "nix flake update hyprland dgop dms-cli dankMaterialShell --flake $HOME/Developer/dotfiles";
       update-apps = "nix flake update yazi wezterm affinity --flake $HOME/Developer/dotfiles";
-      update-secrets = "nix flake update dotfiles-private --flake $HOME/Developer/dotfiles";
-      update-homebrew = "nix flake update nix-homebrew homebrew-core homebrew-cask homebrew-extras --flake $HOME/Developer/dotfiles";
+      update-secrets = "echo 'dotfiles-private is a local stub; point it to your private repo in flake.nix if needed.'";
+      update-homebrew = "nix flake update nix-homebrew homebrew-core homebrew-cask --flake $HOME/Developer/dotfiles";
       clean = "nix-collect-garbage -d && sudo nix-collect-garbage -d && nix store optimise";
       reload = "source $HOME/.config/zsh/.zshrc";
       c = "clear";
@@ -152,9 +152,10 @@ in
     };
     sessionVariables = {
       PAGER = "moor";
-      SOPS_AGE_KEY_FILE = config.sops.age.keyFile;
       GOOGLE_GENERATIVE_AI_API_KEY = "$( [ -f ${config.secrets.credentialFiles.googleGenerativeAiApiKey} ] && ${pkgs.coreutils}/bin/cat ${config.secrets.credentialFiles.googleGenerativeAiApiKey} )";
       TAURI_SIGNING_PRIVATE_KEY = "$( [ -f ${config.secrets.credentialFiles.tauriSigningPrivateKey} ] && ${pkgs.coreutils}/bin/cat ${config.secrets.credentialFiles.tauriSigningPrivateKey} )";
+    } // lib.optionalAttrs (config ? sops && config.sops ? age) {
+      SOPS_AGE_KEY_FILE = config.sops.age.keyFile;
     };
     sessionPath = [
       "$HOME/.local/bin"

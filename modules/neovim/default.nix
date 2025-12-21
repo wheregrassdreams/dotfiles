@@ -21,8 +21,7 @@ in {
         texliveFull
       ];
     };
-    xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Developer/dotfiles/modules/neovim/config";
+    xdg.configFile."nvim".source = lib.mkIf (!config.modules.astronvim.enable) ./config;
     home.packages = with pkgs-unstable; [
       tree-sitter
     ];

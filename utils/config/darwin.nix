@@ -1,11 +1,11 @@
-{ userName, hostName, home-manager, nix-homebrew, dotfiles-private, ... }:
+{ config, lib, userName, hostName, home-manager, nix-homebrew, dotfiles-private, ... }:
 {
   imports = [
     dotfiles-private.darwinModules.secrets
     home-manager.darwinModules.default
     nix-homebrew.darwinModules.nix-homebrew
   ];
-  nix = {
+  nix = lib.mkIf config.nix.enable {
     gc.interval = {
       Weekday = 0;
       Hour = 0;

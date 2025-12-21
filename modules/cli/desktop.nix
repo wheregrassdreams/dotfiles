@@ -12,7 +12,10 @@ in {
       imagemagick
       p7zip
       chafa
+      hugo
+      pandoc
       presenterm
+      typst
       yt-dlp
       openconnect
       testdisk

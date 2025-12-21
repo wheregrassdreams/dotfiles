@@ -23,11 +23,18 @@ in {
     home = {
       packages = with pkgs; [
         sqlite
-        python3
+        (python313.withPackages (ps: [ ps.tkinter ]))
         go
         nodejs
         lua
         luarocks
+        postgresql_15
+        redis
+        pipx
+        pnpm
+        sbcl
+        uv
+        zig
         (fenix.packages.${system}.stable.withComponents [
           "rustc"
           "cargo"
@@ -35,7 +42,8 @@ in {
           "rust-src"
           "rustfmt"
         ])
-      ];
+      ] ++ lib.optionals (pkgs ? kafka) [ kafka ]
+        ++ lib.optionals (pkgs ? mysql) [ mysql ];
       sessionVariables = {
         NODE_COMPILE_CACHE = "$HOME/.cache/nodejs-compile-cache";
       } // lib.optionalAttrs isDarwin {

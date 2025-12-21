@@ -14,6 +14,12 @@ in {
       unzip
       unrar
       rsync
+      gdu
+      grex
+      mosh
+      sttr
+      tldr
+      tree
       fontconfig
       yq
       age

@@ -9,18 +9,13 @@ an SSH key for GitHub to get started with cloning the repository.
 Then, clone the repository into `~/Developer/dotfiles` using SSH:
 
 ```zsh
-git clone git@github.com:michaelbrusegard/dotfiles.git ~/Developer/dotfiles
+git clone git@github.com:zanelu/dotfiles.git ~/Developer/dotfiles
 ```
 
 > [!NOTE]
-> I also maintain a private repository with soft and hard secrets that is added
-> into the repository as a Nix flake.
-> Directly copying the dotfiles will therefore
-> most likely fail since it will fail to fetch the private repository.
-
-Hard secrets are encrypted further inside the private repository using sops.
-To include them in the build, add the age keys to `~/.config/sops/age/keys.txt`
-and then do a rebuild.
+> This repository uses a public stub for secrets at `./dotfiles-private`.
+> If you have your own private secrets repo, update `flake.nix` to point
+> `dotfiles-private` at that Git URL.
 
 ## Reference links
 
@@ -61,8 +56,8 @@ flake configuration:
 
 - Add `git` to system packages in `/etc/nixos/configuration.nix` and rebuild
   the system `sudo nixos-rebuild switch`.
-- Add both the SSH key and the age key to the system, so that we can clone
-  the repository and decrypt secrets.
+- Add the SSH key to the system so that we can clone the repository.
+  If you're using a private secrets repo, also add the age key for sops.
 - Verify that the dotfiles configuration has the same hardware configuration
   as the `/etc/nixos/hardware-configuration.nix`. Specifically, device file
   paths and partition UUIDs.
@@ -305,7 +300,7 @@ Then run the `setup.ps1` script to install packages and apply registry tweaks:
 
 ```sh
 powershell -ExecutionPolicy Bypass -File \
-  \\wsl.localhost\NixOS\home\michaelbrusegard\Developer\dotfiles\windows\setup.ps1
+  \\wsl.localhost\NixOS\home\zanelu\Developer\dotfiles\windows\setup.ps1
 ```
 
 ### Keyboard
@@ -320,8 +315,8 @@ and the configuration can be imported into the app to be edited via
 To apply the custom keyboard layout copy the `keyboard.zip` file from WSL:
 
 ```sh
-SRC=\\wsl$\\NixOS\\home\\michaelbrusegard\\Developer\\dotfiles\\windows\\keyboard.zip
-cp $SRC C:\Users\michaelbrusegard\Downloads
+SRC=\\wsl$\\NixOS\\home\\zanelu\\Developer\\dotfiles\\windows\\keyboard.zip
+cp $SRC C:\Users\zanelu\Downloads
 ```
 
 The resulting image can be found in `result/sd-image/`. It is a compressed

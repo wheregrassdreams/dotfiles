@@ -1,4 +1,7 @@
-{ userName, pkgs-unstable, ... }: {
+{ userName, ... }: {
+
+  nix.enable = false;
+
   system = {
     primaryUser = userName;
     defaults = {
@@ -22,28 +25,30 @@
         Sound = false;
       };
       dock = {
+        # Keep Dock visible on hover; avoid the "never show" delay.
         autohide = true;
-        autohide-delay = 2147483647.0;
-        autohide-time-modifier = 0.0;
-        expose-animation-duration = 0.0;
+        autohide-delay = 0.2;
+        autohide-time-modifier = 0.5;
+        expose-animation-duration = 0.5;
         launchanim = false;
         mineffect = "scale";
         minimize-to-application = true;
         mru-spaces = false;
-        orientation = "left";
+        # Dock position (bottom).
+        orientation = "bottom";
         persistent-apps = [];
         persistent-others = [];
-        show-process-indicators = false;
+        show-process-indicators = true;
         show-recents = false;
         static-only = true;
-        tilesize = 64;
+        tilesize = 48;
         wvous-bl-corner = 1;
         wvous-br-corner = 1;
         wvous-tl-corner = 1;
         wvous-tr-corner = 1;
       };
       finder = {
-        _FXShowPosixPathInTitle = true;
+        _FXShowPosixPathInTitle = true;  # show full path in finder title
         _FXSortFoldersFirst = true;
         _FXSortFoldersFirstOnDesktop = true;
         AppleShowAllExtensions = true;
@@ -54,6 +59,8 @@
         FXPreferredViewStyle = "Nlsv";
         FXRemoveOldTrashItems = true;
         NewWindowTarget = "Desktop";
+        ShowPathbar = true; # show path bar
+        ShowStatusBar = true; # show status bar
         ShowExternalHardDrivesOnDesktop = false;
         ShowHardDrivesOnDesktop = false;
         ShowMountedServersOnDesktop = false;
@@ -120,8 +127,8 @@
       screencapture = {
         disable-shadow = true;
         include-date = true;
-        location = "/Users/${userName}/Pictures/screenshots";
-        show-thumbnail = false;
+        location = "/Users/${userName}/Downloads";
+        show-thumbnail = true;
         type = "png";
       };
       screensaver = {
@@ -145,13 +152,13 @@
       };
       WindowManager = {
         AppWindowGroupingBehavior = false;
-        EnableStandardClickToShowDesktop = false;
+        EnableStandardClickToShowDesktop = false; # Click wallpaper to reveal desktop
         EnableTiledWindowMargins = false;
         EnableTilingByEdgeDrag = false;
         EnableTilingOptionAccelerator = false;
         EnableTopTilingByEdgeDrag = false;
         GloballyEnabled = false;
-        HideDesktop = true;
+        HideDesktop = true; # Do not hide itmes on desktop & stage manager
         StageManagerHideWidgets = true;
         StandardHideDesktopIcons = true;
         StandardHideWidgets = true;
@@ -175,6 +182,11 @@
         };
       };
       CustomUserPreferences = {
+        "com.apple.HIToolbox" = {
+          # Caps Lock: tap to switch input source; hold for Caps Lock.
+          AppleCapsLockPressAndHoldToggleOff = 0;
+          AppleCapsLockSwitchesInputSource = true;
+        };
         "com.apple.symbolichotkeys" = {
           AppleSymbolicHotKeys = {
             "64" = { enabled = false; };
@@ -220,24 +232,27 @@
           TrackpadThreeFingerHorizSwipeGesture = 0;
           TrackpadThreeFingerVertSwipeGesture = 0;
           TrackpadFourFingerHorizSwipeGesture = 0;
-          TrackpadFourFingerVertSwipeGesture = 0;
+          # Four-finger swipe up: Mission Control; swipe down: App Exposé.
+          TrackpadFourFingerVertSwipeGesture = 2;
           TrackpadTwoFingerFromRightEdgeSwipeGesture = 0;
         };
         "com.apple.AppleMultitouchTrackpad" = {
           TrackpadThreeFingerHorizSwipeGesture = 0;
           TrackpadThreeFingerVertSwipeGesture = 0;
           TrackpadFourFingerHorizSwipeGesture = 0;
-          TrackpadFourFingerVertSwipeGesture = 0;
+          # Four-finger swipe up: Mission Control; swipe down: App Exposé.
+          TrackpadFourFingerVertSwipeGesture = 2;
           TrackpadTwoFingerFromRightEdgeSwipeGesture = 0;
         };
         "com.apple.dock" = {
-          showMissionControlGestureEnabled = false;
-          showAppExposeGestureEnabled = false;
+          # Enable system gestures for Mission Control and App Exposé.
+          showMissionControlGestureEnabled = true;
+          showAppExposeGestureEnabled = true;
           showDesktopGestureEnabled = false;
           showLaunchpadGestureEnabled = false;
         };
         "com.apple.Safari" = {
-          AlwaysRestoreSessionAtLaunch = false;
+          AlwaysRestoreSessionAtLaunch = true;
           AutoOpenSafeDownloads = false;
           ShowStandaloneTabBar = false;
           TabCreationPolicy = 1;
@@ -305,24 +320,11 @@
     };
     keyboard = {
       enableKeyMapping = true;
-      remapCapsLockToEscape = true;
+      # NOTE: do NOT support remap capslock to both control and escape at the same time
+      remapCapsLockToControl = false;  # remap caps lock to control, useful for emac users
+      remapCapsLockToEscape  = false;   # remap caps lock to escape, useful for vim users
       nonUS.remapTilde = true;
     };
     startup.chime = false;
-    activationScripts.postActivation.text = ''
-      echo "Loading yabai scripting addition..."
-      ${pkgs-unstable.yabai}/bin/yabai --load-sa
-      echo "Setting wallpaper..."
-      osascript -e '
-      tell application "System Events"
-        set desktopCount to count of desktops
-        repeat with i from 1 to desktopCount
-          tell desktop i
-            set picture to "/Users/${userName}/Developer/dotfiles/assets/wallpapers/twilight-peaks.png"
-          end tell
-        end repeat
-      end tell'
-      echo "Wallpaper set successfully"
-    '';
   };
 }

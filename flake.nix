@@ -37,10 +37,6 @@
       url = "github:homebrew/homebrew-cask?shallow=1";
       flake = false;
     };
-    homebrew-extras = {
-      url = "github:michaelbrusegard/homebrew-extras?shallow=1";
-      flake = false;
-    };
     apple-emoji-linux = {
       url = "github:samuelngs/apple-emoji-linux?shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -83,8 +79,7 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     dotfiles-private = {
-      url = "git+ssh://git@github.com/michaelbrusegard/dotfiles-private.git?ref=main";
-      inputs.sops-nix.follows = "sops-nix";
+      url = "path:./dotfiles-private";
     };
   };
 
@@ -104,14 +99,21 @@
       nixosConfigurations = {
         Desktop = mkSystem {
           system = "x86_64-linux";
-          userName = "michaelbrusegard";
+          userName = "zanelu";
           hostName = "Desktop";
+          stateVersion = "25.05";
+        };
+
+        Homelab = mkSystem {
+          system = "x86_64-linux";
+          userName = "zanelu";
+          hostName = "Homelab";
           stateVersion = "25.05";
         };
 
         WSL = mkSystem {
           system = "x86_64-linux";
-          userName = "michaelbrusegard";
+          userName = "zanelu";
           hostName = "WSL";
           stateVersion = "25.05";
         };
@@ -162,7 +164,7 @@
       in {
         ${hostName} = mkSystem {
           system = "aarch64-darwin";
-          userName = "michaelbrusegard";
+          userName = "zanelu";
           hostName = hostName;
           stateVersion = "25.05";
         };

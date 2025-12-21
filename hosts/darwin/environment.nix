@@ -1,9 +1,5 @@
 { pkgs, ... }: {
-  environment.systemPackages = with pkgs; [
-    kanata
-    colima
-    docker
-    docker-buildx
-    docker-compose
+  environment.systemPackages = [
+    pkgs.pam-reattach
   ];
 }

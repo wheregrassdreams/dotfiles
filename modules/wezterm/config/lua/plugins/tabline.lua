@@ -1,7 +1,7 @@
 local wezterm = require('wezterm')
 
 return function(config)
-  local tabline = wezterm.plugin.require('https://github.com/michaelbrusegard/tabline.wez')
+  local tabline = wezterm.plugin.require('https://github.com/zanelu/tabline.wez')
   tabline.setup({
     options = {
       theme = 'Catppuccin Mocha',

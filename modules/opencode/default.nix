@@ -9,6 +9,6 @@ in {
     home.packages = with pkgs-unstable; [
       opencode
     ];
-    xdg.configFile."opencode".source = ./config;
+    xdg.configFile."opencode/config.jsonc".source = ./config/config.jsonc;
   };
 }

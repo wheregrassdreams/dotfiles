@@ -1,6 +1,6 @@
-{ pkgs, system, userName, hostName, nur, yazi, wezterm, hyprland, pkgs-unstable, pkgs-otbr, catppuccin-themes, ... }:
+{ config, lib, pkgs, system, userName, hostName, nur, yazi, wezterm, hyprland, pkgs-unstable, pkgs-otbr, catppuccin-themes, ... }:
 {
-  nix = {
+  nix = lib.mkIf config.nix.enable {
     optimise.automatic = true;
     gc = {
       automatic = true;
@@ -37,6 +37,7 @@
       nur.overlays.default
       yazi.overlays.default
       catppuccin-themes.overlays.default
+      (final: prev: { boehm-gc = prev.boehm-gc.overrideAttrs (_: { doCheck = false; }); })
       (final: prev: {
         hyprland = hyprland.packages.${prev.system}.hyprland;
         xdg-desktop-portal-hyprland = hyprland.packages.${prev.system}.xdg-desktop-portal-hyprland;
@@ -50,7 +51,7 @@
     ];
   };
   networking.hostName = hostName;
-  time.timeZone = "Europe/Oslo";
+  time.timeZone = "Asia/Shanghai";
   users.users.${userName} = {
     name = userName;
     shell = pkgs.zsh;

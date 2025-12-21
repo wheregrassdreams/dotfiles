@@ -1,0 +1,31 @@
+# Added by OrbStack: 'orb' SSH host for Linux machines
+# This only works if it's at the top of ssh_config (before any Host blocks).
+# Comment this line if you don't want it to be added again.
+Include ~/.orbstack/ssh/config
+
+Host wsl
+  HostName 192.168.31.11
+  User zach
+
+Host homelab.local
+  HostName 192.168.3.250
+  User zach
+
+Host wsl.vpn
+  HostName 192.168.196.48
+  User zach
+Host homelab.vpn
+  HostName 192.168.196.129
+  User zach
+
+
+# OrbStack VM SSH
+Host ubuntu.local
+  HostName ubuntu.orb.local
+  User zanelu
+
+# ghostty term不兼容
+Host *
+    SendEnv TERM
+    SetEnv TERM=xterm-256color
+

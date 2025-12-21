@@ -25,21 +25,8 @@ in {
   options.modules.ssh.enable = lib.mkEnableOption "SSH configuration";
 
   config = lib.mkIf cfg.enable {
-    programs.ssh = {
-      enable = true;
-      enableDefaultConfig = false;
-      matchBlocks = {
-        git = {
-          host = "github.com";
-          user = "git";
-          identityFile = config.secrets.ssh.gitKeyFile;
-          identitiesOnly = true;
-          hashKnownHosts = true;
-          addKeysToAgent = "yes";
-          serverAliveInterval = 5;
-        };
-      } // config.secrets.ssh.hostMatchBlocks;
-    };
+    programs.ssh.enable = false;
+    home.file.".ssh/config".source = ./config/config;
     home.packages = [ wol ];
   };
 }
