@@ -6,3 +6,6 @@ builds without access to private secrets.
 
 To use your real private secrets repository, edit `flake.nix` in the root
 of this repo and point `dotfiles-private` at your private Git URL.
+
+This repo expects your encrypted secrets at
+`dotfiles-private/secrets/secrets.yaml` when using sops-nix.

@@ -13,9 +13,8 @@ git clone git@github.com:zanelu/dotfiles.git ~/Developer/dotfiles
 ```
 
 > [!NOTE]
-> This repository uses a public stub for secrets at `./dotfiles-private`.
-> If you have your own private secrets repo, update `flake.nix` to point
-> `dotfiles-private` at that Git URL.
+> Secrets are currently stubbed via `modules/secrets-stub.nix` while
+> the private repo layout is being reorganized.
 
 ## Reference links
 
