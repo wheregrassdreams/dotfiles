@@ -11,9 +11,9 @@ name:
 }:
 
 let
-  hostDir = ../hosts/${name};
+  # hostDir = ../hosts/${name};
 
-  hostConfig = hostDir + "/default.nix";
+  hostConfig = ../hosts/${name}/default.nix;
   userOSConfig = ../users/${user}/${if isDarwin then "darwin" else "nixos"}.nix;
   userHomeConfig = ../users/${user}/home.nix;
 

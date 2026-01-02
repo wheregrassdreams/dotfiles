@@ -14,12 +14,12 @@
       "shivammathur/php"
       "xenodium/macosrec"
       "charmbracelet/tap"
-      "sho0pi/tap"
+      # "sho0pi/tap"
     ];
     brews = [
       "mas"
       "bendews/tap/apw"
-      "sho0pi/tap/tickli"
+      # "sho0pi/tap/tickli"
       "charmbracelet/tap/crush"
       "daipeihust/tap/im-select"
       "shivammathur/php/php@7.2"

@@ -10,11 +10,12 @@
     fullname = "Zane Lu";
     email = "lv2497712968@outlook.com";
   };
-  programs.git.settings = {
-    includeIf."gitdir:~/Work/" = {
-      path = "~/.gitconfig-work";
-    };
-  };
+  programs.git.includes = [
+    {
+      condition = "gitdir:~/Work/";
+      path = "~/Work/.gitconfig";
+    }
+  ];
 
   home.enableNixpkgsReleaseCheck = false;
   assertions = [

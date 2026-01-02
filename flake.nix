@@ -137,5 +137,29 @@
           isDarwin = true;
         };
       };
+      homeConfigurations = {
+        zanelu = inputs.home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs {
+            system = "aarch64-darwin";
+            config.allowUnfree = true;
+          };
+          extraSpecialArgs = {
+            inherit inputs;
+            system = "aarch64-darwin";
+            hostName = "macbook";
+            isDarwin = true;
+            isWsl = false;
+            userName = "zanelu";
+          };
+          modules = [
+            ./users/zanelu/home.nix
+            ./modules/home
+            {
+              home.username = "zanelu";
+              home.homeDirectory = "/Users/zanelu";
+            }
+          ];
+        };
+      };
     };
 }

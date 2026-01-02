@@ -1,4 +1,4 @@
-{ pkgs, config, isDarwin, hostName, ... }:
+{ pkgs, config, isDarwin, hostName, userName, ... }:
 {
   home.file = {
     ".config/zsh/fzf.zsh".source = ./fzf.zsh;
@@ -55,45 +55,6 @@
         EZA_CONFIG_DIR = "$HOME/.config/eza";
       };
 
-      shellAliases = {
-        rebuild = if isDarwin then
-          "sudo darwin-rebuild switch --flake $DOTFILES#${hostName}"
-        else
-          "sudo nixos-rebuild switch --flake $DOTFILES#${hostName}";
-
-        ls = "eza --color=auto --git --icons=auto --no-user";
-        cat = "bat";
-        top = "btop";
-        grep = "rg";
-        lg = "lazygit";
-        del = "trash";
-        e = "$EDITOR";
-        npm = "pnpm";
-        man = "tldr";
-        neofetch = "fastfetch";
-        ps = "procs";
-        http = "xh";
-        https = "xh --https";
-        du = "dust";
-        codex = "codex --sandbox danger-full-access";
-
-        csv = "csvlens";
-        py = "python3";
-        python = "python3";
-        today = "date +%Y-%m-%d";
-
-        ".." = "cd ..";
-        "..." = "cd ../..";
-        "...." = "cd ../../..";
-        "....." = "cd ../../../..";
-        "......" = "cd ../../../../..";
-        "-" = "cd -";
-
-        update-homebrew = "nix flake update nix-homebrew homebrew-core homebrew-cask --flake $DOTFILES";
-        update-nix = "nix flake update nixpkgs nixpkgs-unstable nix-darwin home-manager --flake $DOTFILES";
-        clean = "nix-collect-garbage -d && sudo nix-collect-garbage -d && nix store optimise";
-        reload = "source $HOME/.config/zsh/.zshrc";
-      };
 
       plugins = [
         {
@@ -135,7 +96,7 @@
         username = {
           style_user = "blue bold";
           style_root = "red bold";
-          format = "[$user]($style) ";
+          format = "[$user]($style)";
           disabled = false;
           show_always = true;
         };
@@ -149,6 +110,47 @@
       };
     };
   };
+
+  home.shellAliases = {
+    rebuild = if isDarwin then
+      "sudo darwin-rebuild switch --flake $DOTFILES#${hostName}"
+    else
+      "sudo nixos-rebuild switch --flake $DOTFILES#${hostName}";
+    hm = "nix run home-manager -- switch --flake $DOTFILES#${userName}";
+    update-homebrew = "nix flake update nix-homebrew homebrew-core homebrew-cask --flake $DOTFILES";
+    update-nix = "nix flake update nixpkgs nixpkgs-unstable nix-darwin home-manager --flake $DOTFILES";
+    clean = "nix-collect-garbage -d && sudo nix-collect-garbage -d && nix store optimise";
+    reload = "source $HOME/.config/zsh/.zshrc";
+
+    ls = "eza --color=auto --git --icons=auto --no-user";
+    cat = "bat";
+    top = "btop";
+        grep = "rg";
+        del = "trash";
+    e = "$EDITOR";
+    npm = "pnpm";
+    man = "tldr";
+    neofetch = "fastfetch";
+    ps = "procs";
+    http = "xh";
+    https = "xh --https";
+    du = "dust";
+    codex = "codex --sandbox danger-full-access";
+
+    csv = "csvlens";
+    py = "python3";
+    python = "python3";
+    today = "date +%Y-%m-%d";
+
+    ".." = "cd ..";
+    "..." = "cd ../..";
+    "...." = "cd ../../..";
+    "....." = "cd ../../../..";
+    "......" = "cd ../../../../..";
+    "-" = "cd -";
+
+  };
+
 
   home.sessionPath = [
     "$HOME/.local/bin"
