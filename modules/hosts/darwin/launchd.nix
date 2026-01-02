@@ -1,6 +1,0 @@
-{ ... }: {
-  launchd = {
-    daemons = { };
-    user.agents = { };
-  };
-}

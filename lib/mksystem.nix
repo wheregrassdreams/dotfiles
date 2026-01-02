@@ -1,56 +1,71 @@
-{ nixpkgs, overlays ? [], inputs }:
+{ nixpkgs, overlays ? [], inputs, self ? null }:
 
 name:
 {
-    system,
-    user,
-    hostName,
-    stateVersion ? null,
-    isDarwin ? false,
-    isWSL ? false
+  system,
+  user,
+  hostName,
+  stateVersion ? null,
+  isDarwin ? false,
+  isWSL ? false
 }:
 
 let
-    hostDir = ../hosts/${name};
-    machineConfig = hostDir + "/system.nix";
-    hostHome = hostDir + "/home.nix";
-    userOSConfig = ../users/${user}/${if isDarwin then "darwin" else "nixos" }.nix;
+  hostDir = ../hosts/${name};
 
-    systemFunc = if isDarwin then inputs.darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
-    commonArgs = {
-      inherit system;
-      specialArgs = {
-        inherit system hostName stateVersion isDarwin isWSL inputs;
-        userName = user;
-      };
-    };
-    commonModules = [
-      ../modules/common.nix
-      (if isDarwin then ../modules/darwin.nix else ../modules/nixos.nix)
-      ../modules/home.nix
+  hostConfig = hostDir + "/default.nix";
+  userOSConfig = ../users/${user}/${if isDarwin then "darwin" else "nixos"}.nix;
+  userHomeConfig = ../users/${user}/home.nix;
+
+  systemFunc =
+    if isDarwin then inputs.nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
+  homeManagerModule =
+    if isDarwin then inputs.home-manager.darwinModules.home-manager
+    else inputs.home-manager.nixosModules.home-manager;
+in
+systemFunc {
+  inherit system;
+
+  specialArgs = {
+    inherit
+      inputs
+      self
+      system
+      hostName
+      stateVersion
+      isDarwin
+      isWSL;
+    userName = user;
+    isWsl = isWSL;
+  };
+
+  modules =
+    [
+      { nixpkgs.overlays = overlays; }
+      { nixpkgs.config.allowUnfree = true; }
+
+      hostConfig
+      userOSConfig
+      homeManagerModule
+      {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.users.${user} = { config, ... }: {
+          imports = [ userHomeConfig ];
+          home.homeDirectory =
+            if isDarwin then "/Users/${user}" else "/home/${user}";
+        };
+        home-manager.sharedModules = [ ../modules/home ];
+        home-manager.extraSpecialArgs = {
+          inherit inputs system hostName;
+          flake = self;
+          userName = user;
+          isDarwin = isDarwin;
+          isWsl = isWSL;
+        };
+      }
+    ]
+    ++ nixpkgs.lib.optionals isWSL [
+      inputs.nixos-wsl.nixosModules.wsl
     ];
-in systemFunc (commonArgs // rec {
-    inherit system;
-
-    modules = [
-        { nixpkgs.overlays = overlays; }
-        { nixpkgs.config.allowUnfree = true; }
-        (if isWSL then inputs.nixos-wsl.nixosModules.wsl else {})
-    ] ++ [
-        machineConfig
-        userOSConfig
-        {
-            config._module.args = {
-                currentSystem = system;
-                currentSystemName = name;
-                currentSystemUser = user;
-                hostName = hostName;
-                stateVersion = stateVersion;
-                isDarwin = isDarwin;
-                isWSL = isWSL;
-                inputs = inputs;
-                hostHome = hostHome;
-            };
-        }
-    ] ++ commonModules;
-}))
+}

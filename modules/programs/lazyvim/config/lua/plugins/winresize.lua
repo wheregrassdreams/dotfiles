@@ -1,3 +1,0 @@
-return {
-  "pogyomo/winresize.nvim",
-}
