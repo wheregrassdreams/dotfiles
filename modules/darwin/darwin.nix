@@ -4,15 +4,10 @@
 
   imports = [
     inputs.nix-homebrew.darwinModules.nix-homebrew
-    ./dock
+    # ./dock
   ];
 
-  nix = {
-    enable = false;
-    gc.automatic = false;
-    optimise.automatic = false;
-    linux-builder.enable = false;
-  };
+  nix.enable = false;
 
   # Homebrew
   nix-homebrew = {
@@ -50,12 +45,12 @@
 
   system.stateVersion = 5;
 
-  local.dock = {
-    enable = true;
-    username = userName;
-    entries = [
-      { path = "/Applications/TickTick.app/"; }
-
-    ];
-  };
+  # local.dock = {
+  #   enable = true;
+  #   username = userName;
+  #   entries = [
+  #     { path = "/Applications/TickTick.app/"; }
+  #
+  #   ];
+  # };
 }

@@ -31,6 +31,11 @@ function tmux_edit_command_line() {
   # popup 尺寸（pane 的百分比）
   local popup_width=$(( pane_width ))
   local popup_height=$(( pane_height * 30 / 100 ))
+  local min_popup_height=10
+
+  if (( popup_height < min_popup_height )); then
+    popup_height=$min_popup_height
+  fi
 
   local space_below=$(( pane_height - cursor_y ))
 

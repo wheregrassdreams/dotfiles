@@ -37,3 +37,7 @@
 #   echo "local:    $(date -r "$secs" '+%Y-%m-%d %H:%M:%S %z')"
 #   echo "utc:      $(TZ=UTC date -r "$secs" '+%Y-%m-%d %H:%M:%S %Z')"
 # }
+
+reveal() {
+  open -R "$@"
+}

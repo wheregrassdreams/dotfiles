@@ -48,12 +48,15 @@ in {
     };
     home.packages = with pkgs; [
       age
+      act
       coreutils
       curl
+      csvkit
       eza
       duf
       delta
       dust
+      duckdb
       entr
       file
       fd
@@ -64,10 +67,12 @@ in {
       gnumake
       gnused
       gnutar
+      gum
       grex
       libqalculate
       lsof
       moor
+      just
       mosh
       procs
       rsync
@@ -79,6 +84,11 @@ in {
       unrar
       unzip
       wget
+      just
+      sshpass
+      tokei
+      mycli
+      mysql-shell
       xh
       yq
       yazi

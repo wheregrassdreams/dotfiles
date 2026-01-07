@@ -1,7 +1,8 @@
+{ userName, ... }:
 {
   determinate-nix.customSettings = {
     experimental-features = "nix-command flakes";
-    trusted-users = "root @admin";
+    trusted-users = "root @admin ${userName}";
     sandbox = true;
     auto-optimise-store = true;
     substituters = "https://cache.nixos.org https://nix-community.cachix.org";

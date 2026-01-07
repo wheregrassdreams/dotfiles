@@ -22,11 +22,15 @@
           [ -r "$file" ] && source "$file"
         done
 
+        mkdir -p ${config.xdg.configHome}/zsh/completions
+        fpath+=(${config.xdg.configHome}/zsh/completions)
+
         zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
         zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
         zstyle ':completion:*' menu no
         zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
         zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+        bindkey '^o' custom_edit_command_line
       '';
       profileExtra = ''
         # Custom ~/.zprofile goes here
@@ -79,7 +83,7 @@
         {
           name = "zsh-system-clipboard";
           src = pkgs.zsh-system-clipboard;
-          file = "share/zsh-system-clipboard/zsh-system-clipboard.zsh";
+          file = "share/zsh/zsh-system-clipboard/zsh-system-clipboard.zsh";
         }
       ];
     };
