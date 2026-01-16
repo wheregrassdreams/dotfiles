@@ -5,6 +5,8 @@
     settings = {
       builders-use-substitutes = true;
       extra-experimental-features = [ "flakes" "nix-command" ];
+      max-jobs = "auto";
+      cores = 0;
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"

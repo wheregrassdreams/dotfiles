@@ -5,6 +5,9 @@
     trusted-users = "root @admin ${userName}";
     sandbox = true;
     auto-optimise-store = true;
+    builders-use-substitutes = true;
+    max-jobs = "auto";
+    cores = 0;
     substituters = "https://cache.nixos.org https://nix-community.cachix.org";
     trusted-public-keys =
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= "

@@ -59,27 +59,34 @@ float antialising(float distance) {
     return 1. - smoothstep(0., normalize(vec2(2., 2.), 0.).x, distance);
 }
 
-float determineStartVertexFactor(vec2 a, vec2 b) {
-    // Conditions using step
-    float condition1 = step(b.x, a.x) * step(a.y, b.y); // a.x < b.x && a.y > b.y
-    float condition2 = step(a.x, b.x) * step(b.y, a.y); // a.x > b.x && a.y < b.y
 
-    // If neither condition is met, return 1 (else case)
-    return 1.0 - max(condition1, condition2);
+float determineStartVertexFactor(vec2 a, vec2 b) {
+    float horiz = step(0.0, a.x - b.x);
+    float sameLine = step(abs(a.y - b.y), 0.0001);
+    float condition1 = step(b.x, a.x) * step(a.y, b.y);
+    float condition2 = step(a.x, b.x) * step(b.y, a.y);
+    float defaultFactor = 1.0 - max(condition1, condition2);
+    return mix(defaultFactor, horiz, sameLine);
 }
 vec2 getRectangleCenter(vec4 rectangle) {
     return vec2(rectangle.x + (rectangle.z / 2.), rectangle.y - (rectangle.w / 2.));
 }
 
-const vec4 TRAIL_COLOR = vec4(1.0, 0.725, 0.161, 1.0); // yellow
+// const vec4 TRAIL_COLOR = vec4(1.0, 0.725, 0.161, 1.0); // yellow
+const vec4 TRAIL_COLOR = vec4(1.0,1.0,1.0, 0.8); // white
+
 const vec4 CURRENT_CURSOR_COLOR = TRAIL_COLOR;
 const vec4 PREVIOUS_CURSOR_COLOR = TRAIL_COLOR;
-const vec4 TRAIL_COLOR_ACCENT = vec4(1.0, 0., 0., 1.0); // red-orange
-const float DURATION = .5;
-const float OPACITY = .2;
+// const vec4 TRAIL_COLOR_ACCENT = vec4(1.0, 0., 0., 1.0); // red-orange
+// const vec4 TRAIL_COLOR_ACCENT = vec4(1.0,1.0,1.0, 0.8); 
+// const float DURATION = .2;
+// const float OPACITY = .2;
+const float DURATION = 0.08;
+const float OPACITY = 0.35;
 // Don't draw trail within that distance * cursor size.
 // This prevents trails from appearing when typing.
-const float DRAW_THRESHOLD = 1.5;
+// const float DRAW_THRESHOLD = 1.5;
+const float DRAW_THRESHOLD = 0;
 // Don't draw trails within the same line: same line jumps are usually where
 // people expect them.
 const bool HIDE_TRAILS_ON_THE_SAME_LINE = false;
@@ -118,25 +125,24 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     vec2 centerCC = getRectangleCenter(currentCursor);
     vec2 centerCP = getRectangleCenter(previousCursor);
     float cursorSize = max(currentCursor.z, currentCursor.w);
+    // float trailThreshold = DRAW_THRESHOLD * cursorSize;
     float trailThreshold = DRAW_THRESHOLD * cursorSize;
-    float lineLength = distance(centerCC, centerCP);
-    //
-    bool isFarEnough = lineLength > trailThreshold;
-    bool isOnSeparateLine = HIDE_TRAILS_ON_THE_SAME_LINE ? currentCursor.y != previousCursor.y : true;
-    if (isFarEnough && isOnSeparateLine) {
-        float distanceToEnd = distance(vu.xy, centerCC);
-        float alphaModifier = distanceToEnd / (lineLength * (easedProgress));
-
-        if (alphaModifier > 1.0) { // this change fixed it for me.
-            alphaModifier = 1.0;
-        }
-
-        float sdfCursor = getSdfRectangle(vu, currentCursor.xy - (currentCursor.zw * offsetFactor), currentCursor.zw * 0.5);
-        float sdfTrail = getSdfParallelogram(vu, v0, v1, v2, v3);
-
-        newColor = mix(newColor, TRAIL_COLOR_ACCENT, 1.0 - smoothstep(sdfTrail, -0.01, 0.001));
-        newColor = mix(newColor, TRAIL_COLOR, antialising(sdfTrail));
-        newColor = mix(fragColor, newColor, 1.0 - alphaModifier);
-        fragColor = mix(newColor, fragColor, step(sdfCursor, 0));
+    // float lineLength = distance(centerCC, centerCP);
+    float lineLength = max(distance(centerCC, centerCP), cursorSize * 0.3);
+ 
+    // bool isFarEnough = lineLength > trailThreshold;
+    bool isFarEnough = true;
+    // bool isOnSeparateLine = HIDE_TRAILS_ON_THE_SAME_LINE ? currentCursor.y != previousCursor.y : true;
+    float distanceToEnd = distance(vu.xy, centerCC);
+    float alphaModifier = distanceToEnd / (lineLength * (easedProgress));
+    if (alphaModifier > 1.0) { // this change fixed it for me.
+        alphaModifier = 1.0;
     }
+    float sdfCursor = getSdfRectangle(vu, currentCursor.xy - (currentCursor.zw * offsetFactor), currentCursor.zw * 0.5);
+    float sdfTrail = getSdfParallelogram(vu, v0, v1, v2, v3);
+
+    // newColor = mix(newColor, TRAIL_COLOR_ACCENT, 1.0 - smoothstep(sdfTrail, -0.01, 0.001));
+    newColor = mix(newColor, TRAIL_COLOR, antialising(sdfTrail));
+    newColor = mix(fragColor, newColor, 1.0 - alphaModifier);
+    fragColor = mix(newColor, fragColor, step(sdfCursor, 0));
 }

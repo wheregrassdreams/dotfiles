@@ -5,7 +5,7 @@ set -g mouse on
 
 set -g history-limit 10000         # 增加 scrollback 缓存
 set -g focus-events on              # 让 tmux 在焦点变化时触发 hook
-set -g @tmux-input-method-command '/opt/homebrew/bin/im-select'
+set -g @tmux-input-method-command 'im-select'
 set -g @tmux-input-method-layout 'com.apple.keylayout.ABC'
 
 # Unbind default keybindings
@@ -224,7 +224,7 @@ set -g status-left-style  "fg=white,bold"
 set -g status-right-style "fg=white,bold"
 
 set -g status-left-length 24
-# set -g status-left "#[fg=#00bfff]▍ #[fg=white,bold]#S #[default] "
+# set -g status-left "#[fg=#01bfff]▍ #[fg=white,bold]#s #[default] "
 # set -g status-left "#[fg=white]▍ #[fg=white,bold]#S #[default] "
 # set -g status-left "#[fg=white]   #[fg=white,bold] #S  #[default] "
 # set -g status-left "#[fg=#00bfff]▍ #[fg=#353535]#[bg=black]▍ #[fg=white]  #[bg=default]#[fg=white,bold] #S  #[default] "

@@ -24,12 +24,31 @@ in {
         package = pkgs-unstable.bun;
       };
       k9s.enable = true;
+
+      go = {
+        enable = true;
+        packages = {};
+
+        env.GOPATH = ".go";
+        env.GOBIN = ".local/bin";
+        env.GOPRIVATE = [
+          "*.xiaoe-tools.com"
+        ];
+
+      };
     };
     home = {
       packages = with pkgs; [
         sqlite
+        alejandra
+        deadnix
+        nil
+        nixd
+        nixfmt-rfc-style
+        nixpkgs-fmt
+        statix
         (python313.withPackages (ps: [ ps.tkinter ]))
-        go
+        # go
         nodejs
         lua
         luarocks
@@ -56,8 +75,8 @@ in {
       ];
       sessionVariables = {
         NODE_COMPILE_CACHE = "$HOME/.cache/nodejs-compile-cache";
-        GOPATH = "$HOME/.go";
-        GOBIN = "$HOME/.go/bin";
+        # GOPATH = "$HOME/.go";
+        # GOBIN = "$HOME/.go/bin";
         GOMODCACHE = "$HOME/.go/pkg/mod";
         GOCACHE = "$HOME/.cache/go-build";
       } // lib.optionalAttrs isDarwin {

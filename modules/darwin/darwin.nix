@@ -19,10 +19,12 @@
     taps = {
       "homebrew/core" = inputs.homebrew-core;
       "homebrew/cask" = inputs.homebrew-cask;
-      "homebrew/bundle" = inputs.homebrew-bundle;
+      # "homebrew/bundle" = inputs.homebrew-bundle;
     };
   };
   environment.systemPath = [ "/opt/homebrew/bin" "/opt/homebrew/sbin" ];
+
+  home-manager.backupFileExtension = "bak";
 
   networking = {
     applicationFirewall.enable = true;

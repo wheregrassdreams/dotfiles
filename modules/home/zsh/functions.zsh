@@ -38,6 +38,6 @@
 #   echo "utc:      $(TZ=UTC date -r "$secs" '+%Y-%m-%d %H:%M:%S %Z')"
 # }
 
-reveal() {
-  open -R "$@"
-}
+# reveal() {
+#   open -R "$@"
+# }

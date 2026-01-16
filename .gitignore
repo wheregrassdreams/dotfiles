@@ -1,6 +1,7 @@
 # misc
 .DS_Store
 .null-ls_*
+lazy-lock.json
 
 # build images
 result

@@ -24,6 +24,7 @@
       "daipeihust/tap/im-select"
       "shivammathur/php/php@7.2"
       "xenodium/macosrec/macosrec"
+      "yqrashawn/goku/goku"
     ];
     casks = [
       "mos"
@@ -33,9 +34,10 @@
       "jordanbaird-ice"
       "bitwarden"
       "raycast"
-      # "dbeaver-community"
+      "dbeaver-community"
       # "ticktick"
-      "cheatsheet"
+      # "cheatsheet"
+      "karabiner-elements"
       "codex"
       "claude-code"
       "font-fira-code"

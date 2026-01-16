@@ -1,0 +1,32 @@
+{
+  :profiles {
+    :Default {
+      :default true
+      :sim     50
+      :delay   200
+      :alone   350   ; 👈 Caps/Control 在 macOS 下必须放大
+      :held    350
+    }
+  }
+
+  :main [
+    {:des "Caps tap -> Esc, hold -> Left Control"
+     :rules [
+
+       [:caps_lock :left_control nil {
+                                      :alone :escape
+                                      }]
+     ]}
+    {:des "Left Control -> Ctrl+;"
+     :rules [
+       [:left_control :!Csemicolon]
+     ]}
+    {:des "Right Option + j/i/k/l -> Left/Up/Down/Right"
+     :rules [
+       [:!Ej :left_arrow]
+       [:!Ei :up_arrow]
+       [:!Ek :down_arrow]
+       [:!El :right_arrow]
+     ]}
+  ]
+}

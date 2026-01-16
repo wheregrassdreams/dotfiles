@@ -26,6 +26,7 @@ return {
 
   { import = "astrocommunity.split-and-window.edgy-nvim" },
   { import = "astrocommunity.markdown-and-latex.render-markdown-nvim" },
+  -- { import = "astrocommunity.utility.live-preview" },
   -- { import = "astrocommunity.register.nvim-neoclip-lua" },
   -- { import = "astrocommunity.diagnostics.trouble-nvim" },
   -- { import = "astrocommunity.pack.nvchad-ui" },
@@ -45,7 +46,7 @@ return {
   { import = "astrocommunity.git.neogit" },
   -- { import = "astrocommunity.utility.hover-nvim" },
   -- { import = "astrocommunity.git.gitgraph-nvim" },
-
+  { import = "astrocommunity.media.img-clip-nvim" },
   { import = "astrocommunity.game.leetcode-nvim" },
   -- { import = "astrocommunity.recipes.astrolsp-auto-signature-help" },
   { import = "astrocommunity.recipes.astrolsp-no-insert-inlay-hints" },
@@ -54,13 +55,14 @@ return {
   -- { import = "astrocommunity.media.image-nvim" },
   { import = "astrocommunity.markdown-and-latex.markdown-preview-nvim" },
 
-  { import = "astrocommunity.pack.full-dadbod" },
+  -- { import = "astrocommunity.pack.full-dadbod" },
 
   { import = "astrocommunity.pack.lua" },
   { import = "astrocommunity.pack.go" },
   { import = "astrocommunity.pack.zig" },
   { import = "astrocommunity.pack.json" },
-  { import = "astrocommunity.pack.python-ruff" },
+  -- { import = "astrocommunity.pack.python-ruff" },
+  { import = "astrocommunity.pack.python" },
   { import = "astrocommunity.pack.cpp" },
   { import = "astrocommunity.pack.rust" },
   { import = "astrocommunity.pack.sql" },
@@ -69,9 +71,6 @@ return {
 
   { import = "astrocommunity.recipes.picker-nvchad-theme" },
   -- { import = "astrocommunity.editing-support.rustowl" },
-
-  -- { import = "astrocommunity.bars-and-lines.dropbar-nvim" },
-  -- { import = "astrocommunity.bars-and-lines.lualine-nvim" },
 
   -- { import = "astrocommunity.code-runner.molten-nvim" },
   -- { import = "astrocommunity.code-runner.conjure" },
