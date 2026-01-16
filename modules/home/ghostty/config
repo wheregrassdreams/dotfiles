@@ -54,6 +54,6 @@ macos-icon = glass
 keybind = shift+enter=text:\x1b\r
 
 cursor-opacity = 1
-# custom-shader = ./my-shaders/virtual_cursor.glsl
+# custom-shader = ./shaders/virtual_cursor.glsl
 
 confirm-close-surface=false

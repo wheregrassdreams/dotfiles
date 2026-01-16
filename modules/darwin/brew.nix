@@ -18,29 +18,25 @@
     ];
     brews = [
       "mas"
+      "terminal-notifier"
       "bendews/tap/apw"
-      # "sho0pi/tap/tickli"
+      # "sho0pi/tap/tickli" # 用不上
       "charmbracelet/tap/crush"
-      "daipeihust/tap/im-select"
-      "shivammathur/php/php@7.2"
-      "xenodium/macosrec/macosrec"
+      "daipeihust/tap/im-select" # 输入法切换
+      "shivammathur/php/php@7.2" # 开发需要的老版本
+      # "xenodium/macosrec/macosrec" # 用不上
       "yqrashawn/goku/goku"
     ];
     casks = [
       "mos"
       "aerospace"
-      # "clash-verge-rev"
-      # "zen"
       "jordanbaird-ice"
-      "bitwarden"
       "raycast"
       "dbeaver-community"
-      # "ticktick"
-      # "cheatsheet"
       "karabiner-elements"
       "codex"
       "claude-code"
-      "font-fira-code"
+      # "font-fira-code" # 暂时不需要
       "font-jetbrains-mono-nerd-font"
       "ghostty"
       "kitty"
@@ -50,24 +46,37 @@
       "google-chrome"
       "the-unarchiver"
       "zerotier-one"
+
+      # "localsend"
+      # "ticktick"
+      # "bitwarden"
+      # "betterdisplay"
+      # "clash-verge-rev"
+      # "zed"
+      # "zen" "obsidian"
+      # "chatgpt"
+      # "figma"
+      # "wechat"
+      # "wechatwork"
+      # "neteasemusic"
     ];
     masApps = {
       "Adblock Plus" = 1432731683;
-      "AdGuard for Safari" = 1440147259;
+      # "AdGuard for Safari" = 1440147259;
       "Affinity Designer 2" = 1616831348;
       "Bob" = 1630034110;
       "Cleaner One Pro" = 1133028347;
-      # "Keynote" = 409183694;
-      # "Numbers" = 409203825;
-      "Orbit" = 1501298198;
-      "Pages 文稿" = 409201541;
       "RunCat" = 1429033973;
       "Tampermonkey" = 6738342400;
-      "Tampermonkey Classic" = 1482490089;
       "Userscripts-Mac-App" = 1463298887;
-      "Vimari" = 1480933944;
-      # "Xcode" = 497799835;
+      # "Vimari" = 1480933944;
       "Xnip" = 1221250572;
+      "Pages" = 409201541;
+      # "Keynote" = 409183694;
+      # "Numbers" = 409203825;
+      # "Xcode" = 497799835;
+      # "Tampermonkey Classic" = 1482490089;
+      # "Orbit" = 1501298198; # 用不上
     };
   };
 }
