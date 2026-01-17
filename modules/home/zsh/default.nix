@@ -2,11 +2,13 @@
   lib,
   pkgs,
   config,
-  isDarwin,
-  hostName,
-  userName,
   ...
 }:
+let
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
+  hostName = config.networking.hostName;
+  userName = config.home.username;
+in
 {
   home.file = {
     ".config/zsh/edit-command-line.zsh".source = ./edit-command-line.zsh;
@@ -178,7 +180,6 @@
     python = "python3";
     today = "date +%Y-%m-%d";
 
-
     ".." = "cd ..";
     "..." = "cd ../..";
     "-" = "cd -";
@@ -187,6 +188,5 @@
 
   home.sessionPath = [
     "$HOME/.local/bin"
-    "/opt/homebrew/bin"
   ];
 }
