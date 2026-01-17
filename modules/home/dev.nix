@@ -28,12 +28,15 @@ in {
       go = {
         enable = true;
         packages = {};
-
-        env.GOPATH = ".go";
-        env.GOBIN = ".local/bin";
-        env.GOPRIVATE = [
-          "*.xiaoe-tools.com"
-        ];
+        env = {
+          GOPATH = "${config.home.homeDirectory}/.go";
+          GOBIN = "${config.home.homeDirectory}/.go/bin";
+          GOMODCACHE = "${config.home.homeDirectory}/.go/pkg/mod";
+          GOCACHE = "${config.home.homeDirectory}/.cache/go-build";
+          GOPRIVATE = [
+            "*.xiaoe-tools.com"
+          ];
+        };
 
       };
     };
@@ -74,11 +77,7 @@ in {
         "$HOME/.go/bin"
       ];
       sessionVariables = {
-        NODE_COMPILE_CACHE = "$HOME/.cache/nodejs-compile-cache";
-        # GOPATH = "$HOME/.go";
-        # GOBIN = "$HOME/.go/bin";
-        GOMODCACHE = "$HOME/.go/pkg/mod";
-        GOCACHE = "$HOME/.cache/go-build";
+        NODE_COMPILE_CACHE = "${config.home.homeDirectory}/.cache/nodejs-compile-cache";
       } // lib.optionalAttrs isDarwin {
         LIBRARY_PATH = "${pkgs.libiconv}/lib:$LIBRARY_PATH";
       };
