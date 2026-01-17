@@ -10,7 +10,6 @@
 {
   home.file = {
     ".config/zsh/edit-command-line.zsh".source = ./edit-command-line.zsh;
-    ".config/zsh/functions.zsh".source = ./functions.zsh;
     ".config/zsh/keybinds.zsh".source = ./keybinds.zsh;
   };
 
@@ -19,11 +18,10 @@
       enable = true;
       dotDir = "${config.xdg.configHome}/zsh";
       enableCompletion = true;
-      autosuggestion.enable = true;
+      autosuggestion.enable = false; # 使用fzf-tab
       syntaxHighlighting.enable = true;
-      envExtra = ''
-        # Custom ~/.zshenv goes here
-      '';
+      autocd = true;
+
       initContent = lib.mkMerge [
         (lib.mkOrder 550 ''
           mkdir -p ${config.xdg.configHome}/zsh/completions
@@ -50,6 +48,9 @@
 
         ''
       ];
+      envExtra = ''
+        # Custom ~/.zshenv goes here
+      '';
       profileExtra = ''
         # Custom ~/.zprofile goes here
       '';
@@ -60,10 +61,14 @@
         # Custom ~/.zlogout goes here
       '';
 
+      dirHashes = {
+        docs  = "${config.home.homeDirectory}/Documents";
+        dl    = "${config.home.homeDirectory}/Downloads";
+      };
+
       history = {
         size = 50000;
         save = 50000;
-        # path = "$HOME/.zsh_history";
         path = "${config.xdg.dataHome}/zsh/zsh_history";
         ignoreSpace = true;
         ignoreDups = true;
@@ -72,16 +77,6 @@
       };
 
       plugins = [
-        {
-          name = "zsh-syntax-highlighting";
-          src = pkgs.zsh-syntax-highlighting;
-          file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
-        }
-        {
-          name = "zsh-autosuggestions";
-          src = pkgs.zsh-autosuggestions;
-          file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
-        }
         {
           name = "zsh-fzf-tab";
           src = pkgs.zsh-fzf-tab;
@@ -97,6 +92,15 @@
           file = "share/zsh/zsh-system-clipboard/zsh-system-clipboard.zsh";
         }
       ];
+
+      siteFunctions = {
+        mkcd = '' mkdir --parents "$1" && cd "$1" '';
+        uuid = '' uuidgen | tr -d '\n' '';
+        to_timestamp = '' date '+%s' ''${1:+--date "$1"} '';
+        from_timestamp = '' date '+%Y-%m-%d %H:%M:%S' --date @"''${1:0:10}" '';
+        # timestamp = '' date '+%s' '';
+        server = '' python3 -m http.server "$1" '';
+      };
     };
 
     zoxide = {
@@ -133,10 +137,8 @@
   };
 
   home.sessionVariables = {
-    EDITOR = pkgs.neovim;
+    EDITOR = "nvim";
     DOTFILES = "$HOME/.dotfiles";
-    # XDG_CONFIG_HOME = "$HOME/.config";
-    # EZA_CONFIG_DIR = "$HOME/.config/eza";
   };
 
   home.shellAliases = {
@@ -147,11 +149,11 @@
         "sudo nixos-rebuild switch --flake $DOTFILES#${hostName}";
     hm = "nix run home-manager -- switch --flake $DOTFILES#${userName}";
     hm-build = "nix run home-manager -- build --flake $DOTFILES#${userName}";
-    rebuild-fast = "nix-fast-build --flake $DOTFILES#darwinConfigurations.${hostName}";
+    # rebuild-fast = "nix-fast-build --flake $DOTFILES#darwinConfigurations.${hostName}";
     update-homebrew = "nix flake update nix-homebrew homebrew-core homebrew-cask --flake $DOTFILES";
     update-nix = "nix flake update nixpkgs nixpkgs-unstable nix-darwin home-manager --flake $DOTFILES";
     clean = "nix-collect-garbage -d && sudo nix-collect-garbage -d && nix store optimise";
-    reload = "source $HOME/.config/zsh/.zshrc";
+    reload = "source ${config.xdg.configHome}/zsh/.zshrc";
 
     ls = "eza --color=auto --git --icons=auto --no-user";
     cat = "bat";
@@ -168,6 +170,7 @@
     http = "xh";
     https = "xh --https";
     du = "dust";
+
     codex = "codex --sandbox danger-full-access";
 
     csv = "csvlens";
@@ -175,11 +178,9 @@
     python = "python3";
     today = "date +%Y-%m-%d";
 
+
     ".." = "cd ..";
     "..." = "cd ../..";
-    "...." = "cd ../../..";
-    "....." = "cd ../../../..";
-    "......" = "cd ../../../../..";
     "-" = "cd -";
 
   };

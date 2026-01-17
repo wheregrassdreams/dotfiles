@@ -51,10 +51,6 @@
 
     };
 
-    # home.shellAliases = {
-    #     lg = "lazygit";
-    # };
-
     # delta 本体由 nix / brew 提供
     home.packages = with pkgs; [
         git
