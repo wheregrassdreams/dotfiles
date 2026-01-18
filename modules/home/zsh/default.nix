@@ -2,11 +2,11 @@
   lib,
   pkgs,
   config,
+  hostName,
   ...
 }:
 let
   isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
-  hostName = config.networking.hostName;
   userName = config.home.username;
 in
 {
@@ -51,6 +51,9 @@ in
         ''
       ];
       envExtra = ''
+        # if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+        #   source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+        # fi
         # Custom ~/.zshenv goes here
       '';
       profileExtra = ''
@@ -101,7 +104,6 @@ in
         to_timestamp = '' date '+%s' ''${1:+--date "$1"} '';
         from_timestamp = '' date '+%Y-%m-%d %H:%M:%S' --date @"''${1:0:10}" '';
         # timestamp = '' date '+%s' '';
-        server = '' python3 -m http.server "$1" '';
       };
     };
 
@@ -157,7 +159,8 @@ in
     clean = "nix-collect-garbage -d && sudo nix-collect-garbage -d && nix store optimise";
     reload = "source ${config.xdg.configHome}/zsh/.zshrc";
 
-    ls = "eza --color=auto --git --icons=auto --no-user";
+    # ls = "eza --color=auto --git --icons=auto --no-user --time-style long-iso";
+    ls = "eza";
     cat = "bat";
     top = "btop";
     grep = "rg";
@@ -172,6 +175,13 @@ in
     http = "xh";
     https = "xh --https";
     du = "dust";
+
+    cb = "NO_COLOR=1 CLIPBOARD_SLIENT=1 cb ";
+    cbcopy = "cb copy";
+    cbpaste = "cb paste";
+
+    server = "python3 -m http.server";
+    noansi = ''sed -r "s/\x1B\[[0-9;]*[mK]//g"'';
 
     codex = "codex --sandbox danger-full-access";
 

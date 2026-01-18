@@ -24,7 +24,7 @@ in
         enable = true;
         config = {
           color = "auto";
-          pager = "delta";
+          pager = "less";
           paging = "never";
           map-syntax = [
             ".ignore:.gitignore"
@@ -37,7 +37,15 @@ in
         package = pkgs-unstable.opencode;
       };
 
-      
+      codex = {
+        enable = true;
+        package = pkgs-unstable.codex;
+      };
+
+      claude-code = {
+        enable = false;
+        package = pkgs-unstable.claude-code;
+      };
 
       fzf = {
         enable = true;
@@ -53,11 +61,11 @@ in
           "--multi"
           "--header='^/ toggle-preview  ^D ^U scroll-preview  TAB select-multi'"
           "--preview-window=right:50%:hidden"
-          "--preview 'if [ -d {} ]; then eza --tree --color=always {} | head -200; elif file --mime-type {} | grep -q \"image/\"; then chafa -f iterm -s \${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES} {}; else bat -n --color=always --line-range :500 {}; fi'"
+          "--preview 'if [ -d {} ]; then eza --tree --color=always {} | head -200; elif file --mime-type {} | rg -q \"image/\"; then timg -g \${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES} {}; else bat -n --color=always --line-range :500 {}; fi'"
         ];
         fileWidgetCommand = "fd --hidden --strip-cwd-prefix --exclude .git --exclude .DS_Store";
         fileWidgetOptions = [
-          "--preview 'if [ -d {} ]; then eza --tree --color=always {} | head -200; elif file --mime-type {} | grep -q \"image/\"; then chafa -f iterm -s \${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES} {}; else bat -n --color=always --line-range :500 {}; fi'"
+          "--preview 'if [ -d {} ]; then eza --tree --color=always {} | head -200; elif file --mime-type {} | rg -q \"image/\"; then timg -g \${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES} {}; else bat -n --color=always --line-range :500 {}; fi'"
         ];
         historyWidgetOptions = [
           "--sort"
@@ -70,6 +78,7 @@ in
 
       direnv = {
         enable = true;
+        enableZshIntegration = true;
         nix-direnv = {
           enable = true;
         };
@@ -89,6 +98,21 @@ in
 
       yazi = {
         enable = true;
+        enableZshIntegration = true;
+        keymap = {
+          mgr.prepend_keymap = [
+            {
+              on = [ "<C-d>" ];
+              run = "seek 5";
+              desc = "Preview page down";
+            }
+            {
+              on = [ "<C-u>" ];
+              run = "seek -5";
+              desc = "Preview page up";
+            }
+          ];
+        };
         settings = {
           mgr = {
             show_hidden = false;
@@ -114,7 +138,9 @@ in
         colors = "auto";
         git = true;
         enableZshIntegration = true;
-        extraOptions = [ ];
+        extraOptions = [
+          # "--time-style long-iso"
+        ];
       };
 
       fd = {
@@ -130,10 +156,27 @@ in
 
     };
     home.packages = with pkgs; [
+
       age
+      sops
+
       act
+
+      # gnu tools
       coreutils
+      gnugrep
+      gnumake
+      gnused
+      gnutar
+
+      # base
       curl
+      wget
+      unrar
+      unzip
+      rsync
+      lsof
+
       csvkit
       # viu
       timg
@@ -147,35 +190,26 @@ in
       fontconfig
       # gdu
       pngpaste
-      gnugrep
-      gnumake
-      gnused
-      gnutar
       gum
       grex
       libqalculate
-      lsof
       moor
       mosh
       procs
-      rsync
-      sops
       sttr
       tldr
       trash-cli
       tree
-      unrar
-      unzip
-      wget
       just
       sshpass
       tokei
-      # inputs.nix-fast-build.packages.${pkgs.system}.default
+      tailscale
       mycli
       mysql-shell
       xh
       yq
       # zstd # 用不上
+      clipboard-jh
     ];
 
     home.sessionVariables = {

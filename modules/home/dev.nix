@@ -12,12 +12,6 @@ in {
 
   config = lib.mkIf cfg.enable {
     programs = {
-      direnv = {
-        enable = true;
-        enableZshIntegration = true;
-        silent = true;
-        nix-direnv.enable = true;
-      };
       bun = {
         enable = true;
         enableGitIntegration = true;
@@ -50,7 +44,7 @@ in {
         nixfmt-rfc-style
         nixpkgs-fmt
         statix
-        (python313.withPackages (ps: [ ps.tkinter ]))
+        (python313.withPackages (ps: [ ps.httpx ]))
         # go
         nodejs
         lua
@@ -58,7 +52,7 @@ in {
         postgresql_15
         redis
         hurl
-        pipx
+        # pipx
         pnpm
         sbcl
         uv
@@ -69,6 +63,7 @@ in {
           "clippy"
           "rust-src"
           "rustfmt"
+          "rust-analyzer"
         ])
       ] ++ lib.optionals (pkgs ? kafka) [ kafka ]
         ++ lib.optionals (pkgs ? mysql) [ mysql ];
