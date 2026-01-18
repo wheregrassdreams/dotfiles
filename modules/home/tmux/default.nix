@@ -114,7 +114,9 @@
       bind -T copy-mode-vi n      send -X search-again
       bind -T copy-mode-vi N      send -X search-reverse
 
-      bind f display-popup -B -w 60% -h 50% -E "tmux list-windows -a -F '#{session_name}:#{window_index}:#{window_name}' | fzf --gutter=' ' --scrollbar='▌ ' --border --height 100% --reverse --prompt='>' --info hidden | cut -d: -f1,2 | xargs -I {} tmux switch-client -t {}"
+      # bind f display-popup -B -w 60% -h 50% -E "tmux list-windows -a -F '#{session_name}:#{window_index}:#{window_name}' | fzf --gutter=' ' --scrollbar='▌ ' --border --height 100% --reverse --prompt='>' --info hidden | cut -d: -f1,2 | xargs -I {} tmux switch-client -t {}"
+      bind f run-shell "${config.xdg.configHome}/tmux/scripts/finder.sh"
+
 
       # Toggle status bar visibility
       # https://dev.to/rahuldhole/tmux-toggle-status-bar-288m

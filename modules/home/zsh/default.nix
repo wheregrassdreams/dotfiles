@@ -48,9 +48,11 @@ in
           zstyle ':completion:*:paths' matcher-list ""
           zstyle ':completion:*:files' matcher-list ""
           zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
-          zstyle ':completion:*' sort false
           zstyle ':completion:*' menu no
-          zstyle ':fzf-tab:*' fzf-flags --no-sort
+          zstyle ':fzf-tab:*' use-fzf-default-opts yes
+          zstyle ':fzf-tab:*' fzf-flags --no-sort --ansi --header '< > switch group' --min-height=6
+          zstyle ':fzf-tab:*' switch-group '<' '>'
+          zstyle ':completion:*:descriptions' format '• %d'
           zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
           zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
           bindkey '^o' custom_edit_command_line

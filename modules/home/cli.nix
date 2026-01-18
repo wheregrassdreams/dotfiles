@@ -53,16 +53,27 @@ in
         defaultCommand = "fd --hidden --strip-cwd-prefix --exclude .git --exclude .DS_Store";
         defaultOptions = [
           "--ansi"
-          "--layout=reverse"
-          "--height 45%"
+
+          "--multi"
+
           "--bind 'ctrl-/:toggle-preview'"
           "--bind 'ctrl-u:preview-half-page-up'"
           "--bind 'ctrl-d:preview-half-page-down'"
-          "--scrollbar='▌ '"
-          "--multi"
-          "--header='^/ toggle-preview  ^D ^U scroll-preview  TAB select-multi'"
+
           "--preview-window=right:50%:hidden"
           "--preview 'if [ -d {} ]; then eza --tree --color=always {} | head -200; elif file --mime-type {} | rg -q \"image/\"; then timg -g \${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES} {}; else bat -n --color=always --line-range :500 {}; fi'"
+
+          "--layout=reverse"
+          "--height 60%"
+
+          # "--header='^/ toggle preview  ^D ^U scroll preview  TAB select multi'"
+
+          "--color=fg:#d0d0d0,fg+:#d0d0d0,bg:-1,bg+:#262626"
+          "--color=hl:#6546ff,hl+:#ff9adf,info:#676767,marker:#6546ff"
+          "--color=prompt:#676767,spinner:#6546ff,pointer:#6546ff,header:#434343"
+          "--color=border:#262626,label:#676767,query:#d9d9d9,scrollbar:#676767"
+          "--separator='─' --scrollbar='▌' --layout='reverse' --info='right'"
+          "--preview-window='border-sharp' --prompt='' --marker='▎ ' --pointer='' "
         ];
         fileWidgetCommand = "fd --hidden --strip-cwd-prefix --exclude .git --exclude .DS_Store";
         fileWidgetOptions = [
@@ -215,15 +226,22 @@ in
       nur.repos.charmbracelet.gum
       nur.repos.charmbracelet.mods
       quicktype
-      jo 
+      jo
       # mods
     ];
 
+    home.shellAliases = {
+      # fzf = ''fzf --header=$'\\e[38;2;103;103;103m^/\\e[0m toggle preview  \\e[38;2;103;103;103m^D ^U\\e[0m scroll preview  \\e[38;2;103;103;103mTAB\\e[0m select multi' --info-command='printf "$FZF_MATCH_COUNT/$FZF_TOTAL_COUNT"' '';
+      fzf = "fzf --header=$'\\e[38;2;103;103;103m^/\\e[0m toggle preview  \\e[38;2;103;103;103m^D ^U\\e[0m scroll preview  \\e[38;2;103;103;103mTAB\\e[0m select multi' --info-command='printf \"$FZF_MATCH_COUNT/$FZF_TOTAL_COUNT\"' ";
+    };
     home.sessionVariables = {
       FZF_COMPLETION_TRIGGER = "?";
+      # FZF_DEFAULT_OPTS = ''
+      #   $FZF_DEFAULT_OPTS'
+      # '';
+
     };
 
-    
     # catppuccin = {
     #   bat.enable = true;
     #   fzf.enable = true;
