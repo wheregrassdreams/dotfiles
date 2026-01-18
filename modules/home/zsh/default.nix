@@ -103,7 +103,8 @@ in
         uuid = '' uuidgen | tr -d '\n' '';
         to_timestamp = '' date '+%s' ''${1:+--date "$1"} '';
         from_timestamp = '' date '+%Y-%m-%d %H:%M:%S' --date @"''${1:0:10}" '';
-        # timestamp = '' date '+%s' '';
+        timestamp = '' date '+%s' '';
+        random = "cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1";
       };
     };
 
@@ -180,6 +181,8 @@ in
     cbcopy = "cb copy";
     cbpaste = "cb paste";
 
+    postmock = "http POST https://httpbin.org/post"; 
+
     server = "python3 -m http.server";
     noansi = ''sed -r "s/\x1B\[[0-9;]*[mK]//g"'';
 
@@ -189,6 +192,8 @@ in
     py = "python3";
     python = "python3";
     today = "date +%Y-%m-%d";
+
+    json2string = "jq tostring";
 
     ".." = "cd ..";
     "..." = "cd ../..";

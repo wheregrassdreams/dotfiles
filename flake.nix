@@ -121,12 +121,20 @@
     determinate = {
       url = "https://flakehub.com/f/DeterminateSystems/determinate/3.8.6";
     };
+
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # 这是 flake 的“入口（main）”：
   outputs = inputs@{ self, nixpkgs, ... }:
     let
-      mkSystem = import ./lib/mksystem.nix { inherit nixpkgs inputs self; overlays = []; };
+      mkSystem = import ./lib/mksystem.nix {
+        inherit nixpkgs inputs self;
+        overlays = [ inputs.nur.overlays.default ];
+      };
     in
     {
       darwinConfigurations = {
@@ -142,6 +150,7 @@
           pkgs = import nixpkgs {
             system = "aarch64-darwin";
             config.allowUnfree = true;
+            overlays = [ inputs.nur.overlays.default ];
           };
           extraSpecialArgs = {
             inherit inputs;

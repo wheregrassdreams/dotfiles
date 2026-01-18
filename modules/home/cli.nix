@@ -52,6 +52,7 @@ in
         enableZshIntegration = true;
         defaultCommand = "fd --hidden --strip-cwd-prefix --exclude .git --exclude .DS_Store";
         defaultOptions = [
+          "--ansi"
           "--layout=reverse"
           "--height 45%"
           "--bind 'ctrl-/:toggle-preview'"
@@ -190,7 +191,7 @@ in
       fontconfig
       # gdu
       pngpaste
-      gum
+      # gum
       grex
       libqalculate
       moor
@@ -210,11 +211,19 @@ in
       yq
       # zstd # 用不上
       clipboard-jh
+      nur.repos.charmbracelet.crush
+      nur.repos.charmbracelet.gum
+      nur.repos.charmbracelet.mods
+      quicktype
+      jo 
+      # mods
     ];
 
     home.sessionVariables = {
       FZF_COMPLETION_TRIGGER = "?";
     };
+
+    
     # catppuccin = {
     #   bat.enable = true;
     #   fzf.enable = true;

@@ -65,8 +65,7 @@ in {
           "rustfmt"
           "rust-analyzer"
         ])
-      ] ++ lib.optionals (pkgs ? kafka) [ kafka ]
-        ++ lib.optionals (pkgs ? mysql) [ mysql ];
+      ];
       sessionPath = [
         "$HOME/.cargo/bin"
         "$HOME/.go/bin"

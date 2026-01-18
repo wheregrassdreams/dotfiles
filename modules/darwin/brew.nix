@@ -20,7 +20,7 @@
       "mas"
       "terminal-notifier"
       "bendews/tap/apw"
-      "charmbracelet/tap/crush" # 准备切换到nixpkgs
+      # "charmbracelet/tap/crush" # 用 NUR
       "daipeihust/tap/im-select" # 输入法切换
       "shivammathur/php/php@7.2" # 开发需要的老版本
       # "yqrashawn/goku/goku" # 切换到nixpkgs

@@ -25,7 +25,7 @@
 
   nixpkgs = {
     hostPlatform = system;
-    overlays = [];
+    overlays = lib.mkDefault [];
   };
 
   networking.hostName = hostName;
