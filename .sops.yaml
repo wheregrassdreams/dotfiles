@@ -1,0 +1,6 @@
+creation_rules:
+  - path_regex: secrets/.*\.ya?ml$
+    key_groups:
+      - age:
+          - "age1ashrrvn3qnlk08jqpfjud4f6c3yr5vrwa4jy5tgpdz9934f0uqkqhmanpz" # age key
+          - "age1wn45027ydntyzw8e53qsym6yyyvgu7pt2tjxvacmzlquvmychvtqc69ld0" # ssh key

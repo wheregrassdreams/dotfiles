@@ -4,6 +4,7 @@
     shell.enable = true;
     dev.enable = true;
     nvim.enable = true;
+    secrets.enable = true;
   };
   me = {
     username = "zanelu";

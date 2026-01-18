@@ -44,6 +44,7 @@ systemFunc {
       { nixpkgs.overlays = overlays; }
       { nixpkgs.config.allowUnfree = true; }
 
+      (if isDarwin then inputs.sops-nix.darwinModules.sops else inputs.sops-nix.nixosModules.sops)
       hostConfig
       userOSConfig
       homeManagerModule
@@ -55,7 +56,10 @@ systemFunc {
           home.homeDirectory =
             if isDarwin then "/Users/${user}" else "/home/${user}";
         };
-        home-manager.sharedModules = [ ../modules/home ];
+        home-manager.sharedModules = [
+          ../modules/home
+          inputs.sops-nix.homeManagerModules.sops
+        ];
         home-manager.extraSpecialArgs = {
           inherit inputs system hostName;
           flake = self;

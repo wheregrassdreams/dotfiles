@@ -70,11 +70,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # # sops-nix：用于管理 secrets（系统模块型工具）
-    # sops-nix = {
-    #   url = "github:Mic92/sops-nix?shallow=1";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    # sops-nix：用于管理 secrets（系统模块型工具）
+    sops-nix = {
+      url = "github:Mic92/sops-nix?shallow=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
      # Build tools
     nix-fast-build = {
@@ -152,6 +152,7 @@
             userName = "zanelu";
           };
           modules = [
+            inputs.sops-nix.homeManagerModules.sops
             ./users/zanelu/home.nix
             ./modules/home
             {
