@@ -3,19 +3,16 @@
     :Default {
       :default true
       :sim     50
-      :delay   200
-      :alone   350   ; 👈 Caps/Control 在 macOS 下必须放大
-      :held    350
+      :delay   50
+      :alone   180
+      :held    300
     }
   }
 
   :main [
     {:des "Caps tap -> Esc, hold -> Left Control"
      :rules [
-
-       [:caps_lock :left_control nil {
-                                      :alone :escape
-                                      }]
+       [:caps_lock :left_control nil { :alone :escape }]
      ]}
     {:des "Left Control -> Ctrl+;"
      :rules [

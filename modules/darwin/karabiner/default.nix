@@ -1,4 +1,10 @@
-{ ... }:
+{ userName, pkgs, ... }:
 {
-  # xdg.configFile."karabiner.edn".source = ./karabiner.edn;
+  home-manager.users.${userName} = { ... }: {
+    home.packages = [ pkgs.goku ];
+    xdg.configFile."karabiner.edn" = {
+      source = ./karabiner.edn;
+      onChange = "${pkgs.goku}/bin/goku";
+    };
+  };
 }

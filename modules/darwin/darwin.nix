@@ -4,22 +4,19 @@
 
   imports = [
     inputs.nix-homebrew.darwinModules.nix-homebrew
+    ./karabiner
     # ./dock
   ];
 
-  nix.enable = false;
+  nix.enable = false; # 使用determinate
 
   # Homebrew
   nix-homebrew = {
     enable = true;
     user = userName;
     enableRosetta = false;
-    # 强制管理 brew 安装（推荐）
     mutableTaps = true;
     taps = {
-      "homebrew/core" = inputs.homebrew-core;
-      "homebrew/cask" = inputs.homebrew-cask;
-      # "homebrew/bundle" = inputs.homebrew-bundle;
     };
   };
   environment.systemPath = [ "/opt/homebrew/bin" "/opt/homebrew/sbin" ];
@@ -37,12 +34,13 @@
   };
 
   # Security 
+  # 支持使用更多认证方式
   environment.systemPackages = [ pkgs.pam-reattach ];
   security.pam.services.sudo_local = {
     enable = true;
     reattach = true;
-    touchIdAuth = true;
-    watchIdAuth = true;
+    touchIdAuth = true; # Touch ID
+    watchIdAuth = true; # Watch ID
   };
 
   system.stateVersion = 5;
