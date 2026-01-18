@@ -12,20 +12,20 @@
       "bendews/tap"
       "daipeihust/tap"
       "shivammathur/php"
-      "xenodium/macosrec"
       "charmbracelet/tap"
+      # "xenodium/macosrec"
       # "sho0pi/tap"
     ];
     brews = [
       "mas"
       "terminal-notifier"
       "bendews/tap/apw"
-      # "sho0pi/tap/tickli" # 用不上
-      "charmbracelet/tap/crush"
+      "charmbracelet/tap/crush" # 准备切换到nixpkgs
       "daipeihust/tap/im-select" # 输入法切换
       "shivammathur/php/php@7.2" # 开发需要的老版本
+      # "yqrashawn/goku/goku" # 切换到nixpkgs
       # "xenodium/macosrec/macosrec" # 用不上
-      "yqrashawn/goku/goku"
+      # "sho0pi/tap/tickli" # 用不上
     ];
     casks = [
       "mos"
@@ -34,10 +34,6 @@
       "raycast"
       "dbeaver-community"
       "karabiner-elements"
-      "codex"
-      "claude-code"
-      # "font-fira-code" # 暂时不需要
-      "font-jetbrains-mono-nerd-font"
       "ghostty"
       "kitty"
       "lookaway"
@@ -47,13 +43,19 @@
       "the-unarchiver"
       "zerotier-one"
 
+      "font-jetbrains-mono-nerd-font"
+
+      # "vlc"
+
+      # "syncthing-app"
       # "localsend"
       # "ticktick"
       # "bitwarden"
       # "betterdisplay"
       # "clash-verge-rev"
       # "zed"
-      # "zen" "obsidian"
+      # "zen" 
+      # "obsidian"
       # "chatgpt"
       # "figma"
       # "wechat"
@@ -62,14 +64,12 @@
     ];
     masApps = {
       "Adblock Plus" = 1432731683;
-      # "AdGuard for Safari" = 1440147259;
       "Affinity Designer 2" = 1616831348;
       "Bob" = 1630034110;
       "Cleaner One Pro" = 1133028347;
       "RunCat" = 1429033973;
       "Tampermonkey" = 6738342400;
       "Userscripts-Mac-App" = 1463298887;
-      # "Vimari" = 1480933944;
       "Xnip" = 1221250572;
       "Pages" = 409201541;
       # "Keynote" = 409183694;
