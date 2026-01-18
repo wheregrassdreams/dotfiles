@@ -34,12 +34,19 @@ in
             [ -r "$file" ] && source "$file"
           done
 
-          # # 允许中间匹配（substring / fuzzy）
-          # zstyle ':completion:*' matcher-list \
-          #   'm:{a-zA-Z}={A-Za-z}' \
-          #   'r:|[._-]=** r:|=**'
           # zstyle ':completion:*' insert-unambiguous false
-          zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+          # 对命令名启用模糊
+          zstyle ':completion:*:commands' matcher-list \
+            'm:{a-z}={A-Za-z}' \
+            'r:|[._-]=** r:|=**'
+
+          # 对选项/参数启用模糊
+          zstyle ':completion:*:options' matcher-list \
+            'm:{a-z}={A-Za-z}' \
+            'r:|[._-]=** r:|=**'
+
+          zstyle ':completion:*:paths' matcher-list ""
+          zstyle ':completion:*:files' matcher-list ""
           zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
           zstyle ':completion:*' sort false
           zstyle ':completion:*' menu no
@@ -66,10 +73,10 @@ in
         # Custom ~/.zlogout goes here
       '';
 
-      dirHashes = {
-        docs  = "${config.home.homeDirectory}/Documents";
-        dl    = "${config.home.homeDirectory}/Downloads";
-      };
+      # dirHashes = {
+      #   docs  = "${config.home.homeDirectory}/Documents";
+      #   dl    = "${config.home.homeDirectory}/Downloads";
+      # };
 
       history = {
         size = 50000;
