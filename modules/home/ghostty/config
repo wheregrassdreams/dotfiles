@@ -1,6 +1,6 @@
-# theme = "Atom"
-# theme = Catppuccin Frappe
-theme = TokyoNight Night
+theme = "Atom"
+# theme = Hardcore
+# theme = TokyoNight Night
 font-family = "JetBrains Mono"
 font-style = "Medium"
 # font-style-bold = "Bold"
@@ -24,10 +24,11 @@ keybind = ctrl+shift+v=ignore
 keybind = ctrl+shift+s=ignore
 keybind = ctrl+shift+t=ignore
 
+# command + `
 keybind = global:super+grave_accent=toggle_quick_terminal
 keybind = alt+shift+p=ignore
 
-quick-terminal-animation-duration = 0
+quick-terminal-animation-duration = 2
 
 title = " "
 window-padding-x = 16,16
