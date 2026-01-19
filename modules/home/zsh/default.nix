@@ -13,6 +13,7 @@ in
   home.file = {
     ".config/zsh/edit-command-line.zsh".source = ./edit-command-line.zsh;
     ".config/zsh/keybinds.zsh".source = ./keybinds.zsh;
+    ".config/zsh/fzf_header.zsh".source = ./fzf_header.zsh;
   };
 
   programs = {
@@ -167,7 +168,8 @@ in
     update-homebrew = "nix flake update nix-homebrew homebrew-core homebrew-cask --flake $DOTFILES";
     update-nix = "nix flake update nixpkgs nixpkgs-unstable nix-darwin home-manager --flake $DOTFILES";
     clean = "nix-collect-garbage -d && sudo nix-collect-garbage -d && nix store optimise";
-    reload = "source ${config.xdg.configHome}/zsh/.zshrc";
+    # reload = "source ${config.xdg.configHome}/zsh/.zshrc";
+    reload = "exec $SHELL --login";
 
     # ls = "eza --color=auto --git --icons=auto --no-user --time-style long-iso";
     ls = "eza";

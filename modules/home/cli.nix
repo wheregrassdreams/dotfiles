@@ -232,7 +232,7 @@ in
 
     home.shellAliases = {
       # fzf = ''fzf --header=$'\\e[38;2;103;103;103m^/\\e[0m toggle preview  \\e[38;2;103;103;103m^D ^U\\e[0m scroll preview  \\e[38;2;103;103;103mTAB\\e[0m select multi' --info-command='printf "$FZF_MATCH_COUNT/$FZF_TOTAL_COUNT"' '';
-      fzf = "fzf --header=$'\\e[38;2;103;103;103m^/\\e[0m toggle preview  \\e[38;2;103;103;103m^D ^U\\e[0m scroll preview  \\e[38;2;103;103;103mTAB\\e[0m select multi' --info-command='printf \"$FZF_MATCH_COUNT/$FZF_TOTAL_COUNT\"' ";
+      # fzf = "fzf --header=$'\\e[38;2;103;103;103m^/\\e[0m toggle preview  \\e[38;2;103;103;103m^D ^U\\e[0m scroll preview  \\e[38;2;103;103;103mTAB\\e[0m select multi' --info-command='printf \"$FZF_MATCH_COUNT/$FZF_TOTAL_COUNT\"' ";
     };
     home.sessionVariables = {
       FZF_COMPLETION_TRIGGER = "?";
