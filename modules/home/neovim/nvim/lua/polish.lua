@@ -101,7 +101,7 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHo
   command = "checktime",
 })
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
-  callback = function() vim.notify("🔄 File reloaded from disk", vim.log.levels.INFO) end,
+  callback = function() vim.notify("File reloaded from disk", vim.log.levels.INFO) end,
 })
 
 vim.api.nvim_create_user_command("CopyPathLine", function(opts)

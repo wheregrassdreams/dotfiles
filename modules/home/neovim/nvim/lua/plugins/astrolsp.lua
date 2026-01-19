@@ -6,6 +6,14 @@
 --       as this provides autocomplete and documentation while editing
 
 ---@type LazySpec
+local dotfiles = vim.fn.getenv "DOTFILES"
+if dotfiles == vim.NIL or dotfiles == "" then dotfiles = vim.loop.cwd() end
+
+local user = vim.fn.getenv "USER"
+if user == vim.NIL or user == "" then user = "zanelu" end
+
+local flake = '(builtins.getFlake "' .. dotfiles .. '")'
+
 return {
   "AstroNvim/astrolsp",
   ---@type AstroLSPOpts
@@ -94,6 +102,20 @@ return {
       --
       --   }
       -- }
+      nixd = {
+        settings = {
+          nixd = {
+            nixpkgs = {
+              expr = "import " .. flake .. ".inputs.nixpkgs { }",
+            },
+            options = {
+              ["home-manager"] = {
+                expr = flake .. ".homeConfigurations." .. user .. ".options",
+              },
+            },
+          },
+        },
+      },
     },
     -- customize how language servers are attached
     handlers = {
