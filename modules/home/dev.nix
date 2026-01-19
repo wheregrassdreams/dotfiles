@@ -24,9 +24,11 @@ in {
         packages = {};
         env = {
           GOPATH = "${config.home.homeDirectory}/.go";
-          GOBIN = "${config.home.homeDirectory}/.go/bin";
+          # GOBIN = "${config.home.homeDirectory}/.go/bin";
+          GOBIN = "${config.home.homeDirectory}/.local/bin";
           GOMODCACHE = "${config.home.homeDirectory}/.go/pkg/mod";
-          GOCACHE = "${config.home.homeDirectory}/.cache/go-build";
+          GOCACHE = "${config.xdg.cacheHome}/go-build";
+          GOENV= "${config.xdg.dataHome}/go/env";
           GOPRIVATE = [
             "*.xiaoe-tools.com"
           ];
@@ -71,7 +73,7 @@ in {
         "$HOME/.go/bin"
       ];
       sessionVariables = {
-        NODE_COMPILE_CACHE = "${config.home.homeDirectory}/.cache/nodejs-compile-cache";
+        NODE_COMPILE_CACHE = "${config.xdg.cacheHome}/nodejs-compile-cache";
       } // lib.optionalAttrs isDarwin {
         LIBRARY_PATH = "${pkgs.libiconv}/lib:$LIBRARY_PATH";
       };

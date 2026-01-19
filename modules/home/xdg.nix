@@ -3,8 +3,9 @@
   xdg = {
     enable = true;
     configHome = "${config.home.homeDirectory}/.config";
-    cacheHome = "${config.home.homeDirectory}/.cache";
     dataHome = "${config.home.homeDirectory}/.local/share";
+    cacheHome = "${config.home.homeDirectory}/.cache";
+    stateHome = "${config.home.homeDirectory}/.local/state";
   };
 
   home.sessionVariables = {
