@@ -5,10 +5,12 @@
     enable = true;
     baseIndex = 1;
     clock24 = true;
+    tmuxp.enable = true;
     plugins = with pkgs; [
       {
         plugin = tmuxPlugins.resurrect;
         extraConfig = ''
+          set -g @resurrect-dir "${config.xdg.dataHome}/tmux/resurrect"
           set -g @resurrect-strategy-nvim 'session' 
           set -g @resurrect-capture-pane-contents 'on'
         '';
@@ -17,7 +19,7 @@
         plugin = tmuxPlugins.continuum;
         extraConfig = ''
           set -g @continuum-restore 'on'
-          set -g @continuum-save-interval '60' # minutes
+          set -g @continuum-save-interval '15' # minutes
         '';
       }
       tmuxPlugins.dotbar
@@ -32,7 +34,7 @@
     escapeTime = 10;
 
     extraConfig = ''
-      bind ',' run-shell 'tmux source-file ${config.xdg.configHome}/tmux/tmux.conf \; display-message -d 800  " #[fg=white] config reloaded"'
+      bind ',' run-shell 'tmux source-file ${config.xdg.configHome}/tmux/tmux.conf \; display-message -d 800  " config reloaded"'
 
       # Yazi 
       set -g allow-passthrough on
