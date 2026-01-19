@@ -12,7 +12,6 @@
       "bendews/tap"
       "daipeihust/tap"
       "shivammathur/php"
-      "charmbracelet/tap"
       # "xenodium/macosrec"
       # "sho0pi/tap"
     ];
@@ -20,10 +19,8 @@
       "mas"
       "terminal-notifier"
       "bendews/tap/apw"
-      # "charmbracelet/tap/crush" # 用 NUR
       "daipeihust/tap/im-select" # 输入法切换
       "shivammathur/php/php@7.2" # 开发需要的老版本
-      # "yqrashawn/goku/goku" # 切换到nixpkgs
       # "xenodium/macosrec/macosrec" # 用不上
       # "sho0pi/tap/tickli" # 用不上
     ];

@@ -16,10 +16,13 @@
     user = userName;
     enableRosetta = false;
     mutableTaps = true;
-    taps = {
-    };
+    taps = {};
   };
   environment.systemPath = [ "/opt/homebrew/bin" "/opt/homebrew/sbin" ];
+
+  environment.variables = {
+    DOTFILES = "/Users/${userName}/.dotfiles";
+  };
 
   home-manager.backupFileExtension = "bak";
 
