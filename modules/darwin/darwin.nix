@@ -2,26 +2,11 @@
 
 {
 
-  imports = [
-    inputs.nix-homebrew.darwinModules.nix-homebrew
-    ./karabiner
-    # ./dock
-  ];
-
   nix.enable = false; # 使用determinate
-
-  # Homebrew
-  nix-homebrew = {
-    enable = true;
-    user = userName;
-    enableRosetta = false;
-    mutableTaps = true;
-    taps = {};
-  };
-  environment.systemPath = [ "/opt/homebrew/bin" "/opt/homebrew/sbin" ];
 
   environment.variables = {
     DOTFILES = "/Users/${userName}/.dotfiles";
+    # BROWSER = "zen";
   };
 
   home-manager.backupFileExtension = "bak";

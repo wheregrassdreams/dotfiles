@@ -8,8 +8,12 @@
 let
   isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   userName = config.home.username;
+  cfg = config.features.terminal;
 in
 {
+  options.features.terminal.enable = lib.mkEnableOption "Zsh and tmux terminal experience";
+
+  config = lib.mkIf cfg.enable {
   home.file = {
     ".config/zsh/edit-command-line.zsh".source = ./edit-command-line.zsh;
     ".config/zsh/keybinds.zsh".source = ./keybinds.zsh;
@@ -20,10 +24,10 @@ in
     zsh = {
       enable = true;
       dotDir = "${config.xdg.configHome}/zsh";
-      enableCompletion = true;
-      autosuggestion.enable = false; # 使用fzf-tab
-      syntaxHighlighting.enable = true;
-      autocd = true;
+      enableCompletion = true; # 开启补全
+      autosuggestion.enable = true; # 提示历史命令
+      syntaxHighlighting.enable = true; # 语法高亮
+      autocd = true; # 不需要输入`cd`直接跳转目录
 
       initContent = lib.mkMerge [
         (lib.mkOrder 550 ''
@@ -35,7 +39,6 @@ in
             [ -r "$file" ] && source "$file"
           done
 
-          # zstyle ':completion:*' insert-unambiguous false
           # 对命令名启用模糊
           zstyle ':completion:*:commands' matcher-list \
             'm:{a-z}={A-Za-z}' \
@@ -46,6 +49,12 @@ in
             'm:{a-z}={A-Za-z}' \
             'r:|[._-]=** r:|=**'
 
+          # 对参数/变量（包括环境变量）启用模糊
+          zstyle ':completion:*:parameters' matcher-list \
+            'm:{a-z}={A-Za-z}' \
+            'r:|[._-]=** r:|=**'
+
+          # zstyle ':completion:*' insert-unambiguous false
           zstyle ':completion:*:paths' matcher-list ""
           zstyle ':completion:*:files' matcher-list ""
           zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
@@ -56,14 +65,12 @@ in
           zstyle ':completion:*:descriptions' format '• %d'
           zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
           zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+
           bindkey '^o' custom_edit_command_line
 
         ''
       ];
       envExtra = ''
-        # if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
-        #   source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-        # fi
         # Custom ~/.zshenv goes here
       '';
       profileExtra = ''
@@ -109,11 +116,11 @@ in
       ];
 
       siteFunctions = {
-        mkcd = '' mkdir --parents "$1" && cd "$1" '';
-        uuid = '' uuidgen | tr -d '\n' '';
-        to_timestamp = '' date '+%s' ''${1:+--date "$1"} '';
-        from_timestamp = '' date '+%Y-%m-%d %H:%M:%S' --date @"''${1:0:10}" '';
-        timestamp = '' date '+%s' '';
+        mkcd = ''mkdir --parents "$1" && cd "$1" '';
+        uuid = ''uuidgen | tr -d '\n' '';
+        to-timestamp = ''if [ "$#" -gt 0 ]; then date '+%s' --date "$*"; else date '+%s'; fi'';
+        from-timestamp = ''date '+%Y-%m-%d %H:%M:%S' --date=@"''${1:0:10}" '';
+        timestamp = "date '+%s' ";
         random = "cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1";
       };
     };
@@ -132,20 +139,57 @@ in
     starship = {
       enable = true;
       enableZshIntegration = true;
+
       settings = {
-        username = {
-          style_user = "blue bold";
-          style_root = "red bold";
-          format = "[$user]($style)";
-          disabled = false;
-          show_always = true;
+        format = ''
+          $directory''${custom.git_branch_tail}
+          $character
+        '';
+
+        directory = {
+          style = "white";
+          truncation_length = 3;
+          format = "[$path]($style) ";
         };
-        hostname = {
-          ssh_only = false;
-          ssh_symbol = "🌐 ";
-          format = "@[$hostname](bold red) ";
-          trim_at = ".local";
-          disabled = false;
+
+        custom.git_branch_tail = {
+          command = "git rev-parse --abbrev-ref HEAD | awk -F/ '{print $NF}'";
+
+          when = "git rev-parse --is-inside-work-tree 2>/dev/null";
+
+          symbol = " ";
+          format = "[$symbol$output](dimmed) ";
+        };
+
+        character = {
+          success_symbol = "[➜](green)";
+          error_symbol = "[➜](red)";
+          vicmd_symbol = "[➜](yellow)";
+        };
+
+        python = {
+          symbol = " ";
+          style = "yellow";
+          version_format = "v\${raw}";
+          format = "[$symbol]($style)[$version](dimmed) ";
+        };
+
+        golang = {
+          symbol = " ";
+          style = "cyan";
+          format = "[$symbol$version](dimmed) ";
+        };
+
+        nodejs = {
+          symbol = " ";
+          style = "green";
+          format = "[$symbol]($style)[$version](dimmed) ";
+        };
+
+        rust = {
+          symbol = " ";
+          style = "red";
+          format = "[$symbol$version](dimmed) ";
         };
       };
     };
@@ -171,7 +215,6 @@ in
     # reload = "source ${config.xdg.configHome}/zsh/.zshrc";
     reload = "exec $SHELL --login";
 
-    # ls = "eza --color=auto --git --icons=auto --no-user --time-style long-iso";
     ls = "eza";
     cat = "bat";
     top = "btop";
@@ -192,7 +235,7 @@ in
     cbcopy = "cb copy";
     cbpaste = "cb paste";
 
-    postmock = "http POST https://httpbin.org/post"; 
+    postmock = "http POST https://httpbin.org/post";
 
     server = "python3 -m http.server";
     noansi = ''sed -r "s/\x1B\[[0-9;]*[mK]//g"'';
@@ -215,4 +258,5 @@ in
   home.sessionPath = [
     "$HOME/.local/bin"
   ];
+  };
 }

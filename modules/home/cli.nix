@@ -1,22 +1,17 @@
 {
+  inputs,
   pkgs,
   lib,
   config,
-  inputs,
+  system,
   ...
 }:
 
 let
-  cfg = config.modules.shell;
-  pkgs-unstable = import inputs.nixpkgs-unstable {
-    system = pkgs.system;
-    config.allowUnfree = true;
-  };
+  cfg = config.features.interactive-cli;
 in
 {
-  options.modules.shell = {
-    enable = lib.mkEnableOption "Shell base tools";
-  };
+  options.features.interactive-cli.enable = lib.mkEnableOption "Interactive command-line tools";
 
   config = lib.mkIf cfg.enable {
     programs = {
@@ -30,21 +25,6 @@ in
             ".ignore:.gitignore"
           ];
         };
-      };
-
-      opencode = {
-        enable = true;
-        package = pkgs-unstable.opencode;
-      };
-
-      codex = {
-        enable = true;
-        package = pkgs-unstable.codex;
-      };
-
-      claude-code = {
-        enable = false;
-        package = pkgs-unstable.claude-code;
       };
 
       fzf = {
@@ -114,6 +94,16 @@ in
         keymap = {
           mgr.prepend_keymap = [
             {
+              on = [ "<C-/>" "<C-->" ];
+              run = "plugin toggle-pane min-preview";
+              desc = "Show or hide the preview pane";
+            }
+            {
+              on = [ "<C-/>" "<C-->" ];
+              run = "plugin toggle-pane max-preview";
+              desc = "Maximize or restore the preview pane";
+            }
+            {
               on = [ "<C-d>" ];
               run = "seek 5";
               desc = "Preview page down";
@@ -131,15 +121,32 @@ in
             sort_by = "mtime";
             sort_dir_first = true;
             sort_reverse = true;
-            ratio = [
-              1
-              3
-              6
-            ];
+            ratio = [ 1 3 6 ];
           };
           preview = {
             max_width = 2000;
             max_height = 1200;
+          };
+          plugin = {
+            prepend_previewers = [
+              { name = "*.csv"; run = "duckdb"; }
+              { name = "*.tsv"; run = "duckdb"; }
+              # { name = "*.json"; run = "duckdb"; }
+              { name = "*.parquet"; run = "duckdb"; }
+              # { name = "*.txt"; run = "duckdb"; }
+              { name = "*.xlsx"; run = "duckdb"; }
+              { name = "*.db"; run = "duckdb"; }
+              { name = "*.duckdb"; run = "duckdb"; }
+            ];
+
+            prepend_preloaders = [
+              { name = "*.csv"; run = "duckdb"; multi = false; }
+              { name = "*.tsv"; run = "duckdb"; multi = false; }
+              # { name = "*.json"; run = "duckdb"; multi = false; }
+              { name = "*.parquet"; run = "duckdb"; multi = false; }
+              # { name = "*.txt"; run = "duckdb"; multi = false; }
+              { name = "*.xlsx"; run = "duckdb"; multi = false; }
+            ];
           };
         };
       };
@@ -168,79 +175,15 @@ in
 
     };
     home.packages = with pkgs; [
-
-      age
-      sops
-
-      act
-
-      # gnu tools
-      coreutils
-      gnugrep
-      gnumake
-      gnused
-      gnutar
-
-      # base
-      curl
-      wget
-      unrar
-      unzip
-      rsync
-      lsof
-
-      csvkit
-      # viu
+      # Runtime dependencies for fzf/Yazi previews.
       timg
       duf
-      delta
-      dust
       duckdb
-      entr
-      file
-      findutils
-      fontconfig
-      # gdu
-      pngpaste
-      # gum
-      grex
-      libqalculate
-      moor
-      mosh
-      procs
-      sttr
-      tldr
-      trash-cli
-      tree
-      just
-      sshpass
-      tokei
-      tailscale
-      mycli
-      mysql-shell
-      xh
-      yq
-      # zstd # 用不上
-      clipboard-jh
-      nur.repos.charmbracelet.crush
-      nur.repos.charmbracelet.gum
-      nur.repos.charmbracelet.mods
-      quicktype
-      jo
-      # mods
     ];
 
-    home.shellAliases = {
-      # fzf = ''fzf --header=$'\\e[38;2;103;103;103m^/\\e[0m toggle preview  \\e[38;2;103;103;103m^D ^U\\e[0m scroll preview  \\e[38;2;103;103;103mTAB\\e[0m select multi' --info-command='printf "$FZF_MATCH_COUNT/$FZF_TOTAL_COUNT"' '';
-      # fzf = "fzf --header=$'\\e[38;2;103;103;103m^/\\e[0m toggle preview  \\e[38;2;103;103;103m^D ^U\\e[0m scroll preview  \\e[38;2;103;103;103mTAB\\e[0m select multi' --info-command='printf \"$FZF_MATCH_COUNT/$FZF_TOTAL_COUNT\"' ";
-    };
-    home.sessionVariables = {
-      FZF_COMPLETION_TRIGGER = "?";
-      # FZF_DEFAULT_OPTS = ''
-      #   $FZF_DEFAULT_OPTS'
-      # '';
-
-    };
+    # home.sessionVariables = {
+    #   FZF_COMPLETION_TRIGGER = "?";
+    # };
 
     # catppuccin = {
     #   bat.enable = true;

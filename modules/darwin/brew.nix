@@ -1,7 +1,6 @@
 { config, ... }: {
   homebrew = {
     enable = true;
-    caskArgs.no_quarantine = true;
     global.brewfile = false;
     onActivation = {
       autoUpdate = true;
@@ -19,7 +18,6 @@
       "mas"
       "terminal-notifier"
       "bendews/tap/apw"
-      "daipeihust/tap/im-select" # 输入法切换
       "shivammathur/php/php@7.2" # 开发需要的老版本
       # "xenodium/macosrec/macosrec" # 用不上
       # "sho0pi/tap/tickli" # 用不上
@@ -38,7 +36,7 @@
       "postman"
       "google-chrome"
       "the-unarchiver"
-      "zerotier-one"
+      "tailscale"
 
       "font-jetbrains-mono-nerd-font"
 
@@ -59,16 +57,19 @@
       # "wechatwork"
       # "neteasemusic"
     ];
+
+    # App Store updates can require interactive confirmation, which makes
+    # nix-darwin activation fail. Keep these installed outside brew bundle.
     masApps = {
-      "Adblock Plus" = 1432731683;
-      "Affinity Designer 2" = 1616831348;
-      "Bob" = 1630034110;
-      "Cleaner One Pro" = 1133028347;
-      "RunCat" = 1429033973;
-      "Tampermonkey" = 6738342400;
-      "Userscripts-Mac-App" = 1463298887;
-      "Xnip" = 1221250572;
-      "Pages" = 409201541;
+      # "Affinity Designer 2" = 1616831348;
+      # "Bob" = 1630034110;
+      # "Cleaner One Pro" = 1133028347;
+      # "Tampermonkey" = 6738342400;
+      # "Userscripts-Mac-App" = 1463298887;
+      # "Xnip" = 1221250572;
+      # "Adblock Plus" = 1432731683;
+      # "RunCat" = 1429033973;
+      # "Pages" = 409201541;
       # "Keynote" = 409183694;
       # "Numbers" = 409203825;
       # "Xcode" = 497799835;

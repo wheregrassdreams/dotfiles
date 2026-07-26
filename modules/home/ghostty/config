@@ -1,5 +1,5 @@
-theme = "Atom"
-# theme = Hardcore
+# theme = "Atom"
+theme = Hardcore
 # theme = TokyoNight Night
 font-family = "JetBrains Mono"
 font-style = "Medium"
@@ -13,7 +13,7 @@ adjust-font-baseline = -10%
 # font-thicken
 
 # 背景透明
-background-opacity = 1.0
+background-opacity = 0.8
 background-blur-radius = 64
 
 # hide top bar

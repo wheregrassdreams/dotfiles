@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, config, lib, ... }:
 {
   imports = [
     # NOTE: The nix-index DB is slow to search, until
@@ -6,6 +6,9 @@
     inputs.nix-index-database.homeModules.nix-index
   ];
 
+  options.features.nix-index.enable = lib.mkEnableOption "nix-index command-not-found integration";
+
+  config = lib.mkIf config.features.nix-index.enable {
   # command-not-found handler to suggest nix way of installing stuff.
   # FIXME: This ought to show new nix cli commands though:
   # https://github.com/nix-community/nix-index/issues/191
@@ -14,5 +17,5 @@
     enableZshIntegration = true;
   };
   programs.nix-index-database.comma.enable = true;
-
+  };
 }

@@ -11,7 +11,7 @@
 
     # Home Manager：用户态配置，必须与主 nixpkgs 保持一致
     home-manager = {
-      url = "github:nix-community/home-manager?shallow=1";
+      url = "github:nix-community/home-manager/release-25.11?shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -67,7 +67,7 @@
     # LLM agents / AI tooling（作为工具使用）
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     # sops-nix：用于管理 secrets（系统模块型工具）
@@ -131,44 +131,43 @@
   # 这是 flake 的“入口（main）”：
   outputs = inputs@{ self, nixpkgs, ... }:
     let
-      mkSystem = import ./lib/mksystem.nix {
+      mkHost = import ./lib/mksystem.nix {
         inherit nixpkgs inputs self;
-        overlays = [ inputs.nur.overlays.default ];
+        overlays = [
+          inputs.nur.overlays.default
+          inputs.llm-agents.overlays.default
+        ];
       };
+      mkHome = import ./lib/mkhome.nix { inherit nixpkgs inputs self; };
     in
     {
       darwinConfigurations = {
-        macbook = mkSystem "macbook" {
+        macbook = mkHost "macbook" {
           system = "aarch64-darwin";
           user = "zanelu";
           hostName = "macbook";
           isDarwin = true;
+          systemProfiles = [ ./profiles/system/personal-mac.nix ];
+          homeProfiles = [ ./profiles/home/personal-mac.nix ];
+        };
+      };
+      nixosConfigurations = {
+        wsl = mkHost "wsl" {
+          system = "x86_64-linux";
+          user = "zanelu";
+          hostName = "wsl";
+          isWSL = true;
+          systemProfiles = [ ./profiles/system/minimal-wsl.nix ];
+          homeProfiles = [ ./profiles/home/minimal-terminal.nix ];
         };
       };
       homeConfigurations = {
-        zanelu = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            system = "aarch64-darwin";
-            config.allowUnfree = true;
-            overlays = [ inputs.nur.overlays.default ];
-          };
-          extraSpecialArgs = {
-            inherit inputs;
-            system = "aarch64-darwin";
-            hostName = "macbook";
-            isDarwin = true;
-            isWsl = false;
-            userName = "zanelu";
-          };
-          modules = [
-            inputs.sops-nix.homeManagerModules.sops
-            ./users/zanelu/home.nix
-            ./modules/home
-            {
-              home.username = "zanelu";
-              home.homeDirectory = "/Users/zanelu";
-            }
-          ];
+        zanelu = mkHome {
+          system = "aarch64-darwin";
+          userName = "zanelu";
+          hostName = "macbook";
+          isDarwin = true;
+          homeProfiles = [ ./profiles/home/personal-mac.nix ];
         };
       };
     };

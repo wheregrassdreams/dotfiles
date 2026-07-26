@@ -6,10 +6,10 @@
 }:
 
 let
-  cfg = config.modules.secrets;
+  cfg = config.features.secrets;
 in
 {
-  options.modules.secrets.enable = lib.mkEnableOption "Secrets via sops-nix";
+  options.features.secrets.enable = lib.mkEnableOption "Secrets via sops-nix";
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [

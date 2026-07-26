@@ -7,14 +7,15 @@ name:
   hostName,
   stateVersion ? null,
   isDarwin ? false,
-  isWSL ? false
+  isWSL ? false,
+  systemProfiles ? [],
+  homeProfiles ? []
 }:
 
 let
   # hostDir = ../hosts/${name};
 
   hostConfig = ../hosts/${name}/default.nix;
-  userOSConfig = ../users/${user}/${if isDarwin then "darwin" else "nixos"}.nix;
   userHomeConfig = ../users/${user}/home.nix;
 
   systemFunc =
@@ -46,13 +47,13 @@ systemFunc {
 
       (if isDarwin then inputs.sops-nix.darwinModules.sops else inputs.sops-nix.nixosModules.sops)
       hostConfig
-      userOSConfig
+      ../platforms/${if isDarwin then "darwin" else "nixos"}
       homeManagerModule
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.users.${user} = { config, ... }: {
-          imports = [ userHomeConfig ];
+          imports = [ userHomeConfig ] ++ homeProfiles;
           home.homeDirectory =
             if isDarwin then "/Users/${user}" else "/home/${user}";
         };
@@ -69,6 +70,7 @@ systemFunc {
         };
       }
     ]
+    ++ systemProfiles
     ++ nixpkgs.lib.optionals isWSL [
       inputs.nixos-wsl.nixosModules.wsl
     ];

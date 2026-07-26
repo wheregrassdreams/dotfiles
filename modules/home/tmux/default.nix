@@ -1,6 +1,8 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 
-{
+let cfg = config.features.terminal;
+in {
+  config = lib.mkIf cfg.enable {
   programs.tmux = {
     enable = true;
     baseIndex = 1;
@@ -132,5 +134,6 @@
   home.file = {
     # ".config/tmux/plugins".source = ./tmux/plugins;
     ".config/tmux/scripts".source = ./tmux/scripts;
+  };
   };
 }

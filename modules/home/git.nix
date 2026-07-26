@@ -1,6 +1,9 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
-{
+let cfg = config.features.git;
+in {
+  options.features.git.enable = lib.mkEnableOption "Git and GitHub tooling";
+  config = lib.mkIf cfg.enable {
   programs = {
     git = {
       enable = true;
@@ -59,5 +62,5 @@
     git-filter-repo
     git-lfs
   ];
-
+  };
 }

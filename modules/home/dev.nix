@@ -1,80 +1,34 @@
 { config, lib, pkgs, system, isDarwin, inputs, ... }:
 
 let
-  cfg = config.modules.dev;
-  pkgs-unstable = import inputs.nixpkgs-unstable {
-    inherit system;
-    config.allowUnfree = true;
-  };
-  fenix = inputs.fenix;
+  cfg = config.features.dev-common;
 in {
-  options.modules.dev.enable = lib.mkEnableOption "Development tools configuration";
+  options.features.dev-common.enable = lib.mkEnableOption "Shared development tools";
 
   config = lib.mkIf cfg.enable {
-    programs = {
-      bun = {
-        enable = true;
-        enableGitIntegration = true;
-        package = pkgs-unstable.bun;
-      };
-      k9s.enable = true;
-
-      go = {
-        enable = true;
-        packages = {};
-        env = {
-          GOPATH = "${config.home.homeDirectory}/.go";
-          # GOBIN = "${config.home.homeDirectory}/.go/bin";
-          GOBIN = "${config.home.homeDirectory}/.local/bin";
-          GOMODCACHE = "${config.home.homeDirectory}/.go/pkg/mod";
-          GOCACHE = "${config.xdg.cacheHome}/go-build";
-          GOENV= "${config.xdg.dataHome}/go/env";
-          GOPRIVATE = [
-            "*.xiaoe-tools.com"
-          ];
-        };
-
-      };
-    };
+    programs.k9s.enable = true;
     home = {
       packages = with pkgs; [
+        cmake
+        glfw
+        neovim
         sqlite
-        alejandra
-        deadnix
-        nil
-        nixd
-        nixfmt-rfc-style
-        nixpkgs-fmt
-        statix
-        (python313.withPackages (ps: [ ps.httpx ]))
+        # ghc
+        # haskell-language-server
         # go
-        nodejs
         lua
         luarocks
-        postgresql_15
-        redis
+
+        # 替换成docker
+        # postgresql_15
+        # redis
+
         hurl
         # pipx
-        pnpm
         sbcl
         uv
-        zig
-        (fenix.packages.${system}.stable.withComponents [
-          "rustc"
-          "cargo"
-          "clippy"
-          "rust-src"
-          "rustfmt"
-          "rust-analyzer"
-        ])
       ];
-      sessionPath = [
-        "$HOME/.cargo/bin"
-        "$HOME/.go/bin"
-      ];
-      sessionVariables = {
-        NODE_COMPILE_CACHE = "${config.xdg.cacheHome}/nodejs-compile-cache";
-      } // lib.optionalAttrs isDarwin {
+      sessionVariables = lib.optionalAttrs isDarwin {
         LIBRARY_PATH = "${pkgs.libiconv}/lib:$LIBRARY_PATH";
       };
     };
