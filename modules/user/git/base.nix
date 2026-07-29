@@ -1,5 +1,7 @@
 { config, lib, pkgs, identity, ... }:
 {
+
+  # TODO: 考虑迁移至options目录下
   options.dotfiles.git.enable = lib.mkEnableOption "Git tooling";
 
   config = lib.mkIf config.dotfiles.git.enable {

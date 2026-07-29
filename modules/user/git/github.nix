@@ -1,8 +1,9 @@
 { config, lib, pkgs, ... }:
+let cfg = config.dotfiles; in
 {
   options.dotfiles.git.github.enable = lib.mkEnableOption "GitHub CLI";
 
-  config = lib.mkIf (config.dotfiles.git.enable && config.dotfiles.git.github.enable) {
+  config = lib.mkIf (cfg.git.enable && cfg.git.github.enable) {
     home.packages = [ pkgs.gh ];
     programs.ssh.matchBlocks."github.com" = {
       hostname = "ssh.github.com";

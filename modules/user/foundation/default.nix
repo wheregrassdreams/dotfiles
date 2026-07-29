@@ -1,3 +1,3 @@
 {
-  imports = [ ./base.nix ];
+  imports = [ ./base.nix ./paths.nix ];
 }

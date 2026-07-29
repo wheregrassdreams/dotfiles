@@ -17,7 +17,6 @@
       # imSelector.enable = true;
     };
 
-    network.tailscale.enable = true;
     menuBar.ice.enable = false; # ice 不兼容macos26
     workspace.enable = true;
   };

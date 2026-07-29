@@ -16,3 +16,6 @@ Example setup (run once):
 
 Encrypt a new file:
 `sops --encrypt --in-place secrets/common.yaml`
+
+There is also a easier way to edit a file with `./scripts/edit-secrets.sh`
+`./scripts/edit-secrets.sh secrets/common.yaml`

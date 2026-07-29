@@ -128,7 +128,7 @@
     };
   };
 
-  # 这是 flake 的“入口（main）”：
+  # 这是 flake 的入口（main）：
   outputs = inputs@{ self, nixpkgs, ... }:
     let
       overlays = [
@@ -152,7 +152,7 @@
         wsl = dotfilesLib.mkHost (import ./hosts/wsl);
       };
       homeConfigurations = {
-        zanelu = dotfilesLib.mkHome (import ./hosts/macbook);
+        zanelu-macbook = dotfilesLib.mkHome (import ./hosts/macbook);
       };
     };
 }

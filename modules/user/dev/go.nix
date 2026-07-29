@@ -1,17 +1,17 @@
 { config, ... }:
 let
-  goPath = "${config.xdg.dataHome}/go";
-  localBin = "${config.home.homeDirectory}/.local/bin";
+  paths = config.dotfiles.paths;
+  goPath = "${paths.xdg.data}/go";
 in {
   programs.go = {
     enable = true;
     packages = { };
     env = {
       GOPATH     = goPath;
-      GOBIN      = localBin;
+      GOBIN      = paths.localBin;
       GOENV      = "${goPath}/env";
       GOMODCACHE = "${goPath}/pkg/mod";
-      GOCACHE    = "${config.xdg.cacheHome}/go-build";
+      GOCACHE    = "${paths.xdg.cache}/go-build";
     };
   };
   # home.sessionPath = [ programs.go.env.GOBIN ];

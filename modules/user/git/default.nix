@@ -1,4 +1,10 @@
-{ dotfilesLib, ... }:
+{ ... }:
 {
-  imports = dotfilesLib.importAll ./.;
+  imports = [
+    ./base.nix
+    ./gitea.nix
+    ./github.nix
+    ./gitlab.nix
+    ./interactive.nix
+  ];
 }

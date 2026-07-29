@@ -1,8 +1,8 @@
 { ... }: {
   imports = [
     ../../modules/user
-    ../../modules/backing-services/default.nix
-    ../../modules/backing-services/home.nix
+    ../../modules/data/home.nix
+    ../../modules/services/home.nix
     ../../profiles/minimal-terminal/home.nix
   ];
 }

@@ -2,12 +2,15 @@
   imports = [
     ../../modules/user
     ../../modules/desktop/home.nix
-    ../../modules/backing-services/default.nix
-    ../../modules/backing-services/home.nix
+    ../../modules/data/home.nix
+    ../../modules/services/home.nix
+    ../../modules/connectivity/tailscale/home.nix
     ../../profiles/personal-mac/home.nix
-    ../../profiles/personal-mac/ai.nix
+    ../../profiles/personal-mac/ai-home.nix
     ../../profiles/personal-mac/desktop.nix
-    ../../profiles/personal-mac/backing-services.nix
+    ../../profiles/personal-mac/data.nix
+    ../../profiles/personal-mac/connectivity.nix
+    ../../profiles/personal-mac/services.nix
     ../../profiles/work/home.nix
     ../../profiles/homelab/home.nix
     ./facts/home.nix

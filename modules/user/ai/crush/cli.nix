@@ -1,4 +1,6 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
-  home.packages = [ pkgs.nur.repos.charmbracelet.crush ];
+  config = lib.mkIf (config.dotfiles.ai.enable && config.dotfiles.ai.crush.cli) {
+    home.packages = [ pkgs.nur.repos.charmbracelet.crush ];
+  };
 }

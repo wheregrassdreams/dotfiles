@@ -8,10 +8,7 @@ dotfilesLib.domain ctx {
     query = { description = "search and structured data tools"; module = ./query.nix; };
     network = { description = "network and remote access tools"; module = ./network.nix; };
     workflow = { description = "command-line workflow tools"; module = ./workflow.nix; };
-    interactive = {
-      description = "interactive tools, including FZF and Yazi";
-      module = ./interactive.nix;
-    };
+    interactive = { description = "interactive tools, including FZF and Yazi"; module = ./interactive.nix; };
     media = { description = "media CLI tools"; module = ./media.nix; };
   };
 }

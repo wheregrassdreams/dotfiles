@@ -1,8 +1,10 @@
 { dotfilesLib, config, lib, pkgs, inputs, dotfilesPath, hostName, userName, ... }@ctx:
+let
+  inherit (dotfilesLib.feature) group;
+in
 dotfilesLib.domain ctx {
   namespace = "dotfiles.shell";
   description = "shell environment";
-  base = ./environment.nix;
 
   features = {
     zsh = {
@@ -15,23 +17,22 @@ dotfilesLib.domain ctx {
       module = ./prompt.nix;
       settings = { };
     };
-  };
-
-  groups.integrations.features = {
-    macos = {
-      description = "macOS shell conveniences";
-      module = ./macos.nix;
-      settings = { };
-    };
-    nixConfiguration = {
-      description = "Nix configuration workflow commands";
-      module = ./nix-configuration.nix;
-      settings = { };
-    };
-    nixIndex = {
-      description = "Nix command discovery";
-      module = ./nix-index.nix;
-      settings = { };
+    integrations = group {
+      macos = {
+        description = "macOS shell conveniences";
+        module = ./macos.nix;
+        settings = { };
+      };
+      nixConfiguration = {
+        description = "Nix configuration workflow commands";
+        module = ./nix-configuration.nix;
+        settings = { };
+      };
+      nixIndex = {
+        description = "Nix command discovery";
+        module = ./nix-index.nix;
+        settings = { };
+      };
     };
   };
 }

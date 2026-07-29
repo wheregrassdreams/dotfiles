@@ -1,8 +1,13 @@
-{ pkgs, config, lib, isDarwin, ... }:
-let inputMethod = config.dotfiles.terminal.tmux.inputMethod.command;
-in
-{
-  config = lib.mkIf config.dotfiles.terminal.tmux.enable {
+{ pkgs, config, lib, isDarwin, feature, ... }:
+let inputMethod = feature.inputMethod.command;
+in {
+  # TODO:
+  # 1. 可以考虑拆分配置比如拆出独立的keybind、主题
+  # 2. 配置重建时自动source
+  # 3. 把tmux/目录下过时的两个tmux.conf迁走，保持目录干净
+  # 4. 特殊配置如finder.sh、imselect、系统复制等拆分出来
+  # 5. 暴露出少数可选项
+  # 6. 抽出路径为变量，方便集中维护
   programs.tmux = {
     enable = true;
     baseIndex = 1;
@@ -13,7 +18,7 @@ in
         plugin = tmuxPlugins.resurrect;
         extraConfig = ''
           set -g @resurrect-dir "${config.xdg.dataHome}/tmux/resurrect"
-          set -g @resurrect-strategy-nvim 'session' 
+          set -g @resurrect-strategy-nvim 'session'
           set -g @resurrect-capture-pane-contents 'on'
         '';
       }
@@ -38,7 +43,7 @@ in
     extraConfig = ''
       bind ',' run-shell 'tmux source-file ${config.xdg.configHome}/tmux/tmux.conf \; display-message -d 800  " config reloaded"'
 
-      # Yazi 
+      # Yazi
       set -g allow-passthrough on
       set -ga update-environment TERM
       set -ga update-environment TERM_PROGRAM
@@ -56,7 +61,7 @@ in
 
       # Select pane
       bind h select-pane -L
-      bind j select-pane -D 
+      bind j select-pane -D
       bind k select-pane -U
       bind l select-pane -R
 
@@ -139,6 +144,5 @@ in
   home.file = {
     # ".config/tmux/plugins".source = ./tmux/plugins;
     ".config/tmux/scripts".source = ./tmux/scripts;
-  };
   };
 }

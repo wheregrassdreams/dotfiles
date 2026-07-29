@@ -2,7 +2,7 @@
 let
   cfg = config.dotfiles.ai;
 in {
-  imports = [ ./default.nix ];
+  imports = [ ../../options/ai.nix ];
 
   config = lib.mkIf cfg.enable {
     homebrew.casks =

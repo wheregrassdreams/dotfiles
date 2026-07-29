@@ -2,7 +2,7 @@
 {
   programs.k9s.enable = true;
   home = {
-    packages = with pkgs; [ neovim sqlite hurl sbcl uv ];
+    packages = with pkgs; [ neovim sqlite  sbcl uv ];
     sessionVariables = lib.optionalAttrs isDarwin {
       LIBRARY_PATH = "${pkgs.libiconv}/lib:$LIBRARY_PATH";
     };
