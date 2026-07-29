@@ -1,0 +1,4 @@
+{ dotfilesLib, ... }:
+{
+  imports = dotfilesLib.importAll ./.;
+}

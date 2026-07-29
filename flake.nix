@@ -131,44 +131,28 @@
   # 这是 flake 的“入口（main）”：
   outputs = inputs@{ self, nixpkgs, ... }:
     let
-      mkHost = import ./lib/mksystem.nix {
-        inherit nixpkgs inputs self;
-        overlays = [
-          inputs.nur.overlays.default
-          inputs.llm-agents.overlays.default
-        ];
+      overlays = [
+        inputs.nur.overlays.default
+        inputs.llm-agents.overlays.default
+      ];
+      dotfilesLib = import ./lib {
+        lib = nixpkgs.lib;
+        inherit nixpkgs inputs self overlays;
       };
-      mkHome = import ./lib/mkhome.nix { inherit nixpkgs inputs self; };
+      flakeLib = nixpkgs.lib.extend (_: _: {
+        dotfiles = dotfilesLib;
+      });
     in
     {
+      lib = flakeLib;
       darwinConfigurations = {
-        macbook = mkHost "macbook" {
-          system = "aarch64-darwin";
-          user = "zanelu";
-          hostName = "macbook";
-          isDarwin = true;
-          systemProfiles = [ ./profiles/system/personal-mac.nix ];
-          homeProfiles = [ ./profiles/home/personal-mac.nix ];
-        };
+        macbook = dotfilesLib.mkHost (import ./hosts/macbook);
       };
       nixosConfigurations = {
-        wsl = mkHost "wsl" {
-          system = "x86_64-linux";
-          user = "zanelu";
-          hostName = "wsl";
-          isWSL = true;
-          systemProfiles = [ ./profiles/system/minimal-wsl.nix ];
-          homeProfiles = [ ./profiles/home/minimal-terminal.nix ];
-        };
+        wsl = dotfilesLib.mkHost (import ./hosts/wsl);
       };
       homeConfigurations = {
-        zanelu = mkHome {
-          system = "aarch64-darwin";
-          userName = "zanelu";
-          hostName = "macbook";
-          isDarwin = true;
-          homeProfiles = [ ./profiles/home/personal-mac.nix ];
-        };
+        zanelu = dotfilesLib.mkHome (import ./hosts/macbook);
       };
     };
 }
