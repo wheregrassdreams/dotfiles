@@ -1,7 +1,6 @@
 { pkgs, ... }: {
   home.packages = with pkgs; [
-    coreutils gnugrep gnumake gnused gnutar
+    gnumake
     curl wget p7zip unrar unzip rsync lsof
-    file findutils tree
   ];
 }

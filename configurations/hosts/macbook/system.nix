@@ -2,6 +2,7 @@
 {
   imports = [
     ../../../modules/system/nix.nix
+    ../../../modules/system/base-tools.nix
     ../../../modules/system/darwin/determinate.nix
     ../../../modules/system/darwin
   ];

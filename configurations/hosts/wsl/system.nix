@@ -2,6 +2,7 @@
 {
   imports = [
     ../../../modules/system/nix.nix
+    ../../../modules/system/base-tools.nix
     ../../../modules/system/nixos.nix
     ../../../modules/system/services/nixos.nix
     ../../profiles/minimal-terminal/system.nix
