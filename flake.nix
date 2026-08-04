@@ -133,13 +133,13 @@
     {
       lib = flakeLib;
       darwinConfigurations = {
-        macbook = dotfilesLib.mkHost (import ./hosts/macbook);
+        macbook = dotfilesLib.mkHost (import ./configurations/hosts/macbook);
       };
       nixosConfigurations = {
-        wsl = dotfilesLib.mkHost (import ./hosts/wsl);
+        wsl = dotfilesLib.mkHost (import ./configurations/hosts/wsl);
       };
       homeConfigurations = {
-        zanelu-macbook = dotfilesLib.mkHome (import ./hosts/macbook);
+        zanelu-macbook = dotfilesLib.mkHome (import ./configurations/hosts/macbook);
       };
     };
 }
