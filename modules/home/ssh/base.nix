@@ -13,7 +13,7 @@
         controlMaster = "auto";
         controlPath = "~/.ssh/control-%C";
         controlPersist = "30m";
-        strictHostKeyChecking = "ask";
+        extraOptions.StrictHostKeyChecking = "ask";
       };
     };
   };
