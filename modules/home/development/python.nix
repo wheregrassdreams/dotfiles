@@ -1,7 +1,12 @@
 { pkgs, feature, ... }:
 let
-  base = with pkgs; [ python313 uv ruff pyright ];
+  python = pkgs.python313;
   data = pkgs.python313.withPackages (ps: with ps; [ httpx pdfplumber openpyxl polars pymysql pypika ]);
 in {
-  home.packages = base ++ pkgs.lib.optionals (feature.suite == "full") [ data ];
+  home.packages = with pkgs; [
+    (if feature.suite == "full" then data else python)
+    uv
+    ruff
+    pyright
+  ];
 }
