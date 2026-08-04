@@ -2,6 +2,10 @@
 {
   options.my.ai = {
     enable = lib.mkEnableOption "AI agent environment";
+    dataHome = lib.mkOption {
+      type = lib.types.str;
+      description = "Shared data directory for AI agent resources";
+    };
 
     codex.cli = lib.mkEnableOption "Codex command-line agent";
 

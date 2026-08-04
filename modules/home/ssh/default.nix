@@ -1,3 +1,3 @@
 {
-  imports = [ ./base.nix ];
+  imports = [ ../../options/ssh.nix ./base.nix ];
 }

@@ -7,41 +7,19 @@ let
     name = locationVariable name;
     value = path;
   }) cfg.personal;
-  locationVariableNames = map locationVariable (builtins.attrNames cfg.personal);
 in {
-  options.my.paths = {
-    home = lib.mkOption {
-      default = config.home.homeDirectory;
-      readOnly = true;
-    };
-    dotfiles = lib.mkOption {
-      default = dotfilesPath;
-      readOnly = true;
-    };
-    localBin = lib.mkOption {
-      default = "${config.home.homeDirectory}/.local/bin";
-      readOnly = true;
-    };
-    xdg = {
-      config = lib.mkOption { default = config.xdg.configHome; readOnly = true; };
-      data   = lib.mkOption { default = config.xdg.dataHome;   readOnly = true; };
-      cache  = lib.mkOption { default = config.xdg.cacheHome;  readOnly = true; };
-      state  = lib.mkOption { default = config.xdg.stateHome;  readOnly = true; };
-    };
-    personal = lib.mkOption {
-      type = lib.types.attrsOf lib.types.str;
-      description = "Named personal and business locations";
-      default = { };
-    };
-
-    # homebrew 位置
-  };
-
   config = {
-    assertions = [{
-      assertion = builtins.length locationVariableNames == builtins.length (lib.unique locationVariableNames);
-      message = "my.paths.personal contains names that map to the same DOTFILES_PATH_* environment variable";
-    }];
+    my.paths = {
+      home = lib.mkDefault config.home.homeDirectory;
+      dotfiles = lib.mkDefault dotfilesPath;
+      localBin = lib.mkDefault "${config.home.homeDirectory}/.local/bin";
+      xdg = {
+        config = lib.mkDefault config.xdg.configHome;
+        data = lib.mkDefault config.xdg.dataHome;
+        cache = lib.mkDefault config.xdg.cacheHome;
+        state = lib.mkDefault config.xdg.stateHome;
+      };
+    };
 
     home.sessionVariables = {
       DOTFILES = cfg.dotfiles;

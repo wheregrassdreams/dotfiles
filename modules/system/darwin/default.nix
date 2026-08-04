@@ -2,7 +2,7 @@
   imports = [
     ./base.nix
     ./homebrew.nix
-    ./dock.nix
+    ./dock-implementation.nix
     ./disk-images.nix
   ];
 }

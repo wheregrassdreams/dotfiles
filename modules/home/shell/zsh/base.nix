@@ -199,20 +199,20 @@
     "-" = "cd -";
 
     }
-    (lib.mkIf config.my.cli.interactive {
+    (lib.mkIf config.my.tools.interactive {
       ls = "eza"; cat = "bat"; top = "btop"; npm = "pnpm";
       neofetch = "fastfetch"; ps = "procs"; du = "dust"; csv = "csvlens";
     })
-    (lib.mkIf config.my.cli.query {
+    (lib.mkIf config.my.tools.query {
       grep = "rg"; json2string = "jq tostring";
     })
-    (lib.mkIf config.my.cli.network {
+    (lib.mkIf config.my.tools.network {
       http = "xh"; https = "xh --https";
     })
-    (lib.mkIf config.my.cli.workflow {
+    (lib.mkIf config.my.tools.workflow {
       man = "tldr"; del = "trash";
     })
-    (lib.mkIf config.my.cli.workflow {
+    (lib.mkIf config.my.tools.workflow {
       del = "trash";
       cb = "NO_COLOR=1 CLIPBOARD_SLIENT=1 cb "; cbcopy = "cb copy";
       cbpaste = "cb paste"; py = "python3"; python = "python3";

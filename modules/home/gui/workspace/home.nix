@@ -1,11 +1,11 @@
 { config, lib, ... }:
 {
   imports = [
-    ./default.nix
+    ../../../options/gui/workspace.nix
     ../../../options/homebrew.nix
   ];
 
-  config = lib.mkIf config.my.desktop.workspace.enable {
+  config = lib.mkIf config.my.gui.workspace.enable {
     my.homebrew = {
       taps = [
         { name = "bendews/tap"; trusted = true; }

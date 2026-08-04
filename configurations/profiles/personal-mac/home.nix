@@ -16,7 +16,7 @@
 
     terminal.tmux.enable = true;
 
-    cli = {
+    tools = {
       core = true;
       query = true;
       network = true;
@@ -35,7 +35,7 @@
       gitea.enable = true;
     };
 
-    dev = {
+    development = {
       enable = true;
       # languages
       lua        = true;

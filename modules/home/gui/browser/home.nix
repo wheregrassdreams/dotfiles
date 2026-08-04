@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.my.desktop.browser;
+  cfg = config.my.gui.browser;
   setDefaultBrowser = pkgs.writeShellScriptBin "browser-default" ''
     defaultbrowser=${lib.escapeShellArg "${config.my.homebrew.brewPrefix}/bin/defaultbrowser"}
     if [ ! -x "$defaultbrowser" ]; then
@@ -12,8 +12,8 @@ let
   '';
 in {
   imports = [
-    ./default.nix
     ../../../options/homebrew.nix
+    ../../../options/gui/browser.nix
   ];
 
   config = {

@@ -1,6 +1,6 @@
 { ... }:
 {
-  my.desktop = {
+  my.gui = {
     browser = {
       default = "safari";
       chrome.enable = true;

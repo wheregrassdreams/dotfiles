@@ -1,9 +1,5 @@
 { config, lib, pkgs, identity, ... }:
 {
-
-  # TODO: 考虑迁移至options目录下
-  options.my.git.enable = lib.mkEnableOption "Git tooling";
-
   config = lib.mkIf config.my.git.enable {
     programs.git = {
       enable = true;

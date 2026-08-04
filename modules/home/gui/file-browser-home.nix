@@ -1,8 +1,8 @@
 { config, lib, ... }:
 {
-  imports = [ ./file-browser.nix ];
+  imports = [ ../../options/gui/file-browser.nix ];
 
-  config = lib.mkIf config.my.desktop.fileBrowser.baseline.enable {
+  config = lib.mkIf config.my.gui.fileBrowser.baseline.enable {
     targets.darwin.defaults."com.apple.finder" = {
       _FXShowPosixPathInTitle = true;
       _FXSortFoldersFirst = true;

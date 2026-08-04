@@ -3,43 +3,11 @@
 
 with lib;
 let
-  cfg = config.my.platform.darwin.dock;
+  cfg = config.my.system.darwin.dock;
   inherit (pkgs) stdenv dockutil;
 in
 {
-  options = {
-    my.platform.darwin.dock = {
-      enable = mkOption {
-        description = "Enable dock";
-        default = false;
-      };
-
-      entries = mkOption {
-        description = "Entries on the Dock";
-        type =
-          with types;
-          listOf (submodule {
-            options = {
-              path    = lib.mkOption { type = str; };
-              section = lib.mkOption {
-                type    = str;
-                default = "apps";
-              };
-              options = lib.mkOption {
-                type    = str;
-                default = "";
-              };
-            };
-          });
-        default = [ ];
-      };
-
-      username = mkOption {
-        description = "Username to apply the dock settings to";
-        type = types.str;
-      };
-    };
-  };
+  imports = [ ../../options/system/darwin/dock.nix ];
 
   config = mkIf cfg.enable (
     let

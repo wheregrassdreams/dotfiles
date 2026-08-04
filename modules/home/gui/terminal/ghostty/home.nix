@@ -1,8 +1,8 @@
 { config, lib, ... }:
-let cfg = config.my.desktop.terminal.ghostty;
+let cfg = config.my.gui.terminal.ghostty;
 in {
   imports = [
-    ../default.nix
+    ../../../../options/gui/terminal.nix
     ../../../../options/homebrew.nix
   ];
   config = lib.mkIf cfg.enable {

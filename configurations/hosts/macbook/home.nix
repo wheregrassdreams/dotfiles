@@ -52,7 +52,7 @@
       };
     }
 
-    (lib.mkIf config.my.desktop.menuBar.ice.enable {
+    (lib.mkIf config.my.gui.menuBar.ice.enable {
       targets.darwin.defaults."com.jordanbaird.Ice" = {
         AutoRehide = true;
         CanToggleAlwaysHiddenSection = true;
@@ -75,7 +75,7 @@
       };
     })
 
-    (lib.mkIf config.my.desktop.keymap.karabiner.enable {
+    (lib.mkIf config.my.gui.keymap.karabiner.enable {
       my.terminal.tmux.inputMethod.command = "${config.my.homebrew.brewPrefix}/bin/im-select";
     })
   ];

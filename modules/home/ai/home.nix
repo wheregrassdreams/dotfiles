@@ -9,13 +9,8 @@ in {
     ./opencode/cli.nix
   ];
 
-  options.my.ai.dataHome = lib.mkOption {
-    type = lib.types.str;
-    default = "${config.my.paths.xdg.data}/agent";
-    description = "shared data directory for AI agent resources";
-  };
-
   config = lib.mkIf cfg.enable {
+    my.ai.dataHome = lib.mkDefault "${config.my.paths.xdg.data}/agent";
     home.sessionVariables = {
       AI_AGENT_HOME = cfg.dataHome;
       AI_AGENT_SKILLS_DIR = "${cfg.dataHome}/skills";

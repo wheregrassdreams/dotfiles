@@ -9,7 +9,7 @@
       integrations.nixConfiguration.enable = true;
     };
     terminal.tmux.enable = true;
-    cli = { core = true; query = true; network = true; };
+    tools = { core = true; query = true; network = true; };
     git = {
       enable = true;
       interactive.enable = true;

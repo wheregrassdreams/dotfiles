@@ -1,8 +1,8 @@
 { config, lib, pkgs, ... }:
-let cfg = config.my.desktop.keymap.karabiner;
+let cfg = config.my.gui.keymap.karabiner;
 in {
   imports = [
-    ../default.nix
+    ../../../../options/gui/keymap.nix
     ../../../../options/homebrew.nix
   ];
   config = lib.mkIf cfg.enable {

@@ -1,7 +1,7 @@
 { dotfilesLib, config, lib, pkgs, inputs, system, isDarwin, ... }@ctx:
 dotfilesLib.domain ctx {
 
-  namespace = "my.dev";
+  namespace = "my.development";
   description = "development environment";
 
   base = ./common.nix;
