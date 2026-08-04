@@ -7,6 +7,7 @@ let
     ./finder.nix
     ./input-method.nix
     ./status.nix
+    ./environment.nix
   ];
   evaluate = path:
     let
