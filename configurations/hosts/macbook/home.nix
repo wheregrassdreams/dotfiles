@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, identity, ... }:
 {
   imports = [
     ../../../modules/home
@@ -26,6 +26,7 @@
       };
 
       my = {
+        identity = identity;
         homebrew.brewPrefix = "/opt/homebrew";
         connectivity.tailscale.host = "homelab.tail50e8c0.ts.net";
         paths.personal = {

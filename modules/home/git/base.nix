@@ -1,12 +1,12 @@
-{ config, lib, pkgs, identity, ... }:
+{ config, lib, pkgs, ... }:
 {
   config = lib.mkIf config.my.git.enable {
     programs.git = {
       enable = true;
       settings = {
         user = {
-          name = identity.fullname;
-          email = identity.email;
+          name = config.my.identity.fullname;
+          email = config.my.identity.email;
         };
 
         core.pager = "delta";

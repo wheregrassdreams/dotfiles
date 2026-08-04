@@ -1,4 +1,3 @@
-# TODO: 移动到secrets/personal.yaml下
 {
   username = "zanelu";
   fullname = "Zane Lu";

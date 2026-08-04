@@ -25,7 +25,6 @@
       network = true;
       workflow = true;
       interactive = true;
-      television = true;
       media = true;
     };
 
