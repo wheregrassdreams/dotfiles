@@ -28,7 +28,7 @@ in {
       cache  = lib.mkOption { default = config.xdg.cacheHome;  readOnly = true; };
       state  = lib.mkOption { default = config.xdg.stateHome;  readOnly = true; };
     };
-    locations = lib.mkOption {
+    personal = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
       description = "Named personal and business locations";
       default = { };

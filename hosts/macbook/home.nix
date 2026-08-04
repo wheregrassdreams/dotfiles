@@ -1,11 +1,13 @@
 { ... }: {
   imports = [
     ../../modules/user
+    ../../modules/platform/darwin/homebrew-home.nix
     ../../modules/desktop/home.nix
     ../../modules/data/home.nix
     ../../modules/services/home.nix
     ../../modules/connectivity/tailscale/home.nix
     ../../profiles/personal-mac/home.nix
+    ../../profiles/personal-mac/homebrew.nix
     ../../profiles/personal-mac/ai-home.nix
     ../../profiles/personal-mac/desktop.nix
     ../../profiles/personal-mac/data.nix

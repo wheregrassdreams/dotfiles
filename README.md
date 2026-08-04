@@ -29,6 +29,13 @@ sudo nixos-rebuild switch --flake .#wsl
 home-manager switch --flake .#zanelu-macbook
 ```
 
+For Homebrew formulae, casks, and taps, use the Home Manager command above.
+`darwin-rebuild` only bootstraps Homebrew itself and applies macOS system
+configuration. The generated Brewfile synchronizes declared packages without
+updating, upgrading, or removing undeclared packages by default. Use
+`brew-sync --update`, `brew-sync --upgrade`, `brew-sync --cleanup`, or
+`brew-sync --zap` only when that behavior is intentional.
+
 ## First bootstrap
 
 Install Determinate Nix on macOS, clone this repository, then apply the
@@ -55,9 +62,11 @@ The detailed module boundaries and performance rules are in
 
 ## Services and data
 
-`dotfiles.services` manages only local service lifecycle and client tools. A
-service can be `external`, `local-manual`, or `local-daemon`; `external` means
-Docker or another system owns the process lifecycle.
+`dotfiles.services` manages only local service lifecycle and client tools. On
+the MacBook, Homebrew formula installation and user-level `brew services`
+lifecycle run during Home Manager activation. A service can be `external`,
+`local-manual`, or `local-daemon`; `external` means Docker or another system
+owns the process lifecycle.
 
 Database data is never stored or backed up by this repository. Before enabling
 a local daemon, define and independently verify its export, backup, and restore

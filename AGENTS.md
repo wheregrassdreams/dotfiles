@@ -29,6 +29,11 @@ sudo nixos-rebuild switch --flake .#wsl
 home-manager switch --flake .#zanelu-macbook
 ```
 
+On macOS, `darwin-rebuild` owns OS/bootstrap changes. Formulae, casks, taps,
+and Homebrew service lifecycle are synchronized by `home-manager switch`.
+`brew-sync --cleanup` and `brew-sync --zap` are explicit destructive actions;
+never make undeclared-package cleanup automatic without a requested change.
+
 Do not claim a host is usable merely because evaluation succeeds. A rebuild
 must be followed by host-appropriate boot, service, and recovery verification.
 

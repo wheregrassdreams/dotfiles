@@ -3,7 +3,10 @@ let
   cfg = config.dotfiles.connectivity.tailscale;
   host = cfg.host;
 in {
-  imports = [ ../../options/connectivity/tailscale.nix ];
+  imports = [
+    ../../options/connectivity/tailscale.nix
+    ../../options/homebrew.nix
+  ];
 
   config = lib.mkMerge [
     {
@@ -13,6 +16,7 @@ in {
       }];
     }
     (lib.mkIf cfg.enable {
+      dotfiles.homebrew.casks = [ "tailscale" ];
       home.file.".local/bin/tailscale-self-dns" = {
         executable = true;
         text = ''

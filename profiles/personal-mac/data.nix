@@ -28,6 +28,5 @@ in{
     #     replication = "export-required";
     #     restore = "import-export";
     #   };
-    };
   };
 }

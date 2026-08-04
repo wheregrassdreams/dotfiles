@@ -22,6 +22,11 @@ host facts + target profile fragments + platform adapters + focused options
   destinations when an adapter needs them.
 - `modules/platform/` owns NixOS and nix-darwin substrate configuration.
 
+On macOS, nix-darwin and `nix-homebrew` own only the Homebrew installation
+substrate. The Darwin Home Manager adapter owns the generated Brewfile and its
+user-level synchronization; desktop, connectivity, and services adapters
+contribute packages through `dotfiles.homebrew`.
+
 ## Options boundary
 
 An interface under `modules/options/` may declare options, types, defaults, and

@@ -29,19 +29,6 @@
 
     # nix-homebrew：在 nix-darwin 上管理 Homebrew
     nix-homebrew.url = "github:zhaofengli/nix-homebrew?shallow=1";
-    homebrew-core = {
-      url = "github:homebrew/homebrew-core?shallow=1";
-      flake = false;
-    };
-    homebrew-cask = {
-      url = "github:homebrew/homebrew-cask?shallow=1";
-      flake = false;
-    };
-    homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle";
-      flake = false;
-    };
-
     # Apple 字体 / emoji（Linux 上使用）
     apple-emoji-linux = {
       url = "github:samuelngs/apple-emoji-linux?shallow=1";
