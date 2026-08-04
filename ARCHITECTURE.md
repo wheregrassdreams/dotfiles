@@ -5,22 +5,19 @@
 Each flake output composes configuration through explicit imports:
 
 ```text
-host facts + target profile fragments + platform adapters + focused options
+configuration host + profile fragments + focused options + home/system adapters
 ```
 
-- `hosts/` owns machine identity, facts, and machine-local preferences.
-- `profiles/` supplies values and combinations. A profile does not define
+- `configurations/hosts/` owns machine identity, facts, and machine-local preferences.
+- `configurations/profiles/` supplies values and combinations. A profile does not define
   option schemas or import unrelated implementations.
 - `modules/options/` owns pure, reusable Nix option interfaces.
-- `modules/user/` is Home Manager-only implementation.
-- `modules/desktop/` owns desktop platform adapters; its Darwin modules may
-  import an option interface but never a Home Manager implementation.
-- `modules/services/` and `modules/connectivity/` own runtime adapters and
-  import only the focused interface they require.
-- `modules/data/` owns backup, synchronization, and export adapters. Profiles
+- `modules/home/` is Home Manager-only implementation, including `gui`.
+- `modules/system/` owns Darwin and NixOS substrate configuration and system adapters.
+- `modules/home/{services,connectivity,data}/` owns Home Manager runtime adapters.
+  Profiles
   declare data contracts; hosts supply machine-local paths, device roles, and
   destinations when an adapter needs them.
-- `modules/platform/` owns NixOS and nix-darwin substrate configuration.
 
 On macOS, nix-darwin and `nix-homebrew` own only the Homebrew installation
 substrate. The Darwin Home Manager adapter owns the generated Brewfile and its
@@ -39,9 +36,8 @@ Interfaces are imported explicitly by their consumers. Do not add a global
 evaluate only the interfaces it needs.
 
 For example, `modules/options/ai.nix` is consumed by both the Home Manager AI
-implementation and the Darwin AI adapter. AI CLI behavior remains in
-`modules/user/ai/home.nix`; GUI casks remain in
-`modules/desktop/ai/darwin.nix`.
+implementation and the GUI Home Manager adapter. AI CLI behavior remains in
+`modules/home/ai/home.nix`; GUI casks remain in `modules/home/gui/ai/homebrew.nix`.
 
 `modules/options/data.nix` describes data ownership and recovery contracts; it
 does not select or run backup tooling. Synchronization improves availability

@@ -7,11 +7,11 @@ This is a Nix flake for the MacBook and NixOS WSL. Read
 composition chain explicit:
 
 ```text
-flake output -> host facts -> profiles -> capability modules -> platform adapters
+flake output -> configurations/hosts -> configurations/profiles -> modules/options -> modules/home or modules/system
 ```
 
-- `hosts/` owns machine identity, platform facts, and machine-local settings.
-- `profiles/` selects capabilities; it must not contain host facts or secrets.
+- `configurations/hosts/` owns machine identity, platform facts, and machine-local settings.
+- `configurations/profiles/` selects capabilities; it must not contain host facts or secrets.
 - `modules/options/` owns pure reusable option interfaces; implementations
   live in focused Home Manager, Darwin, or NixOS adapters.
 - `config/` holds versioned configuration deliberately deployed outside Nix.
@@ -41,14 +41,14 @@ must be followed by host-appropriate boot, service, and recovery verification.
 
 - Register imports explicitly. Do not reintroduce directory scanning or
   implicit module discovery.
-- `modules/user` is Home Manager-only. Desktop adapters may import a focused
-  interface from `modules/options`, but never a user implementation.
-- Put local service lifecycle under `modules/services` and network
-  connectivity under `modules/connectivity`; each adapter imports only the
-  corresponding option interface.
+- `modules/home` is Home Manager-only; `modules/system` is Darwin/NixOS-only.
+  Neither layer imports the other; both import focused interfaces from
+  `modules/options`.
+- Put local service lifecycle and connectivity adapters under the matching
+  `modules/home` or `modules/system` domain; each imports only its contract.
 - `my.services` owns local processes and client tools only. It never
   owns durable service data, backups, or restoration.
-- Keep `modules/user/editor` as a placeholder until it gains a real capability.
+- Keep `modules/home/editor` as a placeholder until it gains a real capability.
 - Use `my.paths` for named locations; define machine-specific locations
   in host facts rather than making unrelated profiles depend on each other.
 

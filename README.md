@@ -1,4 +1,4 @@
-# Dotfiles
+# Personal Nix Configuration
 
 Personal Nix configuration for the MacBook and NixOS WSL. The repository owns
 declarative system and Home Manager configuration, plus the standalone Neovim
@@ -12,8 +12,7 @@ configuration under `config/nvim`.
 | WSL | `nixosConfigurations.wsl` | NixOS WSL system |
 | MacBook home | `homeConfigurations.zanelu-macbook` | Standalone Home Manager evaluation |
 
-Run all commands from the repository root. The normal repository location is
-`~/Developer/dotfiles`.
+Run all commands from the repository root.
 
 ```zsh
 # Validate all flake outputs without switching the current machine.
@@ -51,10 +50,11 @@ switching a new host.
 The detailed module boundaries and performance rules are in
 [ARCHITECTURE.md](ARCHITECTURE.md).
 
-- `hosts/`: machine facts and machine-local preferences.
-- `profiles/`: explicit combinations of capabilities, such as `personal-mac`,
+- `configurations/hosts/`: machine facts and machine-local preferences.
+- `configurations/profiles/`: explicit combinations of capabilities, such as `personal-mac`,
   `minimal-terminal`, `work`, and `homelab`.
-- `modules/`: pure option interfaces plus Darwin, NixOS, and Home Manager
+- `modules/options/`: pure `my.*` interfaces.
+- `modules/home/` and `modules/system/`: Home Manager and Darwin/NixOS
   adapters. `services` owns local service lifecycle; `connectivity` owns
   network connectivity such as Tailscale.
 - `config/`: versioned configuration that is deliberately not deployed by Nix.
@@ -79,7 +79,7 @@ Nix installs the `nvim` binary. The editor configuration remains in
 
 ```zsh
 mkdir -p ~/.config
-ln -sfn ~/Developer/dotfiles/config/nvim ~/.config/nvim
+ln -sfn "$PWD/config/nvim" ~/.config/nvim
 ```
 
 ## Secrets

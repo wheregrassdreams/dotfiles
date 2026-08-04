@@ -1,6 +1,6 @@
 rec {
   system = "aarch64-darwin";
-  identity = import ../../profiles/identity/zanelu.nix;
+  identity = import ../../profiles/me.nix;
   userName = identity.username;
   hostName = "macbook";
   isDarwin = true;
