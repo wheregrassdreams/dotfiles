@@ -32,7 +32,8 @@ in {
       ++ lib.optionals (enabledClient cfg.postgres) [ pkgs.pgcli pkgs.postgresql ]
       ++ lib.optionals (enabledClient cfg.redis) [ pkgs.iredis ];
 
-    home.activation.manageHomebrewServices = lib.hm.dag.entryAfter [ "brewBundle" ] ''
+    home.activation.manageHomebrewServices = lib.mkIf (stoppedComponents != [ ] || daemonComponents != [ ]) (
+      lib.hm.dag.entryAfter [ "brewBundle" ] ''
       brew=${lib.escapeShellArg "${config.my.homebrew.brewPrefix}/bin/brew"}
       if [ -x "$brew" ]; then
         ${lib.concatMapStrings (component: ''
@@ -42,6 +43,7 @@ in {
           "$brew" services start ${lib.escapeShellArg component.formula}
         '') daemonComponents}
       fi
-    '';
+      ''
+    );
   };
 }
