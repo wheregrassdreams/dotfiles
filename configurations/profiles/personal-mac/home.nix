@@ -14,7 +14,10 @@
       };
     };
 
-    terminal.tmux.enable = true;
+    terminal = {
+      enable = true;
+      tmux.enable = true;
+    };
 
     tools = {
       core = true;

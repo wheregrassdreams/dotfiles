@@ -5,7 +5,7 @@ dotfilesLib.domain ctx {
 
   features.tmux = {
     description = "tmux";
-    module = ./tmux/base.nix;
+    module = ./tmux/default.nix;
     settings.inputMethod.command = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;

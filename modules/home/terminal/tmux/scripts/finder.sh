@@ -3,7 +3,6 @@ tmux list-windows -a -F $'#{?session_attached,1,0}#{?window_active,1,0}#{session
 sort -rnk1
 EOF
 )"
-# maybe try this indicator -> "●"
 
 fzf_header() {
   local color1='\033[38;2;103;103;103m'
@@ -11,8 +10,8 @@ fzf_header() {
   echo "${color1}enter${reset} switch to   ${color1}^x${reset} kill    ${color1}^/${reset} preview    ${color1}tab${reset} multi"
 }
 
-sh -c "$SOURCE_CMD"  |
-fzf --tmux --ansi \
+sh -c "$SOURCE_CMD" |
+  fzf --tmux --ansi \
     --delimiter=$'\t' \
     --with-nth=4,5,6 \
     --tabstop=12 \
@@ -21,5 +20,5 @@ fzf --tmux --ansi \
     --preview-window +190 \
     --header "$(fzf_header)" \
     --bind 'ctrl-x:execute-silent(printf "%s\n" {+3} | xargs -r -n1 tmux kill-window -t)+reload:'"$SOURCE_CMD" |
-cut -f 3 |
-xargs -I {} tmux switch-client -t {}
+  cut -f 3 |
+  xargs -I {} tmux switch-client -t {}

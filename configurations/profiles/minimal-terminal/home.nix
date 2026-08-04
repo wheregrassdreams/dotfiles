@@ -8,7 +8,10 @@
       prompt.enable = true;
       integrations.nixConfiguration.enable = true;
     };
-    terminal.tmux.enable = true;
+    terminal = {
+      enable = true;
+      tmux.enable = true;
+    };
     tools = { core = true; query = true; network = true; };
     git = {
       enable = true;
