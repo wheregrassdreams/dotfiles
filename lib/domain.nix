@@ -34,6 +34,20 @@ let
   featureEnabled = name: feature:
     cfg.enable && (if feature ? settings then name.enable else name);
   isGroup = item: item._type or null == "dotfiles-feature-group";
+  hasSelectedFeature = prefix: items:
+    lib.any (name:
+      let
+        item = items.${name};
+        itemPath = prefix ++ [ name ];
+        itemConfig = lib.getAttrFromPath itemPath cfg;
+      in
+        if isGroup item then
+          hasSelectedFeature itemPath item.children
+        else if item ? settings then
+          itemConfig.enable
+        else
+          itemConfig
+    ) (builtins.attrNames items);
   optionTree = items:
     lib.mapAttrs (_: item:
       if isGroup item then
@@ -63,7 +77,15 @@ in {
   } // optionTree features);
 
   config = if apiOnly then { } else lib.mkMerge (
-    lib.optional (base != null) (lib.mkIf cfg.enable (moduleConfig base { }))
+    [
+      {
+        assertions = lib.optional (!cfg.enable && hasSelectedFeature [ ] features) {
+          assertion = false;
+          message = "${namespace}: enable the domain before selecting one of its features";
+        };
+      }
+    ]
+    ++ lib.optional (base != null) (lib.mkIf cfg.enable (moduleConfig base { }))
     ++ configTree [ ] features
   );
 }
