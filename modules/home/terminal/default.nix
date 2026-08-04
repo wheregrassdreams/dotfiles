@@ -2,6 +2,7 @@
 dotfilesLib.domain ctx {
   namespace = "my.terminal";
   description = "terminal environment";
+  base = ./terminfo.nix;
 
   features.tmux = {
     description = "tmux";

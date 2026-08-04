@@ -35,7 +35,18 @@
           colorMoved = "default";
         };
 
-        push.autoSetupRemote = true;
+        branch.sort = "-committerdate";
+        fetch.prune = true;
+        merge.conflictstyle = "diff3";
+        push = {
+          autoSetupRemote = true;
+          followTags = true;
+        };
+        rebase = {
+          autoStash = true;
+          updateRefs = true;
+        };
+        rerere.enabled = true;
       };
     };
 
