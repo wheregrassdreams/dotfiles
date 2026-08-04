@@ -1,4 +1,4 @@
 { lib, ... }:
 {
-  options.dotfiles.desktop.workspace.enable = lib.mkEnableOption "macOS workspace applications";
+  options.my.desktop.workspace.enable = lib.mkEnableOption "macOS workspace applications";
 }

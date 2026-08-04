@@ -1,12 +1,12 @@
 { config, lib, pkgs, ... }:
-let cfg = config.dotfiles.desktop.keymap.karabiner;
+let cfg = config.my.desktop.keymap.karabiner;
 in {
   imports = [
     ../default.nix
     ../../../options/homebrew.nix
   ];
   config = lib.mkIf cfg.enable {
-    dotfiles.homebrew = {
+    my.homebrew = {
       taps = [{ name = "daipeihust/tap"; trusted = true; }];
       brews = [ "daipeihust/tap/im-select" ];
       casks = [ "karabiner-elements" ];

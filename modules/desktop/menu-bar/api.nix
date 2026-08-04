@@ -1,4 +1,4 @@
 { lib, ... }:
 {
-  options.dotfiles.desktop.menuBar.ice.enable = lib.mkEnableOption "Ice";
+  options.my.desktop.menuBar.ice.enable = lib.mkEnableOption "Ice";
 }

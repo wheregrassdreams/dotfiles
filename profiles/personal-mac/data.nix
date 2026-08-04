@@ -1,7 +1,7 @@
 { config, ... }:
-let paths = config.dotfiles.paths;
+let paths = config.my.paths;
 in{
-  dotfiles.data = {
+  my.data = {
     items.notes = {
       source = {
         type = "path";

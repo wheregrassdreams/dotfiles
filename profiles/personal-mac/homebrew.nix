@@ -1,6 +1,6 @@
 { ... }:
 {
-  dotfiles.homebrew = {
+  my.homebrew = {
     enable = true;
     sync = {
       enable = true;

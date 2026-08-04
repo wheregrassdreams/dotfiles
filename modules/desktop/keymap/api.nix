@@ -1,4 +1,4 @@
 { lib, ... }:
 {
-  options.dotfiles.desktop.keymap.karabiner.enable = lib.mkEnableOption "Karabiner";
+  options.my.desktop.keymap.karabiner.enable = lib.mkEnableOption "Karabiner";
 }

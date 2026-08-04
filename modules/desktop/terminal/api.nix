@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  options.dotfiles.desktop.terminal = {
+  options.my.desktop.terminal = {
     ghostty.enable = lib.mkEnableOption "Ghostty";
     kitty.enable = lib.mkEnableOption "Kitty";
   };

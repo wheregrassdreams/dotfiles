@@ -1,7 +1,7 @@
 { ... }: {
   home.stateVersion = "25.11";
   home.enableNixpkgsReleaseCheck = false;
-  dotfiles = {
+  my = {
     shell = {
       enable = true;
       zsh.enable = true;

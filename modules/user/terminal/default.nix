@@ -1,6 +1,6 @@
 { dotfilesLib, config, lib, pkgs, isDarwin, ... }@ctx:
 dotfilesLib.domain ctx {
-  namespace = "dotfiles.terminal";
+  namespace = "my.terminal";
   description = "terminal environment";
 
   features.tmux = {

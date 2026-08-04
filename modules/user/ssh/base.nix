@@ -1,8 +1,8 @@
 { config, lib, ... }:
 {
-  options.dotfiles.ssh.enable = lib.mkEnableOption "SSH defaults";
+  options.my.ssh.enable = lib.mkEnableOption "SSH defaults";
 
-  config = lib.mkIf config.dotfiles.ssh.enable {
+  config = lib.mkIf config.my.ssh.enable {
     programs.ssh = {
       enable = true;
       matchBlocks."*" = {

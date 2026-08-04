@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.dotfiles.homebrew;
+  cfg = config.my.homebrew;
   escapeRuby = value: lib.replaceStrings [ "\\" "\"" ] [ "\\\\" "\\\"" ] value;
   tapLine = tap:
     ''tap "${escapeRuby tap.name}"''

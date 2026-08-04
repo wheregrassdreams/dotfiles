@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.dotfiles.connectivity.tailscale;
+  cfg = config.my.connectivity.tailscale;
   host = cfg.host;
 in {
   imports = [
@@ -12,11 +12,11 @@ in {
     {
       assertions = [{
         assertion = !cfg.enable || host != "";
-        message = "dotfiles.connectivity.tailscale.host must be set when Tailscale is enabled";
+        message = "my.connectivity.tailscale.host must be set when Tailscale is enabled";
       }];
     }
     (lib.mkIf cfg.enable {
-      dotfiles.homebrew.casks = [ "tailscale" ];
+      my.homebrew.casks = [ "tailscale" ];
       home.file.".local/bin/tailscale-self-dns" = {
         executable = true;
         text = ''

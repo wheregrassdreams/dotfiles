@@ -3,7 +3,7 @@ let
   inherit (dotfilesLib.feature) group;
 in
 dotfilesLib.domain ctx {
-  namespace = "dotfiles.shell";
+  namespace = "my.shell";
   description = "shell environment";
 
   features = {

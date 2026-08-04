@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.dotfiles.services;
+  cfg = config.my.services;
   components = [
     { name = "mysql"; formula = "mysql"; settings = cfg.mysql; }
     { name = "postgres"; formula = "postgresql@17"; settings = cfg.postgres; }
@@ -22,10 +22,10 @@ in {
   config = {
     assertions = map (component: {
       assertion = component.settings.enable || component.settings.mode == null;
-      message = "dotfiles.services.${component.name}.mode requires dotfiles.services.${component.name}.enable";
+      message = "my.services.${component.name}.mode requires my.services.${component.name}.enable";
     }) components;
 
-    dotfiles.homebrew.brews = map (component: component.formula) localComponents;
+    my.homebrew.brews = map (component: component.formula) localComponents;
 
     home.packages =
       lib.optionals (enabledClient cfg.mysql) [ pkgs.mycli pkgs.mysql-shell ]
@@ -33,7 +33,7 @@ in {
       ++ lib.optionals (enabledClient cfg.redis) [ pkgs.iredis ];
 
     home.activation.manageHomebrewServices = lib.hm.dag.entryAfter [ "brewBundle" ] ''
-      brew=${lib.escapeShellArg "${config.dotfiles.homebrew.brewPrefix}/bin/brew"}
+      brew=${lib.escapeShellArg "${config.my.homebrew.brewPrefix}/bin/brew"}
       if [ -x "$brew" ]; then
         ${lib.concatMapStrings (component: ''
           "$brew" services stop ${lib.escapeShellArg component.formula} >/dev/null 2>&1 || true

@@ -4,7 +4,7 @@
     ../../../options/homebrew.nix
   ];
 
-  config = lib.mkIf config.dotfiles.desktop.menuBar.ice.enable {
-    dotfiles.homebrew.casks = [ "jordanbaird-ice" ];
+  config = lib.mkIf config.my.desktop.menuBar.ice.enable {
+    my.homebrew.casks = [ "jordanbaird-ice" ];
   };
 }

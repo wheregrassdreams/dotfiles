@@ -62,7 +62,7 @@ The detailed module boundaries and performance rules are in
 
 ## Services and data
 
-`dotfiles.services` manages only local service lifecycle and client tools. On
+`my.services` manages only local service lifecycle and client tools. On
 the MacBook, Homebrew formula installation and user-level `brew services`
 lifecycle run during Home Manager activation. A service can be `external`,
 `local-manual`, or `local-daemon`; `external` means Docker or another system

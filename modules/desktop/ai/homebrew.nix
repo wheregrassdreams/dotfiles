@@ -1,5 +1,5 @@
 { config, lib, ... }:
-let cfg = config.dotfiles.ai;
+let cfg = config.my.ai;
 in {
   imports = [
     ../../options/ai.nix
@@ -7,7 +7,7 @@ in {
   ];
 
   config = lib.mkIf cfg.enable {
-    dotfiles.homebrew.casks =
+    my.homebrew.casks =
       lib.optionals cfg.claude.desktop.enable [ "claude" ]
       ++ lib.optionals cfg.opencode.desktop.enable [ "opencode-desktop" ];
   };

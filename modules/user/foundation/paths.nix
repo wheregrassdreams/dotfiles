@@ -1,6 +1,6 @@
 { config, lib, dotfilesPath, ... }:
 let
-  cfg = config.dotfiles.paths;
+  cfg = config.my.paths;
   locationVariable = name:
     "DOTFILES_PATH_${lib.toUpper (lib.replaceStrings [ "-" "." "/" " " ] [ "_" "_" "_" "_" ] name)}";
   locationVariables = lib.mapAttrs' (name: path: {
@@ -9,7 +9,7 @@ let
   }) cfg.personal;
   locationVariableNames = map locationVariable (builtins.attrNames cfg.personal);
 in {
-  options.dotfiles.paths = {
+  options.my.paths = {
     home = lib.mkOption {
       default = config.home.homeDirectory;
       readOnly = true;
@@ -40,7 +40,7 @@ in {
   config = {
     assertions = [{
       assertion = builtins.length locationVariableNames == builtins.length (lib.unique locationVariableNames);
-      message = "dotfiles.paths.personal contains names that map to the same DOTFILES_PATH_* environment variable";
+      message = "my.paths.personal contains names that map to the same DOTFILES_PATH_* environment variable";
     }];
 
     home.sessionVariables = {

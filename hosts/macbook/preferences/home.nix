@@ -20,7 +20,7 @@
       };
     }
 
-    (lib.mkIf config.dotfiles.desktop.menuBar.ice.enable {
+    (lib.mkIf config.my.desktop.menuBar.ice.enable {
       targets.darwin.defaults."com.jordanbaird.Ice" = {
         AutoRehide = true;
         CanToggleAlwaysHiddenSection = true;

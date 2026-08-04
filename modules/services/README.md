@@ -1,6 +1,6 @@
 # Local services
 
-`dotfiles.services` is a lifecycle boundary for services running on the current
+`my.services` is a lifecycle boundary for services running on the current
 machine. It supports MySQL, PostgreSQL, and Redis with three modes:
 
 - `external`: process lifecycle is managed elsewhere, for example Docker.

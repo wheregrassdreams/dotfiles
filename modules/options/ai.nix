@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  options.dotfiles.ai = {
+  options.my.ai = {
     enable = lib.mkEnableOption "AI agent environment";
 
     codex.cli = lib.mkEnableOption "Codex command-line agent";

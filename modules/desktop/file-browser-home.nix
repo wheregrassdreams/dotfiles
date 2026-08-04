@@ -2,7 +2,7 @@
 {
   imports = [ ./file-browser.nix ];
 
-  config = lib.mkIf config.dotfiles.desktop.fileBrowser.baseline.enable {
+  config = lib.mkIf config.my.desktop.fileBrowser.baseline.enable {
     targets.darwin.defaults."com.apple.finder" = {
       _FXShowPosixPathInTitle = true;
       _FXSortFoldersFirst = true;

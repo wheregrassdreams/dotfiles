@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  cfg = config.dotfiles.ai;
+  cfg = config.my.ai;
 in {
   imports = [
     ./codex/cli.nix
@@ -9,9 +9,9 @@ in {
     ./opencode/cli.nix
   ];
 
-  options.dotfiles.ai.dataHome = lib.mkOption {
+  options.my.ai.dataHome = lib.mkOption {
     type = lib.types.str;
-    default = "${config.dotfiles.paths.xdg.data}/agent";
+    default = "${config.my.paths.xdg.data}/agent";
     description = "shared data directory for AI agent resources";
   };
 

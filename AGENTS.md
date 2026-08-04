@@ -46,10 +46,10 @@ must be followed by host-appropriate boot, service, and recovery verification.
 - Put local service lifecycle under `modules/services` and network
   connectivity under `modules/connectivity`; each adapter imports only the
   corresponding option interface.
-- `dotfiles.services` owns local processes and client tools only. It never
+- `my.services` owns local processes and client tools only. It never
   owns durable service data, backups, or restoration.
 - Keep `modules/user/editor` as a placeholder until it gains a real capability.
-- Use `dotfiles.paths` for named locations; define machine-specific locations
+- Use `my.paths` for named locations; define machine-specific locations
   in host facts rather than making unrelated profiles depend on each other.
 
 ## Secrets and non-Nix assets

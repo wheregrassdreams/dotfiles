@@ -1,5 +1,5 @@
 { ... }: {
-  dotfiles = {
+  my = {
     ssh.enable = true;
     secrets.enable = true;
     shell = {

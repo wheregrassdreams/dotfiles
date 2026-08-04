@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.dotfiles.services;
+  cfg = config.my.services;
   modeOf = component: if component.mode != null then component.mode else cfg.defaultMode;
   isManual = component: component.enable && modeOf component == "local-manual";
   isDaemon = component: component.enable && modeOf component == "local-daemon";
@@ -10,7 +10,7 @@ in {
   config = {
     assertions = map (name: {
       assertion = let component = cfg.${name}; in component.enable || component.mode == null;
-      message = "dotfiles.services.${name}.mode requires dotfiles.services.${name}.enable";
+      message = "my.services.${name}.mode requires my.services.${name}.enable";
     }) [ "mysql" "postgres" "redis" ];
 
     environment.systemPackages =

@@ -5,8 +5,8 @@
     ../../options/homebrew.nix
   ];
 
-  config = lib.mkIf config.dotfiles.desktop.workspace.enable {
-    dotfiles.homebrew = {
+  config = lib.mkIf config.my.desktop.workspace.enable {
+    my.homebrew = {
       taps = [
         { name = "bendews/tap"; trusted = true; }
         { name = "shivammathur/php"; trusted = true; }

@@ -1,6 +1,6 @@
 { dotfilesLib, config, lib, pkgs, inputs, system, ... }@ctx:
 dotfilesLib.domain ctx {
-  namespace = "dotfiles.cli";
+  namespace = "my.cli";
   description = "command-line tools";
 
   features = {

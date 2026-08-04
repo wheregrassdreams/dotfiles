@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  cfg = config.dotfiles.data;
+  cfg = config.my.data;
   preservationType = lib.types.enum [
     "durable"
     "rebuildable"
@@ -58,42 +58,42 @@ let
     let item = cfg.items.${name}; in [
       {
         assertion = item.source.type != "path" || (item.source.path != null && item.source.service == null);
-        message = "dotfiles.data.items.${name}: path sources require source.path and forbid source.service";
+        message = "my.data.items.${name}: path sources require source.path and forbid source.service";
       }
       {
         assertion = item.source.type != "service" || (item.source.service != null && item.source.path == null);
-        message = "dotfiles.data.items.${name}: service sources require source.service and forbid source.path";
+        message = "my.data.items.${name}: service sources require source.service and forbid source.path";
       }
       {
         assertion = item.replication != "export-required" || item.source.type == "service";
-        message = "dotfiles.data.items.${name}: export-required replication requires a service source";
+        message = "my.data.items.${name}: export-required replication requires a service source";
       }
       {
         assertion = item.source.type != "service" || item.replication == "export-required";
-        message = "dotfiles.data.items.${name}: service sources require export-required replication";
+        message = "my.data.items.${name}: service sources require export-required replication";
       }
       {
         assertion = item.replication != "export-required" || item.restore == "import-export";
-        message = "dotfiles.data.items.${name}: export-required replication requires import-export restoration";
+        message = "my.data.items.${name}: export-required replication requires import-export restoration";
       }
       {
         assertion = item.restore != "import-export" || item.replication == "export-required";
-        message = "dotfiles.data.items.${name}: import-export restoration requires export-required replication";
+        message = "my.data.items.${name}: import-export restoration requires export-required replication";
       }
     ]) (builtins.attrNames cfg.items);
   serviceTemplateAssertions = lib.concatMap (name:
     let template = cfg.serviceTemplates.${name}; in [
       {
         assertion = template.replication == "export-required";
-        message = "dotfiles.data.serviceTemplates.${name}: service data requires export-required replication";
+        message = "my.data.serviceTemplates.${name}: service data requires export-required replication";
       }
       {
         assertion = template.restore == "import-export";
-        message = "dotfiles.data.serviceTemplates.${name}: service data requires import-export restoration";
+        message = "my.data.serviceTemplates.${name}: service data requires import-export restoration";
       }
     ]) (builtins.attrNames cfg.serviceTemplates);
 in {
-  options.dotfiles.data = {
+  options.my.data = {
     items = lib.mkOption {
       type = lib.types.attrsOf itemType;
       default = { };

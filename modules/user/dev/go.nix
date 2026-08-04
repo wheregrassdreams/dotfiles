@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  paths = config.dotfiles.paths;
+  paths = config.my.paths;
   goPath = "${paths.xdg.data}/go";
 in {
   programs.go = {

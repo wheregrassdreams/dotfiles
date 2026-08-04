@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  options.dotfiles.connectivity.tailscale = {
+  options.my.connectivity.tailscale = {
     enable = lib.mkEnableOption "Tailscale connectivity";
     host = lib.mkOption {
       type = lib.types.str;

@@ -1,6 +1,6 @@
 { ... }:
 {
-  dotfiles.desktop = {
+  my.desktop = {
     browser = {
       default = "safari";
       chrome.enable = true;

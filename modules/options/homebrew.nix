@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  options.dotfiles.homebrew = {
+  options.my.homebrew = {
     enable = lib.mkEnableOption "Homebrew package synchronization";
 
     brewPrefix = lib.mkOption {

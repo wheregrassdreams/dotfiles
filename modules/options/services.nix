@@ -15,7 +15,7 @@ let
     client.enable = lib.mkEnableOption "${name} client tools" // { default = true; };
   };
 in {
-  options.dotfiles.services = {
+  options.my.services = {
     defaultMode = lib.mkOption {
       type = lib.types.enum [ "external" "local-manual" "local-daemon" ];
       default = "external";

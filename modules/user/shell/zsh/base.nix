@@ -199,20 +199,20 @@
     "-" = "cd -";
 
     }
-    (lib.mkIf config.dotfiles.cli.interactive {
+    (lib.mkIf config.my.cli.interactive {
       ls = "eza"; cat = "bat"; top = "btop"; npm = "pnpm";
       neofetch = "fastfetch"; ps = "procs"; du = "dust"; csv = "csvlens";
     })
-    (lib.mkIf config.dotfiles.cli.query {
+    (lib.mkIf config.my.cli.query {
       grep = "rg"; json2string = "jq tostring";
     })
-    (lib.mkIf config.dotfiles.cli.network {
+    (lib.mkIf config.my.cli.network {
       http = "xh"; https = "xh --https";
     })
-    (lib.mkIf config.dotfiles.cli.workflow {
+    (lib.mkIf config.my.cli.workflow {
       man = "tldr"; del = "trash";
     })
-    (lib.mkIf config.dotfiles.cli.workflow {
+    (lib.mkIf config.my.cli.workflow {
       del = "trash";
       cb = "NO_COLOR=1 CLIPBOARD_SLIENT=1 cb "; cbcopy = "cb copy";
       cbpaste = "cb paste"; py = "python3"; python = "python3";

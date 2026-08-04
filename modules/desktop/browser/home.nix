@@ -1,8 +1,8 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.dotfiles.desktop.browser;
+  cfg = config.my.desktop.browser;
   setDefaultBrowser = pkgs.writeShellScriptBin "browser-default" ''
-    defaultbrowser=${lib.escapeShellArg "${config.dotfiles.homebrew.brewPrefix}/bin/defaultbrowser"}
+    defaultbrowser=${lib.escapeShellArg "${config.my.homebrew.brewPrefix}/bin/defaultbrowser"}
     if [ ! -x "$defaultbrowser" ]; then
       echo "defaultbrowser is unavailable; run brew-sync before setting the default browser." >&2
       exit 0
@@ -17,7 +17,7 @@ in {
   ];
 
   config = {
-    dotfiles.homebrew = {
+    my.homebrew = {
       brews = [ "defaultbrowser" ];
       casks = lib.optionals cfg.chrome.enable [ "google-chrome" ]
         ++ lib.optionals cfg.zen.enable [ "zen" ];

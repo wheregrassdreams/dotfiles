@@ -1,3 +1,3 @@
 { ... }: {
-  dotfiles.connectivity.tailscale.enable = true;
+  my.connectivity.tailscale.enable = true;
 }

@@ -3,12 +3,12 @@
 
 with lib;
 let
-  cfg = config.dotfiles.platform.darwin.dock;
+  cfg = config.my.platform.darwin.dock;
   inherit (pkgs) stdenv dockutil;
 in
 {
   options = {
-    dotfiles.platform.darwin.dock = {
+    my.platform.darwin.dock = {
       enable = mkOption {
         description = "Enable dock";
         default = false;

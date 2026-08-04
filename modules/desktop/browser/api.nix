@@ -1,6 +1,6 @@
 { config, lib, ... }:
 {
-  options.dotfiles.desktop.browser = {
+  options.my.desktop.browser = {
     chrome.enable = lib.mkEnableOption "Google Chrome";
     zen.enable = lib.mkEnableOption "Zen Browser";
     default = lib.mkOption {
@@ -12,12 +12,12 @@
 
   config.assertions = [
     {
-      assertion = config.dotfiles.desktop.browser.default != "chrome" || config.dotfiles.desktop.browser.chrome.enable;
-      message = "dotfiles.desktop.browser.default is chrome, but Chrome is disabled";
+      assertion = config.my.desktop.browser.default != "chrome" || config.my.desktop.browser.chrome.enable;
+      message = "my.desktop.browser.default is chrome, but Chrome is disabled";
     }
     {
-      assertion = config.dotfiles.desktop.browser.default != "zen" || config.dotfiles.desktop.browser.zen.enable;
-      message = "dotfiles.desktop.browser.default is zen, but Zen is disabled";
+      assertion = config.my.desktop.browser.default != "zen" || config.my.desktop.browser.zen.enable;
+      message = "my.desktop.browser.default is zen, but Zen is disabled";
     }
   ];
 }

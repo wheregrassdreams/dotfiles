@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
-let cfg = config.dotfiles; in
+let cfg = config.my; in
 {
-  options.dotfiles.git.github.enable = lib.mkEnableOption "GitHub CLI";
+  options.my.git.github.enable = lib.mkEnableOption "GitHub CLI";
 
   config = lib.mkIf (cfg.git.enable && cfg.git.github.enable) {
     home.packages = [ pkgs.gh ];

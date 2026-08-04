@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }:
-let workDir = config.dotfiles.paths.personal.work;
+let workDir = config.my.paths.personal.work;
 in {
   programs.git.includes = [{ condition = "gitdir:${workDir}/"; path = "${workDir}/.gitconfig"; }];
   programs.go.env.GOPRIVATE = [ "*.xiaoe-tools.com" ];
