@@ -32,22 +32,8 @@ let
     else
       lib.mkEnableOption feature.description;
   featureEnabled = name: feature:
-    if feature ? settings then name.enable else name;
+    cfg.enable && (if feature ? settings then name.enable else name);
   isGroup = item: item._type or null == "dotfiles-feature-group";
-  hasSelectedFeature = prefix: items:
-    lib.any (name:
-      let
-        item = items.${name};
-        itemPath = prefix ++ [ name ];
-        itemConfig = lib.getAttrFromPath itemPath cfg;
-      in
-        if isGroup item then
-          hasSelectedFeature itemPath item.children
-        else if item ? settings then
-          itemConfig.enable
-        else
-          itemConfig
-    ) (builtins.attrNames items);
   optionTree = items:
     lib.mapAttrs (_: item:
       if isGroup item then
@@ -77,7 +63,7 @@ in {
   } // optionTree features);
 
   config = if apiOnly then { } else lib.mkMerge (
-    lib.optional (base != null) (lib.mkIf (cfg.enable || hasSelectedFeature [ ] features) (moduleConfig base { }))
+    lib.optional (base != null) (lib.mkIf cfg.enable (moduleConfig base { }))
     ++ configTree [ ] features
   );
 }

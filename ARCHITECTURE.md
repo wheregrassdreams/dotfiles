@@ -35,11 +35,11 @@ Interfaces are imported explicitly by their consumers. Do not add a global
 `modules/options/default.nix` that imports every interface: each target should
 evaluate only the interfaces it needs.
 
-Feature domains may expose an optional parent `enable` and independent child
-features. A selected child feature activates its own adapter without requiring
-the parent switch; if the domain has a base adapter, that base is activated
-when either the parent or any child is selected. The parent switch is therefore
-useful for base-only behavior, not a hidden prerequisite for child features.
+Feature domains may expose a parent `enable` and independently configurable
+child features. A child may be declared as enabled while its parent is false,
+which permits profiles to state intended capabilities before enabling a domain.
+The adapter and any base implementation load only when the parent is enabled;
+the parent switch is the domain's single effective lifecycle boundary.
 
 For example, `modules/options/ai.nix` is consumed by both the Home Manager AI
 implementation and the GUI Home Manager adapter. AI CLI behavior remains in

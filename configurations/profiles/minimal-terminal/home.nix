@@ -12,7 +12,7 @@
       enable = true;
       tmux.enable = true;
     };
-    tools = { core = true; query = true; network = true; };
+    tools = { enable = true; core = true; query = true; network = true; };
     git = {
       enable = true;
       interactive.enable = true;
