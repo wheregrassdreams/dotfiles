@@ -3,7 +3,7 @@
 ## Repository model
 
 This is a Nix flake for the MacBook and NixOS WSL. Read
-[`ARCHITECTURE.md`](ARCHITECTURE.md) before changing module boundaries. Keep the
+[`ARCHITECTURE.md`](docs/ARCHITECTURE.md) before changing module boundaries. Keep the
 composition chain explicit:
 
 ```text
