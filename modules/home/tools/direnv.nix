@@ -3,7 +3,11 @@
     enable = true;
     enableZshIntegration = true;
     nix-direnv.enable = true;
-    config.global.hide_env_diff = true;
+    config.global = {
+      hide_env_diff = true;
+      log_format = "-";
+      warn_timeout = "10s";
+    };
     stdlib = ''
       : ''${XDG_CACHE_HOME:=$HOME/.cache}
       declare -A direnv_layout_dirs
