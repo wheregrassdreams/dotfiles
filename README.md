@@ -54,6 +54,21 @@ Destructive or privileged actions remain explicit: `switch` requires `sudo`;
 package cleanup continues to require an explicit
 `brew-sync --cleanup` or `brew-sync --zap` invocation.
 
+## Direnv
+
+This repository loads its pinned development environment automatically through
+direnv. In a new clone or worktree, trust the checked-in `.envrc` once:
+
+```zsh
+direnv allow
+```
+
+Afterward, entering the repository loads the default flake devShell, including
+the development tools and generated pre-commit configuration. `just dev`
+remains the explicit fallback when direnv is unavailable. The project layout is
+stored under the XDG direnv cache rather than in the repository; `.direnv/` is
+ignored as a safeguard.
+
 For Homebrew formulae, casks, and taps, use the Home Manager command above.
 `darwin-rebuild` only bootstraps Homebrew itself and applies macOS system
 configuration. The generated Brewfile synchronizes declared packages without

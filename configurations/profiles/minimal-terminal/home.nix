@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   home.stateVersion = "25.11";
   home.enableNixpkgsReleaseCheck = false;
   my = {
@@ -12,7 +13,13 @@
       enable = true;
       tmux.enable = true;
     };
-    tools = { enable = true; core = true; query = true; network = true; };
+    tools = {
+      enable = true;
+      core = true;
+      direnv = true;
+      query = true;
+      network = true;
+    };
     git = {
       enable = true;
       interactive.enable = true;

@@ -13,12 +13,6 @@ lib.mkMerge [
           map-syntax = [ ".ignore:.gitignore" ];
         };
       };
-      direnv = {
-        enable = true;
-        enableZshIntegration = true;
-        nix-direnv.enable = true;
-        config.global.hide_env_diff = true;
-      };
       fastfetch.enable = true;
       btop.enable = true;
       eza = {

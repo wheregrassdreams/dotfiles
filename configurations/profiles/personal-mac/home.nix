@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   my = {
     ssh.enable = true;
     secrets.enable = true;
@@ -22,6 +23,7 @@
     tools = {
       enable = true;
       core = true;
+      direnv = true;
       query = true;
       network = true;
       workflow = true;
@@ -42,17 +44,17 @@
     development = {
       enable = true;
       # languages
-      lua        = true;
-      nix        = true;
-      go         = true;
+      lua = true;
+      nix = true;
+      go = true;
       javascript = true;
-      rust       = true;
-      haskell    = false; # 工具链占用空间过大，暂时不在mac上用
-      python     = {
+      rust = true;
+      haskell = false; # 工具链占用空间过大，暂时不在mac上用
+      python = {
         enable = true;
         suite = "full";
       };
-      clang      = {
+      clang = {
         enable = true;
         opengl.enable = true;
       };

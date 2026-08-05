@@ -5,6 +5,7 @@ lazy-lock.json
 
 # build images
 result
+.direnv/
 .pre-commit-config.yaml
 
 # wsl
