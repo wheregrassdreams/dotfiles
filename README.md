@@ -46,8 +46,9 @@ just switch
 platform. `switch-home` remains intentionally separate: it applies only Home
 Manager and synchronizes Homebrew packages. Use `just dev` for the pinned
 developer environment. `just fmt` formats Nix and shell files, and `just
-hooks` runs static hooks for staged files. The repository respects the existing
-Git `core.hooksPath` instead of replacing its hook manager.
+check-staged` runs the same pre-commit checks as `git commit` for staged files,
+without creating a commit. The repository respects the existing Git
+`core.hooksPath` instead of replacing its hook manager.
 
 Destructive or privileged actions remain explicit: `switch` requires `sudo`;
 package cleanup continues to require an explicit
