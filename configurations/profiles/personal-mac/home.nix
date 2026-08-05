@@ -20,7 +20,6 @@
     };
 
     tools = {
-      enable = true;
       core = true;
       query = true;
       network = true;

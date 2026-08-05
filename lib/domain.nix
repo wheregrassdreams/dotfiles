@@ -32,7 +32,7 @@ let
     else
       lib.mkEnableOption feature.description;
   featureEnabled = name: feature:
-    cfg.enable && (if feature ? settings then name.enable else name);
+    if feature ? settings then name.enable else name;
   isGroup = item: item._type or null == "dotfiles-feature-group";
   hasSelectedFeature = prefix: items:
     lib.any (name:
@@ -77,15 +77,7 @@ in {
   } // optionTree features);
 
   config = if apiOnly then { } else lib.mkMerge (
-    [
-      {
-        assertions = lib.optional (!cfg.enable && hasSelectedFeature [ ] features) {
-          assertion = false;
-          message = "${namespace}: enable the domain before selecting one of its features";
-        };
-      }
-    ]
-    ++ lib.optional (base != null) (lib.mkIf cfg.enable (moduleConfig base { }))
+    lib.optional (base != null) (lib.mkIf (cfg.enable || hasSelectedFeature [ ] features) (moduleConfig base { }))
     ++ configTree [ ] features
   );
 }

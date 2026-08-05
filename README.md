@@ -2,7 +2,7 @@
 
 Personal Nix configuration for the MacBook and NixOS WSL. The repository owns
 declarative system and Home Manager configuration, plus the standalone Neovim
-configuration under `config/nvim`.
+configuration under `resources/nvim`.
 
 ## Outputs
 
@@ -57,7 +57,7 @@ The detailed module boundaries and performance rules are in
 - `modules/home/` and `modules/system/`: Home Manager and Darwin/NixOS
   adapters. `services` owns local service lifecycle; `connectivity` owns
   network connectivity such as Tailscale.
-- `config/`: versioned configuration that is deliberately not deployed by Nix.
+- `resources/`: versioned configuration deliberately deployed outside Nix.
 - `secrets/`: encrypted SOPS material and its usage notes.
 
 ## Services and data
@@ -75,11 +75,11 @@ procedure.
 ## Neovim
 
 Nix installs the `nvim` binary. The editor configuration remains in
-`config/nvim` and is linked manually:
+`resources/nvim` and is linked manually:
 
 ```zsh
 mkdir -p ~/.config
-ln -sfn "$PWD/config/nvim" ~/.config/nvim
+ln -sfn "$PWD/resources/nvim" ~/.config/nvim
 ```
 
 ## Secrets

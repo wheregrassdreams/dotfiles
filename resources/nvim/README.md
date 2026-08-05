@@ -10,12 +10,12 @@ Keep the `nvim` binary installed via Nix, then link this directory into
 
 ```zsh
 mkdir -p ~/.config
-ln -sfn ~/Developer/dotfiles/config/nvim ~/.config/nvim
+ln -sfn ~/Developer/dotfiles/resources/nvim ~/.config/nvim
 ```
 
 If you want to keep a backup of an existing config first:
 
 ```zsh
 mv ~/.config/nvim ~/.config/nvim.bak
-ln -sfn ~/Developer/dotfiles/config/nvim ~/.config/nvim
+ln -sfn ~/Developer/dotfiles/resources/nvim ~/.config/nvim
 ```

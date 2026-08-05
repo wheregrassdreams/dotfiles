@@ -35,6 +35,12 @@ Interfaces are imported explicitly by their consumers. Do not add a global
 `modules/options/default.nix` that imports every interface: each target should
 evaluate only the interfaces it needs.
 
+Feature domains may expose an optional parent `enable` and independent child
+features. A selected child feature activates its own adapter without requiring
+the parent switch; if the domain has a base adapter, that base is activated
+when either the parent or any child is selected. The parent switch is therefore
+useful for base-only behavior, not a hidden prerequisite for child features.
+
 For example, `modules/options/ai.nix` is consumed by both the Home Manager AI
 implementation and the GUI Home Manager adapter. AI CLI behavior remains in
 `modules/home/ai/home.nix`; GUI casks remain in `modules/home/gui/ai/homebrew.nix`.
@@ -62,3 +68,19 @@ closure do. Keep outputs small by following these rules:
 
 Validate both correctness and closure changes with `nix flake check`, focused
 `nix eval`, and dry-run builds before switching a machine.
+
+## Open design questions
+
+The helper currently named `lib/domain.nix` defines a `my.*` option subtree,
+optional base implementation, and independently selectable features. Its name
+may be confused with a DDD business domain. Candidate replacements include
+`capability.nix`, `feature-set.nix`, and `module-family.nix`; no rename is
+decided until the chosen word better describes this composition role.
+
+Likewise, `my.*` remains the public personal-environment DSL because it gives
+all options a clear ownership boundary. The helper's `namespace` argument is
+an implementation detail that maps a module to that option path. We should
+revisit whether `namespace` should be renamed to `optionPath`, or whether the
+helper should receive a structured path, if the current string-based form
+becomes harder to navigate or refactor. Neither question changes the public
+`my.*` interface today.

@@ -14,7 +14,7 @@ flake output -> configurations/hosts -> configurations/profiles -> modules/optio
 - `configurations/profiles/` selects capabilities; it must not contain host facts or secrets.
 - `modules/options/` owns pure reusable option interfaces; implementations
   live in focused Home Manager, Darwin, or NixOS adapters.
-- `config/` holds versioned configuration deliberately deployed outside Nix.
+- `resources/` holds versioned configuration deliberately deployed outside Nix.
 - `secrets/` holds encrypted SOPS data only.
 
 The supported outputs are `darwinConfigurations.macbook`,
@@ -55,6 +55,6 @@ must be followed by host-appropriate boot, service, and recovery verification.
 ## Secrets and non-Nix assets
 
 Use SOPS/age for secrets and never add plaintext credentials. Neovim remains a
-manual symlink from `config/nvim`. Windows configuration has moved to
+manual symlink from `resources/nvim`. Windows configuration has moved to
 `/Users/zanelu/Workspace/code/projects/windows-config`; do not add it back to
 this repository.
