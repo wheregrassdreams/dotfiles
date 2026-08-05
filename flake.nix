@@ -63,36 +63,24 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-     # Build tools
+    # Build tools
     nix-fast-build = {
       url = "github:Mic92/nix-fast-build";
       inputs = {
-        # flake-parts.follows = "flake-parts";
         nixpkgs.follows = "nixpkgs";
-        # treefmt-nix.follows = "treefmt-nix";
+        treefmt-nix.follows = "treefmt-nix";
       };
     };
 
     # Development tools
-    # git-hooks = {
-    #   url = "github:cachix/git-hooks.nix";
-    #   inputs = {
-    #     flake-compat.follows = "flake-compat";
-    #     nixpkgs.follows = "nixpkgs";
-    #   };
-    # };
-    # treefmt-nix = {
-    #   url = "github:numtide/treefmt-nix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    # # Utility inputs
-    # flake-compat = {
-    #   url = "github:edolstra/flake-compat";
-    #   flake = false;
-    # };
-    #
-    # flake-parts.url = "github:hercules-ci/flake-parts";
-    # nixos-unified.url = "github:srid/nixos-unified";
+    pre-commit-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     agenix = {
       url = "github:ryantm/agenix";
       inputs = {
@@ -116,22 +104,86 @@
   };
 
   # 这是 flake 的入口（main）：
-  outputs = inputs@{ self, nixpkgs, ... }:
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      pre-commit-hooks,
+      treefmt-nix,
+      ...
+    }:
     let
+      systems = [
+        "aarch64-darwin"
+        "x86_64-linux"
+      ];
+      forAllSystems = nixpkgs.lib.genAttrs systems;
       overlays = [
         inputs.nur.overlays.default
         inputs.llm-agents.overlays.default
       ];
+      pkgsFor = system: import nixpkgs { inherit system overlays; };
+      treefmtFor = system: treefmt-nix.lib.evalModule (pkgsFor system) ./treefmt.nix;
+      preCommitFor =
+        system:
+        pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          hooks = {
+            check-added-large-files.enable = true;
+            check-merge-conflicts.enable = true;
+            check-symlinks.enable = true;
+            deadnix.enable = true;
+            end-of-file-fixer.enable = true;
+            nixfmt-rfc-style.enable = true;
+            shellcheck.enable = true;
+            trim-trailing-whitespace.enable = true;
+          };
+        };
       dotfilesLib = import ./lib {
         lib = nixpkgs.lib;
-        inherit nixpkgs inputs self overlays;
+        inherit
+          nixpkgs
+          inputs
+          self
+          overlays
+          ;
       };
-      flakeLib = nixpkgs.lib.extend (_: _: {
-        dotfiles = dotfilesLib;
-      });
+      flakeLib = nixpkgs.lib.extend (
+        _: _: {
+          dotfiles = dotfilesLib;
+        }
+      );
     in
     {
       lib = flakeLib;
+      formatter = forAllSystems (system: (treefmtFor system).config.build.wrapper);
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = pkgsFor system;
+        in
+        {
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              age
+              deadnix
+              just
+              nixd
+              nixfmt-rfc-style
+              pre-commit
+              shellcheck
+              shfmt
+              sops
+              statix
+              inputs.nix-fast-build.packages.${system}.default
+            ];
+            shellHook = (preCommitFor system).shellHook;
+          };
+        }
+      );
+      packages = forAllSystems (system: {
+        nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
+      });
       darwinConfigurations = {
         macbook = dotfilesLib.mkHost (import ./configurations/hosts/macbook);
       };

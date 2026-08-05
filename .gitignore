@@ -5,6 +5,7 @@ lazy-lock.json
 
 # build images
 result
+.pre-commit-config.yaml
 
 # wsl
 nixos.wsl

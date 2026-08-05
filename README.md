@@ -36,14 +36,21 @@ aliases; it does not replace them. Run `just --list` for the full list.
 
 ```zsh
 just check
-just build-darwin
+just fmt
+just build
 just switch-home
-just switch-darwin
-just link-nvim
+just switch
 ```
 
-Destructive or privileged actions remain explicit: `switch-darwin` and
-`switch-wsl` require `sudo`; package cleanup continues to require an explicit
+`build` and `switch` select the MacBook or WSL system output from the current
+platform. `switch-home` remains intentionally separate: it applies only Home
+Manager and synchronizes Homebrew packages. Use `just dev` for the pinned
+developer environment. `just fmt` formats Nix and shell files, and `just
+hooks` runs static hooks for staged files. The repository respects the existing
+Git `core.hooksPath` instead of replacing its hook manager.
+
+Destructive or privileged actions remain explicit: `switch` requires `sudo`;
+package cleanup continues to require an explicit
 `brew-sync --cleanup` or `brew-sync --zap` invocation.
 
 For Homebrew formulae, casks, and taps, use the Home Manager command above.
