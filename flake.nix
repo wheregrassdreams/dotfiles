@@ -9,6 +9,12 @@
     # Unstable nixpkgs：用于个别需要新版本的软件
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable?shallow=1";
 
+    # Flake output composition and input partitions.
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+
     # Home Manager：用户态配置，必须与主 nixpkgs 保持一致
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11?shallow=1";
@@ -67,24 +73,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Build tools
-    nix-fast-build = {
-      url = "github:Mic92/nix-fast-build";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        treefmt-nix.follows = "treefmt-nix";
-      };
-    };
-
-    # Development tools
-    pre-commit-hooks = {
-      url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     agenix = {
       url = "github:ryantm/agenix";
       inputs = {
@@ -108,94 +96,15 @@
   };
 
   # 这是 flake 的入口（main）：
-  outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      pre-commit-hooks,
-      treefmt-nix,
-      ...
-    }:
-    let
+  outputs = inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "aarch64-darwin"
         "x86_64-linux"
       ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
-      overlays = [
-        inputs.nur.overlays.default
-        inputs.llm-agents.overlays.default
+
+      imports = [
+        ./modules/flake-parts
       ];
-      pkgsFor = system: import nixpkgs { inherit system overlays; };
-      treefmtFor = system: treefmt-nix.lib.evalModule (pkgsFor system) ./treefmt.nix;
-      preCommitFor =
-        system:
-        pre-commit-hooks.lib.${system}.run {
-          src = ./.;
-          hooks = {
-            check-added-large-files.enable = true;
-            check-merge-conflicts.enable = true;
-            check-symlinks.enable = true;
-            deadnix.enable = true;
-            end-of-file-fixer.enable = true;
-            nixfmt-rfc-style.enable = true;
-            shellcheck.enable = true;
-            trim-trailing-whitespace.enable = true;
-          };
-        };
-      dotfilesLib = import ./lib {
-        lib = nixpkgs.lib;
-        inherit
-          nixpkgs
-          inputs
-          self
-          overlays
-          ;
-      };
-      flakeLib = nixpkgs.lib.extend (
-        _: _: {
-          dotfiles = dotfilesLib;
-        }
-      );
-    in
-    {
-      lib = flakeLib;
-      formatter = forAllSystems (system: (treefmtFor system).config.build.wrapper);
-      devShells = forAllSystems (
-        system:
-        let
-          pkgs = pkgsFor system;
-        in
-        {
-          default = pkgs.mkShell {
-            packages = with pkgs; [
-              age
-              deadnix
-              just
-              nixd
-              nixfmt-rfc-style
-              pre-commit
-              shellcheck
-              shfmt
-              sops
-              statix
-              inputs.nix-fast-build.packages.${system}.default
-            ];
-            shellHook = (preCommitFor system).shellHook;
-          };
-        }
-      );
-      packages = forAllSystems (system: {
-        nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
-      });
-      darwinConfigurations = {
-        macbook = dotfilesLib.mkHost (import ./configurations/hosts/macbook);
-      };
-      nixosConfigurations = {
-        wsl = dotfilesLib.mkHost (import ./configurations/hosts/wsl);
-      };
-      homeConfigurations = {
-        zanelu-macbook = dotfilesLib.mkHome (import ./configurations/hosts/macbook);
-      };
     };
 }

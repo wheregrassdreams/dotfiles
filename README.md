@@ -63,7 +63,8 @@ direnv. In a new clone or worktree, trust the checked-in `.envrc` once:
 direnv allow
 ```
 
-Afterward, entering the repository loads the default flake devShell, including
+Afterward, entering the repository loads the default flake devShell from the
+development input partition, including
 the development tools and generated pre-commit configuration. `just dev`
 remains the explicit fallback when direnv is unavailable. The project layout is
 stored under the XDG direnv cache rather than in the repository; `.direnv/` is

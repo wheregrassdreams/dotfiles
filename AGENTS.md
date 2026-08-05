@@ -14,6 +14,8 @@ flake output -> configurations/hosts -> configurations/profiles -> modules/optio
 - `configurations/profiles/` selects capabilities; it must not contain host facts or secrets.
 - `modules/options/` owns pure reusable option interfaces; implementations
   live in focused Home Manager, Darwin, or NixOS adapters.
+- `modules/flake-parts/` owns flake output composition and input partitions;
+  it is not a Home Manager or system adapter directory.
 - `resources/` holds versioned configuration deliberately deployed outside Nix.
 - `secrets/` holds encrypted SOPS data only.
 
@@ -41,6 +43,9 @@ must be followed by host-appropriate boot, service, and recovery verification.
 
 - Register imports explicitly. Do not reintroduce directory scanning or
   implicit module discovery.
+- Keep development-only inputs in the `dev` partition under
+  `modules/flake-parts/dev/`; do not move optional or experimental inputs into
+  the root input graph without a current base-output consumer.
 - `modules/home` is Home Manager-only; `modules/system` is Darwin/NixOS-only.
   Neither layer imports the other; both import focused interfaces from
   `modules/options`.

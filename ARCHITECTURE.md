@@ -14,6 +14,8 @@ configuration host + profile fragments + focused options + home/system adapters
 - `modules/options/` owns pure, reusable Nix option interfaces.
 - `modules/home/` is Home Manager-only implementation, including `gui`.
 - `modules/system/` owns Darwin and NixOS substrate configuration and system adapters.
+- `modules/flake-parts/` owns flake output composition only; it is neither a
+  Home Manager nor a system implementation layer.
 - `modules/home/{services,connectivity,data}/` owns Home Manager runtime adapters.
   Profiles
   declare data contracts; hosts supply machine-local paths, device roles, and
@@ -23,6 +25,24 @@ On macOS, nix-darwin and `nix-homebrew` own only the Homebrew installation
 substrate. The Darwin Home Manager adapter owns the generated Brewfile and its
 user-level synchronization; desktop, connectivity, and services adapters
 contribute packages through `my.homebrew`.
+
+## Flake composition and input partitions
+
+The root flake uses flake-parts for explicit output composition. Its modules
+live in `modules/flake-parts/`, but they must not auto-discover configuration
+modules or define Home Manager, Darwin, or NixOS behavior.
+
+- `base.nix` exports the supported MacBook, WSL, and standalone Home Manager
+  outputs and their shared stable inputs.
+- `development.nix` belongs to the `dev` partition and exports the formatter,
+  dev shell, and `nix-fast-build` package.
+- `dev/flake.nix` has a separate lock for development-only inputs. They are not
+  root inputs and therefore cannot block deployment-output evaluation.
+
+Future host-specific optional dependency graphs belong in their own partition
+only when a real host consumes them. For example, a future Linux desktop
+partition may own Apple fonts and GUI-only inputs. Do not add dormant inputs to
+the root graph merely to preserve a future possibility.
 
 ## Options boundary
 
