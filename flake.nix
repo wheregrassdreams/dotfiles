@@ -34,10 +34,14 @@
       url = "github:samuelngs/apple-emoji-linux?shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    apple-fonts = {
-      url = "github:Lyndeno/apple-fonts.nix?shallow=1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # Reserved for a future Linux desktop font module (SF Pro/SF Mono).
+    # Disabled until that module has a consumer: its upstream sources include
+    # mutable Apple CDN artifacts, whose changed narHash currently prevents
+    # unrelated flake consumers such as direnv from resolving the lock graph.
+    # apple-fonts = {
+    #   url = "github:Lyndeno/apple-fonts.nix?shallow=1";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     # Rust toolchain 管理（比 nixpkgs 自带的更新）
     fenix = {
