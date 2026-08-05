@@ -3,6 +3,11 @@
 Use sops-nix with age. Store encrypted files under `secrets/` and use
 `.sops.yaml` recipients for encryption.
 
+Recipients are public encryption policy, not host configuration. Keep private
+age identities and SSH private keys on the machine; never commit them. A host
+may provide the path to its local decryption identity to the Home Manager
+secrets adapter without exposing that key in Nix.
+
 Suggested files:
 - `secrets/common.yaml` (shared across environments)
 - `secrets/hosts/<host>.yaml`

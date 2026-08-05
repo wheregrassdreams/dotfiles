@@ -73,6 +73,18 @@ not itself a recoverable backup. Tool-specific behavior such as Syncthing,
 Restic, or rclone belongs in a future focused adapter with an independently
 verified restore procedure.
 
+## SSH and key ownership
+
+- `my.ssh` client defaults are Home Manager behavior.
+- `my.ssh.server` is a NixOS-only contract and is disabled by default. Its
+  `authorizedKeys` values describe the target machine's login policy and are
+  applied only when the server is explicitly enabled.
+- SOPS/age recipients belong to `.sops.yaml` encryption policy. The local
+  private key path used to decrypt secrets is a host fact and must not be
+  hard-coded in a reusable adapter.
+- Git signing keys belong to personal identity configuration; SSH host keys
+  and authorized login keys belong to the target system that consumes them.
+
 ## Performance boundary
 
 Directory names do not affect build cost; a target's import and derivation
