@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   home.packages = with pkgs; [
-    gnumake
+    gnumake just
     curl wget p7zip unrar unzip rsync lsof
   ];
 }

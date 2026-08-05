@@ -28,6 +28,24 @@ sudo nixos-rebuild switch --flake .#wsl
 home-manager switch --flake .#zanelu-macbook
 ```
 
+## Quick commands
+
+`just` is the repository-local, discoverable command entry point. It is
+installed as part of `my.tools.core` and complements the interactive shell
+aliases; it does not replace them. Run `just --list` for the full list.
+
+```zsh
+just check
+just build-darwin
+just switch-home
+just switch-darwin
+just link-nvim
+```
+
+Destructive or privileged actions remain explicit: `switch-darwin` and
+`switch-wsl` require `sudo`; package cleanup continues to require an explicit
+`brew-sync --cleanup` or `brew-sync --zap` invocation.
+
 For Homebrew formulae, casks, and taps, use the Home Manager command above.
 `darwin-rebuild` only bootstraps Homebrew itself and applies macOS system
 configuration. The generated Brewfile synchronizes declared packages without
