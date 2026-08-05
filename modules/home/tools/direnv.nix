@@ -5,7 +5,8 @@
     nix-direnv.enable = true;
     config.global = {
       hide_env_diff = true;
-      log_format = "-";
+      log_format = "direnv: %s\\n";
+      log_filter = "^(loading|using flake|nix-direnv: Renewed cache).*";
       warn_timeout = "10s";
     };
     stdlib = ''
