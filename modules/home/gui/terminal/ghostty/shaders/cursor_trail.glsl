@@ -79,7 +79,7 @@ const vec4 TRAIL_COLOR = vec4(1.0,1.0,1.0, 0.8); // white
 const vec4 CURRENT_CURSOR_COLOR = TRAIL_COLOR;
 const vec4 PREVIOUS_CURSOR_COLOR = TRAIL_COLOR;
 // const vec4 TRAIL_COLOR_ACCENT = vec4(1.0, 0., 0., 1.0); // red-orange
-// const vec4 TRAIL_COLOR_ACCENT = vec4(1.0,1.0,1.0, 0.8); 
+// const vec4 TRAIL_COLOR_ACCENT = vec4(1.0,1.0,1.0, 0.8);
 // const float DURATION = .2;
 // const float OPACITY = .2;
 const float DURATION = 0.08;
@@ -130,7 +130,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     float trailThreshold = DRAW_THRESHOLD * cursorSize;
     // float lineLength = distance(centerCC, centerCP);
     float lineLength = max(distance(centerCC, centerCP), cursorSize * 0.3);
- 
+
     // bool isFarEnough = lineLength > trailThreshold;
     bool isFarEnough = true;
     // bool isOnSeparateLine = HIDE_TRAILS_ON_THE_SAME_LINE ? currentCursor.y != previousCursor.y : true;

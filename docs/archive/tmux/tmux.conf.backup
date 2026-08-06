@@ -19,10 +19,10 @@ unbind "'"
 unbind '('
 unbind ')'
 unbind ','
-unbind '[' 
+unbind '['
 unbind ']'
-unbind C-Up   
-unbind C-Down 
+unbind C-Up
+unbind C-Down
 unbind C-Left
 unbind C-Right
 unbind E
@@ -32,7 +32,7 @@ bind ',' run-shell 'tmux source-file ~/.tmux.conf \; display-message -d 800  " #
 
 # Select pane
 bind h select-pane -L
-bind j select-pane -D 
+bind j select-pane -D
 bind k select-pane -U
 bind l select-pane -R
 
@@ -54,7 +54,7 @@ bind = select-layout even-horizontal      # 等分水平
 bind + select-layout even-vertical        # 等分垂直
 bind ] select-layout tiled                # 平铺
 
-# Paste 
+# Paste
 bind p choose-buffer
 
 # Join pane
@@ -105,7 +105,7 @@ bind -T copy-mode-vi C-[ if-shell -F '#{selection_active}' \
 
 # bind -T copy-mode-vi y      send -X copy-pipe-and-cancel "pbcopy"
 bind -T copy-mode-vi y      send -X copy-pipe "pbcopy"
-# bind -T copy-mode-vi y    send -X copy-pipe-and-cancel "xclip -selection clipboard" 
+# bind -T copy-mode-vi y    send -X copy-pipe-and-cancel "xclip -selection clipboard"
 # bind -T copy-mode-vi y    send -X copy-pipe-and-cancel "wl-copy"
 
 # 没用
@@ -158,7 +158,7 @@ set -g @continuum-restore 'on'
 # set-hook -g key-press 'run-shell "~/.tmux/status-hide.sh reset"'
 
 
-set -g mode-style "bg=#4A0099,fg=white" 
+set -g mode-style "bg=#4A0099,fg=white"
 # 搜索匹配（非当前光标处的）
 set -g copy-mode-match-style "bg=#444444,fg=white"
 
@@ -171,7 +171,7 @@ set -g copy-mode-current-match-style "bg=#ffdd00,fg=black"
 # #{?window_zoomed_flag,#[bg=#00bfff]#[fg=black]#[bold] 󰁌 #[default],}}} #[fg=white]#[bold] %H:%M  '
 
 set -g status-right '#{?pane_in_mode,#[bg=#4A0099]#[fg=#ffffff]#[bold]  SCROLL #[default],\
-#{?client_prefix,#[bg=#404040]#[fg=#ffffff]  PREFIX #[default], 
+#{?client_prefix,#[bg=#404040]#[fg=#ffffff]  PREFIX #[default],
 #{?window_zoomed_flag,#[bg=#404040]#[fg=#ffffff]#[bold] 󰘖 FULL #[default] ,}}} #[fg=white]#[nobold] %H:%M  '
 
 # set -g status-right '#{?pane_in_mode,#[bg=#ADE332]#[fg=black]#[bold] 󰔌 COPY #[default],\
@@ -185,7 +185,7 @@ set -g window-status-format "#{?client_prefix,#[fg=#9633FF]#[bold]#I#[default], 
 # set -g window-status-current-format "#[bg=#ffffff]#[fg=#282828]▊#[bg=#454545]#[fg=default] #W #[default]"
 # set -g window-status-current-format "#[bg=#ffffff]#[fg=#282828]#[bg=#454545]#[fg=default] #W #[default]"
 set -g window-status-current-format "#[bg=#404040]#[fg=default] #W #[default]"
-#  
+# 
 # set -g window-status-current-format "#[bg=brightblack]#[fg=#F5E500]▍#[bg=brightblack]#[fg=default] #W  #[default]"
 # set -g window-status-current-format "#[bg=brightblack]#[fg=#F5003F]▍#[bg=brightblack]#[fg=default] #W  #[default]"
 
@@ -239,7 +239,7 @@ set -g status-left "    #(echo #{session_name} | tr a-z A-Z) #[default]  "
 # set -g status-left "    #(echo #{session_name} | tr a-z A-Z) #[default]  "
 # set -g status-left " #[fg=#353535]#[bg=black]▍ #[fg=white]  #[bg=default]#[fg=white,bold] #(echo #{session_name} | tr a-z A-Z) #[default]  "
 # 
-#   󰀵  
+#   󰀵 
 # set -g status-left "#(echo #{session_name} | tr a-z A-Z)"
 # 
 bind -n MouseDown1StatusLeft run-shell "tmux choose-window -Z"
@@ -256,10 +256,10 @@ set -g message-style "bg=#282828,fg=white"
 #tmux choose-tree -Ztmux choose-tree -Z 
 
 # bind -n C-Space  run-shell "tmux popup -B 'zsh' "
-# bind Space display-popup -w 80% -h 80% -E "zsh" 
-bind g display-popup -d "#{pane_current_path}" -w 80% -h 80% -E "lazygit" 
-bind t display-popup -d "#{pane_current_path}" -w 80% -h 80% -E "zsh" 
-# bind t display-popup  -w 10 -h 5 -x 20 -y 25 -B "echo -e '\033[48;2;255;165;0m     \033[0m'" 
+# bind Space display-popup -w 80% -h 80% -E "zsh"
+bind g display-popup -d "#{pane_current_path}" -w 80% -h 80% -E "lazygit"
+bind t display-popup -d "#{pane_current_path}" -w 80% -h 80% -E "zsh"
+# bind t display-popup  -w 10 -h 5 -x 20 -y 25 -B "echo -e '\033[48;2;255;165;0m     \033[0m'"
 
 # bind -T copy-mode-vi y send -X copy-pipe-and-cancel "pbcopy; tmux display-message -d 800 ' #[fg=#282828]#[bg=brightblack]▍#[fg=white] 󱉧  #[bg=default]#[fg=white,bold] Copied'"
 # bind -T copy-mode-vi y send -X copy-pipe-and-cancel "pbcopy; tmux display-message -d 800 ' #[fg=#353535]#[bg=black]▍#[fg=white]  #[bg=default]#[fg=white,bold] copied'"

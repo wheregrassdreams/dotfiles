@@ -49,9 +49,9 @@ macos-titlebar-proxy-icon = hidden
 
 # App图标
 # 透明图标
-macos-icon = glass 
+macos-icon = glass
 # 经典图标
-# macos-icon = official 
+# macos-icon = official
 
 keybind = shift+enter=text:\x1b\r
 
