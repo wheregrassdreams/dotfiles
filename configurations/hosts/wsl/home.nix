@@ -11,6 +11,11 @@ let
       inherit name;
       runtimeInputs = [ pkgs.wslu ];
       text = ''
+        if [ "$#" -eq 1 ] && [ -e "$1" ]; then
+          explorer.exe "$(wslpath -w -a "$1")" >/dev/null 2>&1 &
+          exit 0
+        fi
+
         exec wslview "$@"
       '';
     };
