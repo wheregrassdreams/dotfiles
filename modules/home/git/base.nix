@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   config = lib.mkIf config.my.git.enable {
     programs.git = {
@@ -47,6 +52,7 @@
           updateRefs = true;
         };
         rerere.enabled = true;
+        url."git@github.com:".insteadOf = "https://github.com/";
       };
     };
 

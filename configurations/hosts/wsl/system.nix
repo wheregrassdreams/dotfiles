@@ -15,6 +15,7 @@
     system.stateVersion = "25.11";
     networking.hostName = hostName;
     time.timeZone = "Asia/Shanghai";
+    programs.ssh.startAgent = true;
 
     users.users.zane = {
       isNormalUser = true;

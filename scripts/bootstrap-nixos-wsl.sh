@@ -14,6 +14,7 @@ host="$DEFAULT_HOST"
 target="$DEFAULT_TARGET"
 private_repo=false
 repair=false
+skip_github_ssh=false
 source_override=""
 tmp_dir=""
 
@@ -30,6 +31,7 @@ Options:
   --target PATH       Final zane-owned checkout (default: $DEFAULT_TARGET)
   --source PATH       Use an existing local Git flake for the first installation
   --private           Authenticate with GitHub CLI before cloning a private repo
+  --skip-github-ssh   Do not configure zane's GitHub SSH key after first switch
   --repair            Repair checkout ownership, then reset the zane password
   -h, --help          Show this help
 EOF
@@ -47,6 +49,66 @@ cleanup() {
 }
 trap cleanup EXIT
 
+configure_github_ssh() {
+  local answer
+
+  printf '\nConfigure GitHub SSH for zane now? [Y/n] '
+  read -r answer
+  if [[ -n "$answer" && ! "$answer" =~ ^[Yy]([Ee][Ss])?$ ]]; then
+    printf 'GitHub SSH setup skipped; origin remains HTTPS.\n'
+    return
+  fi
+
+  printf '\nConfiguring a dedicated, passphrase-protected GitHub SSH key for zane...\n'
+  if ! sudo -u zane -H nix shell "${nix_features[@]}" nixpkgs#git nixpkgs#gh nixpkgs#openssh \
+    --command bash -s -- "$repo" "$target" <<'ZANE_SSH_SETUP'
+set -Eeuo pipefail
+
+repo="$1"
+target="$2"
+key_dir="$HOME/.ssh"
+key_file="$key_dir/id_ed25519_github_wsl"
+public_key_file="$key_file.pub"
+
+install -d -m 0700 "$key_dir"
+if [[ ! -f "$key_file" ]]; then
+  printf 'Create a passphrase for %s.\n' "$key_file"
+  ssh-keygen -t ed25519 -a 64 -f "$key_file" -C "$(id -un)@$(hostname)-wsl"
+fi
+[[ -f "$public_key_file" ]] || {
+  printf 'error: public key is missing: %s\n' "$public_key_file" >&2
+  exit 1
+}
+chmod 0600 "$key_file"
+chmod 0644 "$public_key_file"
+
+gh auth login --web --git-protocol ssh --skip-ssh-key
+
+public_key="$(<"$public_key_file")"
+github_keys="$(gh api --paginate user/keys --jq '.[].key')"
+if ! grep -Fqx "$public_key" <<<"$github_keys"; then
+  gh ssh-key add "$public_key_file" --title "NixOS WSL $(hostname)"
+fi
+
+eval "$(ssh-agent -s)" >/dev/null
+trap 'ssh-agent -k >/dev/null' EXIT
+ssh-add "$key_file"
+if ssh -T git@github.com; then
+  :
+else
+  ssh_status=$?
+  [[ "$ssh_status" -eq 1 ]] || exit "$ssh_status"
+fi
+git ls-remote "git@github.com:${repo}.git" HEAD >/dev/null
+git -C "$target" remote set-url origin "git@github.com:${repo}.git"
+ZANE_SSH_SETUP
+  then
+    printf 'GitHub SSH is ready; origin now uses SSH.\n'
+  else
+    printf 'GitHub SSH setup did not finish; origin remains HTTPS. Configure it later with gh auth login.\n' >&2
+  fi
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --repo) repo="${2:?--repo requires OWNER/REPO}"; shift 2 ;;
@@ -55,6 +117,7 @@ while [[ $# -gt 0 ]]; do
     --target) target="${2:?--target requires a path}"; shift 2 ;;
     --source) source_override="${2:?--source requires a path}"; shift 2 ;;
     --private) private_repo=true; shift ;;
+    --skip-github-ssh) skip_github_ssh=true; shift ;;
     --repair) repair=true; shift ;;
     -h|--help) usage; exit 0 ;;
     *) die "unknown option: $1" ;;
@@ -149,12 +212,6 @@ if "$first_install"; then
   sudo chown -R zane:users "$target"
 fi
 
-if "$first_install" && "$private_repo"; then
-  printf 'Authenticate as zane so the permanent checkout has GitHub credentials.\n'
-  sudo -u zane -H nix shell "${nix_features[@]}" nixpkgs#git nixpkgs#gh --command gh auth login --web --git-protocol https
-  sudo -u zane -H nix shell "${nix_features[@]}" nixpkgs#git nixpkgs#gh --command gh auth setup-git
-fi
-
 if "$first_install" || "$repair"; then
   if "$repair" && ! "$first_install"; then
     printf '\nRepairing checkout ownership...\n'
@@ -162,6 +219,10 @@ if "$first_install" || "$repair"; then
   fi
   printf '\nSet the zane password.\n'
   sudo passwd zane
+fi
+
+if "$first_install" && ! "$skip_github_ssh"; then
+  configure_github_ssh
 fi
 
 cat <<EOF

@@ -82,6 +82,24 @@ updating, upgrading, or removing undeclared packages by default. Use
 Install Determinate Nix on macOS, clone this repository, then apply the
 MacBook output.
 
+### Install NixOS WSL from Windows
+
+Run the following in PowerShell to download a pinned installer script to a
+temporary file and install the latest NixOS-WSL release. It uses
+`wsl --install --from-file` when available and falls back to `wsl --import` for
+older WSL versions. The default installation location is
+`%LOCALAPPDATA%\WSL\NixOS`; pass `-InstallLocation 'E:\WSL\NixOS'` to place the
+distribution elsewhere.
+
+```powershell
+$installer = Join-Path ([System.IO.Path]::GetTempPath()) 'install-nixos-wsl.ps1'; Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/wheregrassdreams/dotfiles/bootstrap-v1/scripts/install-nixos-wsl.ps1' -OutFile $installer; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $installer -InstallLocation 'E:\WSL\NixOS'; $status = $LASTEXITCODE; Remove-Item -LiteralPath $installer -Force; exit $status
+```
+
+The installer refuses to overwrite an existing distribution or installation
+directory. Add `-SetDefault` only when NixOS should become the default WSL
+distribution. Once it finishes, open `wsl -d NixOS` and continue with the NixOS
+bootstrap below.
+
 ### Fresh NixOS WSL bootstrap
 
 On a fresh NixOS WSL installation, sign in as the installer user and run the
@@ -90,6 +108,13 @@ temporary file instead of piping network content directly to a shell. The
 script temporarily obtains Git through Nix, builds and tests `.#wsl`, switches
 the system, then moves that same checkout into the permanent zane-owned
 location at `~/nix-config`.
+
+The initial download and clone use HTTPS because a fresh WSL installation has
+no GitHub key. After the first switch, the script offers to create a dedicated
+passphrase-protected key at `~/.ssh/id_ed25519_github_wsl`, authenticate in the
+browser, upload its public half, verify SSH over port 443, and change `origin`
+to `git@github.com:wheregrassdreams/dotfiles.git`. Decline the prompt or pass
+`--skip-github-ssh` to retain HTTPS temporarily.
 
 ```bash
 tmp="$(mktemp)"; curl --proto '=https' --tlsv1.2 -fsSL "https://raw.githubusercontent.com/wheregrassdreams/dotfiles/bootstrap-v1/scripts/bootstrap-nixos-wsl.sh" -o "$tmp" && bash "$tmp"; status=$?; rm -f "$tmp"; exit "$status"
@@ -102,8 +127,9 @@ script to a separate public repository (for example,
 repository cannot provide an unauthenticated raw bootstrap URL.
 
 For a private GitHub repository, use the downloaded script with `--private`.
-It uses GitHub CLI HTTPS authentication without putting a token in this
-repository or shell history.
+It uses temporary GitHub CLI HTTPS authentication for the initial clone, then
+offers the same zane-owned SSH setup after switch. Neither the private key nor
+GitHub CLI credentials enter this repository.
 
 After the script completes, run `wsl --shutdown` from Windows and reopen
 NixOS. Daily use is from the permanent configuration checkout:
@@ -121,6 +147,16 @@ For a locally prepared, not-yet-pushed checkout, pass `--source /absolute/path`
 instead of cloning from GitHub. At completion, the script offers to run
 `wsl.exe --shutdown`; if Windows interop is unavailable, run that command from
 Windows PowerShell instead.
+
+After reopening WSL, unlock the dedicated key once per login session:
+
+```zsh
+ssh-add ~/.ssh/id_ed25519_github_wsl
+```
+
+The NixOS SSH agent and GitHub SSH-over-443 host configuration are declared by
+this repository. GitHub HTTPS Git URLs are rewritten to SSH for daily use; raw
+bootstrap downloads remain HTTPS.
 
 ### Codex WSL backend and future user changes
 
