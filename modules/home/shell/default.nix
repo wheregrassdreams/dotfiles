@@ -1,4 +1,8 @@
-{ dotfilesLib, config, lib, pkgs, inputs, dotfilesPath, hostName, userName, ... }@ctx:
+{
+  dotfilesLib,
+  lib,
+  ...
+}@ctx:
 let
   inherit (dotfilesLib.feature) group;
 in
@@ -10,7 +14,17 @@ dotfilesLib.domain ctx {
     zsh = {
       description = "portable Zsh shell";
       module = ./zsh/base.nix;
-      settings = { };
+      settings = {
+        clipboard = lib.mkOption {
+          type = lib.types.submodule {
+            options.enable = lib.mkEnableOption "system clipboard integration" // {
+              default = true;
+            };
+          };
+          default = { };
+          description = "Whether to load zsh-system-clipboard when a supported backend is available.";
+        };
+      };
     };
     prompt = {
       description = "shell prompt";

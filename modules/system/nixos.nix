@@ -1,3 +1,3 @@
 {
-  imports = [ ./nixos/ssh.nix ];
+  imports = [ ./nixos ];
 }

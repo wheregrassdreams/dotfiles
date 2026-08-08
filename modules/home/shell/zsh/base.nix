@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  feature,
   ...
 }:
 {
@@ -23,6 +24,14 @@
         (lib.mkOrder 550 ''
           mkdir -p ${config.xdg.configHome}/zsh/completions
           fpath+=(${config.xdg.configHome}/zsh/completions)
+        '')
+        (lib.mkIf feature.clipboard.enable ''
+          # The plugin reports an error when sourced without a supported
+          # clipboard manager. Keep headless shells quiet while allowing hosts
+          # to provide their appropriate backend.
+          if (( $+commands[pbcopy] || $+commands[wl-copy] || $+commands[xclip] || $+commands[xsel] )); then
+            source ${pkgs.zsh-system-clipboard}/share/zsh/zsh-system-clipboard/zsh-system-clipboard.zsh
+          fi
         '')
         ''
           source ${config.xdg.configHome}/zsh/scripts/keybinds.zsh
@@ -95,11 +104,6 @@
           name = "zsh-completions";
           src = pkgs.zsh-completions;
         }
-        {
-          name = "zsh-system-clipboard";
-          src = pkgs.zsh-system-clipboard;
-          file = "share/zsh/zsh-system-clipboard/zsh-system-clipboard.zsh";
-        }
       ];
 
       siteFunctions = {
@@ -124,98 +128,112 @@
     };
 
     # Prompt configuration lives in ../shell/prompt.nix.
-    /* starship = {
-      enable = true;
-      enableZshIntegration = true;
-      settings = {
-        format = ''
-          $directory''${custom.git_branch_tail}
-          $character
-        '';
+    /*
+      starship = {
+        enable = true;
+        enableZshIntegration = true;
+        settings = {
+          format = ''
+            $directory''${custom.git_branch_tail}
+            $character
+          '';
 
-        directory = {
-          style = "white";
-          truncation_length = 3;
-          format = "[$path]($style) ";
-        };
+          directory = {
+            style = "white";
+            truncation_length = 3;
+            format = "[$path]($style) ";
+          };
 
-        custom.git_branch_tail = {
-          command = "git rev-parse --abbrev-ref HEAD | awk -F/ '{print $NF}'";
+          custom.git_branch_tail = {
+            command = "git rev-parse --abbrev-ref HEAD | awk -F/ '{print $NF}'";
 
-          when = "git rev-parse --is-inside-work-tree 2>/dev/null";
+            when = "git rev-parse --is-inside-work-tree 2>/dev/null";
 
-          symbol = " ";
-          format = "[$symbol$output](dimmed) ";
-        };
+            symbol = " ";
+            format = "[$symbol$output](dimmed) ";
+          };
 
-        character = {
-          success_symbol = "[➜](green)";
-          error_symbol = "[➜](red)";
-          vicmd_symbol = "[➜](yellow)";
-        };
+          character = {
+            success_symbol = "[➜](green)";
+            error_symbol = "[➜](red)";
+            vicmd_symbol = "[➜](yellow)";
+          };
 
-        python = {
-          symbol = " ";
-          style = "yellow";
-          version_format = "v\${raw}";
-          format = "[$symbol]($style)[$version](dimmed) ";
-        };
+          python = {
+            symbol = " ";
+            style = "yellow";
+            version_format = "v\${raw}";
+            format = "[$symbol]($style)[$version](dimmed) ";
+          };
 
-        golang = {
-          symbol = " ";
-          style = "cyan";
-          format = "[$symbol$version](dimmed) ";
-        };
+          golang = {
+            symbol = " ";
+            style = "cyan";
+            format = "[$symbol$version](dimmed) ";
+          };
 
-        nodejs = {
-          symbol = " ";
-          style = "green";
-          format = "[$symbol]($style)[$version](dimmed) ";
-        };
+          nodejs = {
+            symbol = " ";
+            style = "green";
+            format = "[$symbol]($style)[$version](dimmed) ";
+          };
 
-        rust = {
-          symbol = " ";
-          style = "red";
-          format = "[$symbol$version](dimmed) ";
+          rust = {
+            symbol = " ";
+            style = "red";
+            format = "[$symbol$version](dimmed) ";
+          };
         };
       };
-    }; */
+    */
   };
 
   home.sessionVariables.EDITOR = "nvim";
 
   home.shellAliases = lib.mkMerge [
     {
-    reload = "exec $SHELL --login";
+      reload = "exec $SHELL --login";
 
-    e = "$EDITOR";
-    server = "python3 -m http.server";
-    noansi = ''sed -r "s/\x1B\[[0-9;]*[mK]//g"'';
+      e = "$EDITOR";
+      server = "python3 -m http.server";
+      noansi = ''sed -r "s/\x1B\[[0-9;]*[mK]//g"'';
 
-    today = "date +%Y-%m-%d";
+      today = "date +%Y-%m-%d";
 
-    ".." = "cd ..";
-    "..." = "cd ../..";
-    "-" = "cd -";
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      "-" = "cd -";
 
     }
     (lib.mkIf config.my.tools.interactive {
-      ls = "eza"; cat = "bat"; top = "btop"; npm = "pnpm";
-      neofetch = "fastfetch"; ps = "procs"; du = "dust"; csv = "csvlens";
+      ls = "eza";
+      cat = "bat";
+      top = "btop";
+      npm = "pnpm";
+      neofetch = "fastfetch";
+      ps = "procs";
+      du = "dust";
+      csv = "csvlens";
     })
     (lib.mkIf config.my.tools.query {
-      grep = "rg"; json2string = "jq tostring";
+      grep = "rg";
+      json2string = "jq tostring";
     })
     (lib.mkIf config.my.tools.network {
-      http = "xh"; https = "xh --https";
+      http = "xh";
+      https = "xh --https";
     })
     (lib.mkIf config.my.tools.workflow {
-      man = "tldr"; del = "trash";
+      man = "tldr";
+      del = "trash";
     })
     (lib.mkIf config.my.tools.workflow {
       del = "trash";
-      cb = "NO_COLOR=1 CLIPBOARD_SLIENT=1 cb "; cbcopy = "cb copy";
-      cbpaste = "cb paste"; py = "python3"; python = "python3";
+      cb = "NO_COLOR=1 CLIPBOARD_SLIENT=1 cb ";
+      cbcopy = "cb copy";
+      cbpaste = "cb paste";
+      py = "python3";
+      python = "python3";
     })
   ];
 }
