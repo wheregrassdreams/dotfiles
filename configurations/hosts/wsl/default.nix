@@ -6,7 +6,7 @@ rec {
   };
   userName = identity.username;
   hostName = "nixos";
-  dotfilesPath = "/home/nixos/dotfiles";
+  dotfilesPath = "/home/zane/nix-config";
   isWsl = true;
   hostModule = ./system.nix;
   systemModules = [ ];

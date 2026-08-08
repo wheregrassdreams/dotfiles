@@ -80,8 +80,70 @@ updating, upgrading, or removing undeclared packages by default. Use
 ## First bootstrap
 
 Install Determinate Nix on macOS, clone this repository, then apply the
-MacBook output. NixOS WSL is built from the `wsl` output; its tarball builder
-is available at `.#nixosConfigurations.wsl.config.system.build.tarballBuilder`.
+MacBook output.
+
+### Fresh NixOS WSL bootstrap
+
+On a fresh NixOS WSL installation, sign in as the installer user and run the
+following single command. It downloads the versioned bootstrap script to a
+temporary file instead of piping network content directly to a shell. The
+script temporarily obtains Git through Nix, builds and tests `.#wsl`, switches
+the system, then moves that same checkout into the permanent zane-owned
+location at `~/nix-config`.
+
+```bash
+tmp="$(mktemp)"; curl --proto '=https' --tlsv1.2 -fsSL "https://raw.githubusercontent.com/wheregrassdreams/dotfiles/bootstrap-v1/scripts/bootstrap-nixos-wsl.sh" -o "$tmp" && bash "$tmp"; status=$?; rm -f "$tmp"; exit "$status"
+```
+
+The `bootstrap-v1` tag must be created and protected when this change is
+released. Before making this repository private, move the same bootstrap
+script to a separate public repository (for example,
+`wheregrassdreams/nixos-bootstrap`) and change this command there; a private
+repository cannot provide an unauthenticated raw bootstrap URL.
+
+For a private GitHub repository, use the downloaded script with `--private`.
+It uses GitHub CLI HTTPS authentication without putting a token in this
+repository or shell history.
+
+After the script completes, run `wsl --shutdown` from Windows and reopen
+NixOS. Daily use is from the permanent configuration checkout:
+
+```zsh
+cd ~/nix-config
+sudo nixos-rebuild switch --flake .#wsl
+```
+
+The bootstrap command is safe to re-run: once `~/nix-config` exists as a Git
+flake checkout, it reuses that checkout for build, test, and switch instead of
+cloning or replacing it. Use `--repair` only when you intentionally need to
+restore zane ownership of the checkout and reset the zane password.
+For a locally prepared, not-yet-pushed checkout, pass `--source /absolute/path`
+instead of cloning from GitHub. At completion, the script offers to run
+`wsl.exe --shutdown`; if Windows interop is unavailable, run that command from
+Windows PowerShell instead.
+
+### Codex WSL backend and future user changes
+
+After bootstrap, accept `wsl --shutdown`, reopen NixOS, verify `id` reports
+`zane`, and only then re-enable Codex's WSL backend. This clears the previous
+WSL process and makes the updated DrvFS mount options effective.
+
+The primary WSL identity uses UID 1000. Usernames may change, but the primary
+UID must not: DrvFS metadata records numeric ownership rather than usernames.
+For a future rename, declare the new default user with UID 1000, update the WSL
+default user, and keep the DrvFS mount UID at 1000. A genuine UID change still
+requires a directed migration of the shared Codex state:
+
+```bash
+sudo chown -R --no-dereference NEW_USER:users /mnt/c/Users/<WindowsUser>/.codex
+```
+
+Run `wsl --shutdown`, confirm the new default user with `id`, and then enable
+the Codex WSL backend. Do not recursively change ownership of the entire
+Windows profile or drive.
+
+NixOS WSL is built from the `wsl` output; its tarball builder is available at
+`.#nixosConfigurations.wsl.config.system.build.tarballBuilder`.
 
 This repository does not contain host disks, hardware configuration, private
 keys, or service data. Keep a boot/recovery path and independent backups before
