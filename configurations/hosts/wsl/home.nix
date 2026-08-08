@@ -5,13 +5,15 @@
   ...
 }:
 let
-  xdgOpen = pkgs.writeShellApplication {
-    name = "xdg-open";
-    runtimeInputs = [ pkgs.wslu ];
-    text = ''
-      exec wslview "$@"
-    '';
-  };
+  windowsOpen =
+    name:
+    pkgs.writeShellApplication {
+      inherit name;
+      runtimeInputs = [ pkgs.wslu ];
+      text = ''
+        exec wslview "$@"
+      '';
+    };
 in
 {
   imports = [
@@ -32,7 +34,8 @@ in
     packages = [
       pkgs.wl-clipboard
       pkgs.wslu
-      xdgOpen
+      (windowsOpen "open")
+      (windowsOpen "xdg-open")
     ];
     sessionVariables = {
       BROWSER = "wslview";

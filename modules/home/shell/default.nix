@@ -1,12 +1,28 @@
 {
   dotfilesLib,
+  config,
   lib,
+  pkgs,
+  inputs,
+  dotfilesPath,
+  hostName,
+  userName,
   ...
 }@ctx:
 let
   inherit (dotfilesLib.feature) group;
+  domainArgs = ctx // {
+    inherit
+      config
+      pkgs
+      inputs
+      dotfilesPath
+      hostName
+      userName
+      ;
+  };
 in
-dotfilesLib.domain ctx {
+dotfilesLib.domain domainArgs {
   namespace = "my.shell";
   description = "shell environment";
 
