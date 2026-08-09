@@ -110,8 +110,8 @@ the system, then moves that same checkout into the permanent zane-owned
 location at `~/nix-config`.
 
 The initial download and clone use HTTPS because a fresh WSL installation has
-no GitHub key. After the first switch, the script offers to create a dedicated
-passphrase-protected key at `~/.ssh/id_ed25519_github_wsl`, authenticate in the
+no GitHub key. After the first switch, the script offers to create a
+passphrase-protected key at `~/.ssh/id_ed25519`, authenticate in the
 browser, upload its public half, verify SSH over port 443, and change `origin`
 to `git@github.com:wheregrassdreams/dotfiles.git`. Decline the prompt or pass
 `--skip-github-ssh` to retain HTTPS temporarily.
@@ -148,10 +148,10 @@ instead of cloning from GitHub. At completion, the script offers to run
 `wsl.exe --shutdown`; if Windows interop is unavailable, run that command from
 Windows PowerShell instead.
 
-After reopening WSL, unlock the dedicated key once per login session:
+After reopening WSL, unlock the key once per login session:
 
 ```zsh
-ssh-add ~/.ssh/id_ed25519_github_wsl
+ssh-add ~/.ssh/id_ed25519
 ```
 
 The NixOS SSH agent and GitHub SSH-over-443 host configuration are declared by

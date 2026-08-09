@@ -17,6 +17,7 @@ repair=false
 skip_github_ssh=false
 source_override=""
 tmp_dir=""
+github_setup_script=""
 
 usage() {
   cat <<EOF
@@ -43,6 +44,9 @@ die() {
 }
 
 cleanup() {
+  if [[ -n "$github_setup_script" && -f "$github_setup_script" ]]; then
+    rm -f -- "$github_setup_script"
+  fi
   if [[ -n "$tmp_dir" && -d "$tmp_dir" ]]; then
     rm -rf -- "$tmp_dir"
   fi
@@ -50,7 +54,7 @@ cleanup() {
 trap cleanup EXIT
 
 configure_github_ssh() {
-  local answer
+  local answer setup_status
 
   printf '\nConfigure GitHub SSH for zane now? [Y/n] '
   read -r answer
@@ -59,15 +63,18 @@ configure_github_ssh() {
     return
   fi
 
-  printf '\nConfiguring a dedicated, passphrase-protected GitHub SSH key for zane...\n'
-  if ! sudo -u zane -H nix shell "${nix_features[@]}" nixpkgs#git nixpkgs#gh nixpkgs#openssh \
-    --command bash -s -- "$repo" "$target" <<'ZANE_SSH_SETUP'
+  printf '\nConfiguring a passphrase-protected GitHub SSH key for zane...\n'
+  # A file keeps the terminal on stdin for ssh-keygen, gh's device login, and
+  # first-use SSH host-key confirmation. A here-document would consume it.
+  github_setup_script="$(mktemp -t nixos-wsl-github-ssh.XXXXXXXX)"
+  chmod 0755 "$github_setup_script"
+  cat >"$github_setup_script" <<'ZANE_SSH_SETUP'
 set -Eeuo pipefail
 
 repo="$1"
 target="$2"
 key_dir="$HOME/.ssh"
-key_file="$key_dir/id_ed25519_github_wsl"
+key_file="$key_dir/id_ed25519"
 public_key_file="$key_file.pub"
 
 install -d -m 0700 "$key_dir"
@@ -82,9 +89,15 @@ fi
 chmod 0600 "$key_file"
 chmod 0644 "$public_key_file"
 
-gh auth login --web --git-protocol ssh --skip-ssh-key
+# `git_protocol` is already declared as SSH by Home Manager.  Passing
+# `--git-protocol ssh` here makes gh attempt to rewrite its Nix-store-backed,
+# read-only config.yml after authentication.
+gh auth login --web --skip-ssh-key
 
 public_key="$(<"$public_key_file")"
+# `gh ssh-key add` does not provide a machine-readable lookup by public-key
+# material. Query the account keys first so rerunning bootstrap never uploads
+# the same key twice.
 github_keys="$(gh api --paginate user/keys --jq '.[].key')"
 if ! grep -Fqx "$public_key" <<<"$github_keys"; then
   gh ssh-key add "$public_key_file" --title "NixOS WSL $(hostname)"
@@ -102,10 +115,20 @@ fi
 git ls-remote "git@github.com:${repo}.git" HEAD >/dev/null
 git -C "$target" remote set-url origin "git@github.com:${repo}.git"
 ZANE_SSH_SETUP
-  then
+
+  if sudo -u zane -H nix shell "${nix_features[@]}" nixpkgs#git nixpkgs#gh nixpkgs#openssh \
+    --command bash "$github_setup_script" "$repo" "$target"; then
+    setup_status=0
+  else
+    setup_status=$?
+  fi
+  rm -f -- "$github_setup_script"
+  github_setup_script=""
+
+  if [[ "$setup_status" -eq 0 ]]; then
     printf 'GitHub SSH is ready; origin now uses SSH.\n'
   else
-    printf 'GitHub SSH setup did not finish; origin remains HTTPS. Configure it later with gh auth login.\n' >&2
+    printf 'GitHub SSH setup did not finish; origin remains HTTPS. Configure it later with gh auth login and gh ssh-key add.\n' >&2
   fi
 }
 
