@@ -60,6 +60,5 @@ must be followed by host-appropriate boot, service, and recovery verification.
 ## Secrets and non-Nix assets
 
 Use SOPS/age for secrets and never add plaintext credentials. Neovim remains a
-manual symlink from `resources/nvim`. Windows configuration has moved to
-`/Users/zanelu/Workspace/code/projects/windows-config`; do not add it back to
-this repository.
+manual symlink from `resources/nvim`. Windows configuration is out of scope for
+this repository; do not add it here.

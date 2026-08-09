@@ -100,19 +100,3 @@ closure do. Keep outputs small by following these rules:
 
 Validate both correctness and closure changes with `nix flake check`, focused
 `nix eval`, and dry-run builds before switching a machine.
-
-## Open design questions
-
-The helper currently named `lib/domain.nix` defines a `my.*` option subtree,
-optional base implementation, and independently selectable features. Its name
-may be confused with a DDD business domain. Candidate replacements include
-`capability.nix`, `feature-set.nix`, and `module-family.nix`; no rename is
-decided until the chosen word better describes this composition role.
-
-Likewise, `my.*` remains the public personal-environment DSL because it gives
-all options a clear ownership boundary. The helper's `namespace` argument is
-an implementation detail that maps a module to that option path. We should
-revisit whether `namespace` should be renamed to `optionPath`, or whether the
-helper should receive a structured path, if the current string-based form
-becomes harder to navigate or refactor. Neither question changes the public
-`my.*` interface today.

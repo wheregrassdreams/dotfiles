@@ -1,26 +1,42 @@
 # Secrets layout
 
-Use sops-nix with age. Store encrypted files under `secrets/` and use
-`.sops.yaml` recipients for encryption.
+Use sops-nix with age. Store encrypted files under `secrets/`; `.sops.yaml`
+defines the recipients used for encryption.
 
 Recipients are public encryption policy, not host configuration. Keep private
 age identities and SSH private keys on the machine; never commit them. A host
 may provide the path to its local decryption identity to the Home Manager
 secrets adapter without exposing that key in Nix.
 
-Suggested files:
+Suggested layout:
+
 - `secrets/common.yaml` (shared across environments)
 - `secrets/hosts/<host>.yaml`
 - `secrets/users/<user>.yaml`
 - `secrets/apps/<app>.yaml`
 
-Example setup (run once):
-1) `age-keygen -o ~/.config/sops/age/keys.txt`
-2) `ssh-to-age -i ~/.ssh/id_ed25519.pub`
-3) Replace the recipients in `.sops.yaml`
+## Add an age identity
 
-Encrypt a new file:
-`sops --encrypt --in-place secrets/common.yaml`
+Run once on a machine that needs to decrypt secrets:
 
-There is also a easier way to edit a file with `./scripts/edit-secrets.sh`
-`./scripts/edit-secrets.sh secrets/common.yaml`
+```zsh
+age-keygen -o ~/.config/sops/age/keys.txt
+```
+
+To use the SSH public key as an additional recipient, print its age recipient
+and add the result to `.sops.yaml`:
+
+```zsh
+ssh-to-age -i ~/.ssh/id_ed25519.pub
+```
+
+## Edit a secret
+
+Create or edit an encrypted file with:
+
+```zsh
+just edit-secret secrets/common.yaml
+```
+
+The command uses the repository's SOPS configuration and leaves decrypted
+content only in SOPS's temporary editor file.
