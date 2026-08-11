@@ -10,7 +10,6 @@
 
       integrations = {
         macos.enable = true;
-        nixConfiguration.enable = true;
         nixIndex.enable = true;
       };
     };

@@ -7,7 +7,6 @@
       enable = true;
       zsh.enable = true;
       prompt.enable = true;
-      integrations.nixConfiguration.enable = true;
     };
     terminal = {
       enable = true;

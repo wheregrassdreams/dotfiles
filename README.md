@@ -9,7 +9,8 @@ the standalone Neovim configuration in `resources/nvim`.
 | --- | --- |
 | MacBook | `darwinConfigurations.macbook` |
 | NixOS WSL | `nixosConfigurations.wsl` |
-| MacBook Home Manager | `homeConfigurations.zanelu-macbook` |
+| MacBook Home Manager | `homeConfigurations.zanelu@macbook` |
+| WSL Home Manager | `homeConfigurations.zane@wsl` |
 
 ## Everyday use
 
@@ -20,15 +21,24 @@ WSL target where appropriate.
 just check
 just fmt
 just build
+just test
 just switch
+just build-home
+just switch-home
 ```
 
-For an explicit target:
+The commands resolve the current host from `hostname -s` and the standalone
+Home Manager output from `id -un`. During the WSL transition, hostname `nixos`
+is mapped to canonical host `wsl` with a warning. `just switch` is the normal
+full system activation and includes its embedded Home Manager activation;
+`build-home` and `switch-home` are the cross-platform standalone,
+user-environment-only actions.
 
 ```zsh
-darwin-rebuild switch --flake .#macbook
-sudo nixos-rebuild switch --flake .#wsl
-home-manager switch --flake .#zanelu-macbook
+just update
+just gc-user
+just gc-system
+just store-optimise
 ```
 
 Trust direnv once after cloning:
@@ -38,7 +48,8 @@ direnv allow
 ```
 
 Run `just --list` for the full command list. `just switch-home` applies only
-the MacBook Home Manager configuration, including declared Homebrew packages.
+the current user's standalone Home Manager configuration. On macOS, it
+includes declared Homebrew packages.
 Use `brew-sync --cleanup` or `brew-sync --zap` only when removal is intended.
 
 ## First bootstrap
@@ -50,7 +61,7 @@ apply the MacBook target:
 
 ```zsh
 darwin-rebuild switch --flake .#macbook
-home-manager switch --flake .#zanelu-macbook
+home-manager switch --flake .#zanelu@macbook
 ```
 
 ### NixOS WSL
@@ -76,7 +87,9 @@ home-manager switch --flake .#zanelu-macbook
    It temporarily obtains Git through Nix, builds, tests, and switches `.#wsl`,
    then installs the same checkout at `~/nix-config`. The initial clone uses
    HTTPS; after switch, the script can configure GitHub SSH at
-   `~/.ssh/id_ed25519` and change `origin` to SSH.
+   `~/.ssh/id_ed25519` and change `origin` to SSH. The installed system still
+   reports hostname `nixos`; daily `just` commands temporarily map it to the
+   canonical flake host `wsl`.
 
 4. Accept the shutdown prompt, or run `wsl --shutdown` in Windows PowerShell.
    Reopen NixOS and verify:

@@ -19,20 +19,25 @@ flake output -> configurations/hosts -> configurations/profiles -> modules/optio
 - `resources/` holds versioned configuration deliberately deployed outside Nix.
 - `secrets/` holds encrypted SOPS data only.
 
-The supported outputs are `darwinConfigurations.macbook`,
-`nixosConfigurations.wsl`, and `homeConfigurations.zanelu-macbook`.
+The canonical outputs are `darwinConfigurations.macbook`,
+`nixosConfigurations.wsl`, `homeConfigurations.zanelu@macbook`, and
+`homeConfigurations.zane@wsl`. `homeConfigurations.zanelu-macbook` remains a
+temporary compatibility alias.
 
 ## Local development
 
 ```zsh
-nix flake check 'path:.' --no-write-lock-file --no-eval-cache
-darwin-rebuild switch --flake .#macbook
-sudo nixos-rebuild switch --flake .#wsl
-home-manager switch --flake .#zanelu-macbook
+just check
+just fmt
+just build
+just test
+just switch
 ```
 
-On macOS, `darwin-rebuild` owns OS/bootstrap changes. Formulae, casks, taps,
-and Homebrew service lifecycle are synchronized by `home-manager switch`.
+On macOS, `just switch` owns OS/bootstrap changes and its embedded Home
+Manager activation. `just switch-home` is the standalone, user-environment
+only path. Formulae, casks, taps, and Homebrew service lifecycle are included
+in the embedded Home Manager activation.
 `brew-sync --cleanup` and `brew-sync --zap` are explicit destructive actions;
 never make undeclared-package cleanup automatic without a requested change.
 

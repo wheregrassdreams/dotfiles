@@ -23,60 +23,43 @@ check-staged:
 
 # Build the system output for the current supported platform without activating it.
 build:
-  #!/usr/bin/env bash
-  set -euo pipefail
-  case "$(uname -s)" in
-    Darwin) darwin-rebuild build --flake "{{repo}}#macbook" ;;
-    Linux)
-      grep -qiE '(microsoft|wsl)' /proc/sys/kernel/osrelease || {
-        echo 'This repository only supports the Linux build through its WSL output.' >&2
-        exit 1
-      }
-      nixos-rebuild build --flake "{{repo}}#wsl"
-      ;;
-    *) echo "Unsupported platform: $(uname -s)" >&2; exit 1 ;;
-  esac
+  bash "{{repo}}/scripts/nix-target.sh" build "{{repo}}"
 
-# Apply the system output for the current supported platform. This is intentionally explicit because it uses sudo.
+# Test the NixOS system output without changing the active generation.
+test:
+  bash "{{repo}}/scripts/nix-target.sh" test "{{repo}}"
+
+# Apply the system output for the current supported platform.
 switch:
-  #!/usr/bin/env bash
-  set -euo pipefail
-  case "$(uname -s)" in
-    Darwin) sudo darwin-rebuild switch --flake "{{repo}}#macbook" ;;
-    Linux)
-      grep -qiE '(microsoft|wsl)' /proc/sys/kernel/osrelease || {
-        echo 'This repository only supports the Linux switch through its WSL output.' >&2
-        exit 1
-      }
-      sudo nixos-rebuild switch --flake "{{repo}}#wsl"
-      ;;
-    *) echo "Unsupported platform: $(uname -s)" >&2; exit 1 ;;
-  esac
+  bash "{{repo}}/scripts/nix-target.sh" switch "{{repo}}"
 
-# Build, but do not activate, the standalone MacBook Home Manager configuration.
+# Build, but do not activate, the standalone Home Manager configuration for the current user and host.
 build-home:
-  nix run --inputs-from "{{repo}}" home-manager -- build --flake "{{repo}}#zanelu-macbook"
+  bash "{{repo}}/scripts/nix-target.sh" build-home "{{repo}}"
 
-# Apply only the MacBook Home Manager configuration, including the Homebrew package sync.
+# Apply only the standalone Home Manager configuration for the current user and host.
 switch-home:
-  nix run --inputs-from "{{repo}}" home-manager -- switch --flake "{{repo}}#zanelu-macbook"
+  bash "{{repo}}/scripts/nix-target.sh" switch-home "{{repo}}"
 
 # Use nix-fast-build for the current supported system output. Intended for CI or remote builders.
 fast-build:
-  #!/usr/bin/env bash
-  set -euo pipefail
-  case "$(uname -s)" in
-    Darwin) attr='darwinConfigurations.macbook.system' ;;
-    Linux)
-      grep -qiE '(microsoft|wsl)' /proc/sys/kernel/osrelease || {
-        echo 'This repository only supports the Linux build through its WSL output.' >&2
-        exit 1
-      }
-      attr='nixosConfigurations.wsl.config.system.build.toplevel'
-      ;;
-    *) echo "Unsupported platform: $(uname -s)" >&2; exit 1 ;;
-  esac
-  nix run "{{repo}}#nix-fast-build" -- --no-nom --skip-cached --flake "{{repo}}#${attr}"
+  bash "{{repo}}/scripts/nix-target.sh" fast-build "{{repo}}"
+
+# Update the declared flake inputs used by the personal configuration.
+update:
+  nix flake update nixpkgs nixpkgs-unstable nix-darwin home-manager nix-homebrew --flake "{{repo}}"
+
+# Collect unreachable user generations only.
+gc-user:
+  nix-collect-garbage -d
+
+# Collect unreachable system generations; this requires root privileges.
+gc-system:
+  sudo nix-collect-garbage -d
+
+# Optimise the local Nix store without deleting generations.
+store-optimise:
+  nix store optimise
 
 # Edit an encrypted SOPS file, for example: `just edit-secret secrets/common.yaml`.
 edit-secret secret_file:

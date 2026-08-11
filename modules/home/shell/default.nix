@@ -53,11 +53,6 @@ dotfilesLib.domain domainArgs {
         module = ./macos.nix;
         settings = { };
       };
-      nixConfiguration = {
-        description = "Nix configuration workflow commands";
-        module = ./nix-configuration.nix;
-        settings = { };
-      };
       nixIndex = {
         description = "Nix command discovery";
         module = ./nix-index.nix;
