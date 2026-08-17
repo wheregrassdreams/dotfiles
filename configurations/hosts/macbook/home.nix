@@ -1,4 +1,9 @@
-{ config, lib, identity, ... }:
+{
+  config,
+  lib,
+  identity,
+  ...
+}:
 {
   imports = [
     ../../../modules/home
@@ -7,6 +12,7 @@
     ../../../modules/home/data/home.nix
     ../../../modules/home/services
     ../../../modules/home/connectivity/tailscale/home.nix
+    ../../../modules/home/connectivity/clash-verge/home.nix
     ../../profiles/personal-mac/home.nix
     ../../profiles/personal-mac/homebrew.nix
     ../../profiles/personal-mac/ai-home.nix
@@ -29,6 +35,13 @@
         identity = identity;
         homebrew.brewPrefix = "/opt/homebrew";
         connectivity.tailscale.host = "homelab.tail50e8c0.ts.net";
+        connectivity.clashVerge = {
+          enable = true;
+          hostname = "cv-macbook-zane";
+          tailnetDomain = "wheregrassdreams.top";
+          tailnetCidr = "100.64.0.0/10";
+          dnsUpstream = "100.124.158.7";
+        };
         paths.personal = {
           work = "${config.home.homeDirectory}/Work";
           notes = "${config.home.homeDirectory}/Workspace/notes";

@@ -4,12 +4,14 @@
   imports = [
     ../../options/gui/file-browser.nix
     ../../options/gui/browser.nix
+    ../../options/gui/editor.nix
     ../../options/gui/terminal.nix
     ../../options/gui/keymap.nix
     ../../options/gui/menu-bar.nix
     ../../options/gui/workspace.nix
     ./file-browser-home.nix
     ./browser/home.nix
+    ./editor/zed/home.nix
     ./ai/homebrew.nix
     ./terminal/ghostty/home.nix
     ./terminal/kitty/homebrew.nix

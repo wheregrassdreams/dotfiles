@@ -58,13 +58,13 @@
     # Affinity 软件（依赖 unstable）
     affinity = {
       url = "github:mrshmllow/affinity-nix?shallow=1";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # LLM agents / AI tooling（作为工具使用）
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # sops-nix：用于管理 secrets（系统模块型工具）
@@ -96,7 +96,8 @@
   };
 
   # 这是 flake 的入口（main）：
-  outputs = inputs@{ flake-parts, ... }:
+  outputs =
+    inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "aarch64-darwin"

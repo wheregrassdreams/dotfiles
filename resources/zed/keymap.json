@@ -1,0 +1,114 @@
+[
+  {
+    "context": "vim_mode == normal && !menu",
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "shift-h": "pane::ActivatePreviousItem",
+      "shift-l": "pane::ActivateNextItem",
+      "[ b": "pane::ActivatePreviousItem",
+      "] b": "pane::ActivateNextItem",
+      "g r": "editor::FindAllReferences",
+      "g k": "editor::ShowSignatureHelp",
+      "] d": ["editor::GoToDiagnostic", { "severity": { "min": "hint", "max": "error" } }],
+      "[ d": ["editor::GoToPreviousDiagnostic", { "severity": { "min": "hint", "max": "error" } }],
+      "] e": ["editor::GoToDiagnostic", { "severity": { "min": "hint", "max": "error" } }],
+      "[ e": ["editor::GoToPreviousDiagnostic", { "severity": { "min": "hint", "max": "error" } }],
+      "ctrl-/": "terminal_panel::Toggle"
+    }
+  },
+  {
+    "context": "Editor && mode == full && !menu",
+    "bindings": {
+      "alt-j": "editor::MoveLineDown",
+      "alt-k": "editor::MoveLineUp"
+    }
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "space space": "file_finder::Toggle",
+      "space ,": "tab_switcher::Toggle",
+      "space /": "project_search::ToggleFocus",
+      "space :": "command_palette::Toggle",
+      "space e": "project_panel::ToggleFocus",
+      "space shift-e": "project_panel::ToggleFocus",
+      "space f b": "tab_switcher::Toggle",
+      "space f shift-b": "tab_switcher::Toggle",
+      "space f f": "file_finder::Toggle",
+      "space f shift-f": "file_finder::Toggle",
+      "space f n": "workspace::NewFile",
+      "space f t": "terminal_panel::Toggle",
+      "space f shift-t": "terminal_panel::Toggle",
+      "space g g": "git_panel::ToggleFocus",
+      "space g s": "git_panel::ToggleFocus",
+      "space b `": "pane::ActivatePreviousItem",
+      "space b b": "pane::ActivatePreviousItem",
+      "space b d": ["pane::CloseActiveItem", { "close_pinned": false }],
+      "space b shift-d": ["pane::CloseActiveItem", { "close_pinned": false }],
+      "space b o": ["pane::CloseOtherItems", { "close_pinned": false }],
+      "space b i": ["pane::CloseCleanItems", { "close_pinned": false }],
+      "space b j": "tab_switcher::Toggle",
+      "space c a": "editor::ToggleCodeActions",
+      "space c d": ["editor::GoToDiagnostic", { "severity": { "min": "hint", "max": "error" } }],
+      "space c f": "editor::Format",
+      "space c o": "editor::OrganizeImports",
+      "space c r": "editor::Rename",
+      "space s b": "pane::DeploySearch",
+      "space s d": "diagnostics::Deploy",
+      "space s shift-d": "diagnostics::Deploy",
+      "space s g": "project_search::ToggleFocus",
+      "space s shift-g": "project_search::ToggleFocus",
+      "space s r": ["pane::DeploySearch", { "replace_enabled": true }],
+      "space s s": "outline_panel::ToggleFocus",
+      "space s shift-s": "project_symbols::Toggle",
+      "space s c": "command_palette::Toggle",
+      "space s k": "zed::OpenKeymap",
+      "space x x": "diagnostics::Deploy",
+      "space x shift-x": "diagnostics::Deploy",
+      "space -": "pane::SplitDown",
+      "space |": "pane::SplitRight",
+      "space w h": "workspace::ActivatePaneLeft",
+      "space w j": "workspace::ActivatePaneDown",
+      "space w k": "workspace::ActivatePaneUp",
+      "space w l": "workspace::ActivatePaneRight",
+      "space w s": "pane::SplitDown",
+      "space w v": "pane::SplitRight",
+      "space w d": ["pane::CloseActiveItem", { "close_pinned": false }],
+      "space w o": "workspace::ToggleAllDocks",
+      "space tab [": "pane::ActivatePreviousItem",
+      "space tab ]": "pane::ActivateNextItem",
+      "space tab d": ["pane::CloseActiveItem", { "close_pinned": false }],
+      "space u b": "theme::ToggleMode",
+      "space a a": "agent::ToggleFocus",
+      "space ?": "zed::OpenKeymap"
+    }
+  },
+  {
+    "context": "EmptyPane || SharedScreen",
+    "bindings": {
+      "space space": "file_finder::Toggle",
+      "space ,": "tab_switcher::Toggle",
+      "space /": "project_search::ToggleFocus",
+      "space :": "command_palette::Toggle",
+      "space e": "project_panel::ToggleFocus",
+      "space f f": "file_finder::Toggle",
+      "space f n": "workspace::NewFile",
+      "space f t": "terminal_panel::Toggle",
+      "space g g": "git_panel::ToggleFocus",
+      "space s d": "diagnostics::Deploy",
+      "space s g": "project_search::ToggleFocus",
+      "space s k": "zed::OpenKeymap",
+      "space x x": "diagnostics::Deploy",
+      "space a a": "agent::ToggleFocus"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-/": "terminal_panel::Toggle"
+    }
+  }
+]

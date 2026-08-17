@@ -1,0 +1,10 @@
+# This is a versioned, subscription-independent Clash Verge Rev Merge profile.
+#
+# Import the subscription in the app, then create a Merge profile from this
+# file's contents. Keep subscription URLs, proxy credentials, and generated
+# application state outside this repository.
+#
+# Add only stable policy here, such as DNS behavior or named proxy groups.
+# Rules and proxy-group list transformations that must append to a
+# subscription belong in a Clash Verge Script profile instead.
+{}

@@ -10,7 +10,7 @@
         "flake-parts": "flake-parts",
         "git-hooks": "git-hooks",
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs"
         ],
         "nixpkgs-wine": "nixpkgs-wine",
         "on-linux": "on-linux",
@@ -562,7 +562,7 @@
         "bun2nix": "bun2nix",
         "flake-parts": "flake-parts_4",
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs"
         ],
         "systems": "systems_2",
         "treefmt-nix": "treefmt-nix_2"
