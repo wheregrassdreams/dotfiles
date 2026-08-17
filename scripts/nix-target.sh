@@ -69,8 +69,12 @@ case "$action:$platform" in
   switch:wsl)
     exec sudo nixos-rebuild switch --flake "$system_ref"
     ;;
-  build-home:*|switch-home:*)
-    exec nix run --inputs-from "$repo" home-manager -- "${action%-home}" --flake "$home_ref"
+  build-home:*)
+    exec nix run --inputs-from "$repo" home-manager -- build --flake "$home_ref"
+    ;;
+  switch-home:*)
+    exec nix run --inputs-from "$repo" home-manager -- switch --flake "$home_ref" \
+      -B "${repo}/scripts/home-manager-backup.sh"
     ;;
   fast-build:darwin)
     exec nix run "$repo#nix-fast-build" -- --no-nom --skip-cached --flake "$repo#darwinConfigurations.${canonical_host}.system"

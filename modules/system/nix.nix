@@ -1,13 +1,24 @@
-{ lib, system, isDarwin ? false, ... }:
+{
+  lib,
+  pkgs,
+  system,
+  isDarwin ? false,
+  ...
+}:
 
 {
 
-  home-manager.backupFileExtension = "bak";
+  home-manager.backupCommand = pkgs.writeShellScript "home-manager-backup" ''
+    exec ${pkgs.bash}/bin/bash ${../../scripts/home-manager-backup.sh} "$@"
+  '';
 
   nix = lib.mkIf (!isDarwin) {
     settings = {
       builders-use-substitutes = true;
-      extra-experimental-features = [ "flakes" "nix-command" ];
+      extra-experimental-features = [
+        "flakes"
+        "nix-command"
+      ];
       max-jobs = "auto";
       cores = 0;
       substituters = [
@@ -28,6 +39,6 @@
 
   nixpkgs = {
     hostPlatform = system;
-    overlays = lib.mkDefault [];
+    overlays = lib.mkDefault [ ];
   };
 }
