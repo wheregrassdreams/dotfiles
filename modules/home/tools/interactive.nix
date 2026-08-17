@@ -30,6 +30,7 @@ lib.mkMerge [
       dust
       moor
       procs
+      tokei
 
     ];
   }
