@@ -8,8 +8,14 @@
   config = lib.mkIf config.my.gui.workspace.enable {
     my.homebrew = {
       taps = [
-        { name = "bendews/tap"; trusted = true; }
-        { name = "shivammathur/php"; trusted = true; }
+        {
+          name = "bendews/tap";
+          trusted = true;
+        }
+        {
+          name = "shivammathur/php";
+          trusted = true;
+        }
       ];
       brews = [
         "mas"
@@ -19,7 +25,8 @@
       ];
       casks = [
         "mos"
-        "aerospace"
+        # "aerospace"
+        "obsidian"
         "raycast"
         "dbeaver-community"
         "lookaway"
