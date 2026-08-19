@@ -1,8 +1,14 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.my.connectivity.tailscale;
   host = cfg.host;
-in {
+in
+{
   imports = [
     ../../../options/connectivity/tailscale.nix
     ../../../options/homebrew.nix
@@ -10,13 +16,15 @@ in {
 
   config = lib.mkMerge [
     {
-      assertions = [{
-        assertion = !cfg.enable || host != "";
-        message = "my.connectivity.tailscale.host must be set when Tailscale is enabled";
-      }];
+      assertions = [
+        {
+          assertion = !cfg.enable || host != "";
+          message = "my.connectivity.tailscale.host must be set when Tailscale is enabled";
+        }
+      ];
     }
     (lib.mkIf cfg.enable {
-      my.homebrew.casks = [ "tailscale" ];
+      my.homebrew.casks = [ "tailscale-app" ];
       home.file.".local/bin/tailscale-self-dns" = {
         executable = true;
         text = ''

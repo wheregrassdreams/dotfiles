@@ -78,10 +78,8 @@ function main(config) {
     ? config.dns["fake-ip-filter"]
     : [];
 
-  if (
-    !config.dns["fake-ip-filter"].includes(`+.${tailnetDomain}`)
-  ) {
-    config.dns["fake-ip-filter"].push(`+.${tailnetDomain}`);
+  if (!config.dns["fake-ip-filter"].includes(`*.${tailnetDomain}`)) {
+    config.dns["fake-ip-filter"].push(`*.${tailnetDomain}`);
   }
 
   return config;
