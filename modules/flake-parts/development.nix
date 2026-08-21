@@ -12,7 +12,7 @@
           check-symlinks.enable = true;
           deadnix.enable = true;
           end-of-file-fixer.enable = true;
-          nixfmt-rfc-style.enable = true;
+          # nixfmt-rfc-style.enable = true;
           shellcheck.enable = true;
           trim-trailing-whitespace.enable = true;
         };
@@ -28,7 +28,7 @@
           deadnix
           just
           nixd
-          nixfmt-rfc-style
+          # nixfmt-rfc-style
           pre-commit
           shellcheck
           shfmt
