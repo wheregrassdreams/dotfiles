@@ -40,6 +40,10 @@
           colorMoved = "default";
         };
 
+        lfs = {
+          enable = true;
+        };
+
         branch.sort = "-committerdate";
         fetch.prune = true;
         merge.conflictstyle = "diff3";
@@ -52,15 +56,14 @@
           updateRefs = true;
         };
         rerere.enabled = true;
-        url."git@github.com:".insteadOf = "https://github.com/";
       };
     };
 
     home.packages = with pkgs; [
-      git
+      # git
       delta
       git-filter-repo
-      git-lfs
+      # git-lfs
     ];
   };
 }

@@ -17,6 +17,9 @@ in
     # 而上面的配置会导致与本地gh配置冲突，
     # 因此只声明包
     home.packages = [ pkgs.gh ];
+    programs.git.settings = {
+      url."git@github.com:".insteadOf = "https://github.com/";
+    };
     programs.ssh.matchBlocks."github.com" = {
       hostname = "ssh.github.com";
       port = 443;
